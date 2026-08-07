@@ -124,10 +124,10 @@
       <table>
         <thead>
           <tr>
-            <th>구분</th>
-            <th>업체명</th>
-            <th>원사/원단 스펙</th>
-            <th>예정일(ETD)</th>
+            <th>업체명 / 품목</th>
+            <th>스펙 및 비고</th>
+            <th>주문일 (발주일)</th>
+            <th>출고 예정일 (ETD)</th>
             <th>관리</th>
           </tr>
         </thead>
@@ -143,10 +143,10 @@
       <table>
         <thead>
           <tr>
-            <th>품목명</th>
-            <th>업체명</th>
-            <th>스펙 / 비고</th>
-            <th>예정일</th>
+            <th>업체명 / 품목</th>
+            <th>스펙 및 비고</th>
+            <th>주문일 (발주일)</th>
+            <th>출고 예정일 (ETD)</th>
             <th>관리</th>
           </tr>
         </thead>
@@ -162,10 +162,10 @@
       <table>
         <thead>
           <tr>
-            <th>품목</th>
-            <th>공장명</th>
-            <th>스펙 / WeChat</th>
-            <th>예정일</th>
+            <th>업체명 / 품목</th>
+            <th>스펙 및 비고</th>
+            <th>주문일 (발주일)</th>
+            <th>출고 예정일 (ETD)</th>
             <th>관리</th>
           </tr>
         </thead>
@@ -181,10 +181,10 @@
       <table>
         <thead>
           <tr>
-            <th>공장명</th>
-            <th>담당 오더</th>
-            <th>스펙 / 비고</th>
-            <th>예정일</th>
+            <th>공장명 / 오더</th>
+            <th>스펙 및 비고</th>
+            <th>주문일 (투입일)</th>
+            <th>완성 예정일 (ETD)</th>
             <th>관리</th>
           </tr>
         </thead>
@@ -214,15 +214,19 @@
       </div>
       <div class="form-group">
         <label>업체명 / 품목명</label>
-        <input type="text" id="input-name" placeholder="예: 성수 B라벨, 중다지퍼" required>
+        <input type="text" id="input-name" placeholder="예: MAINTAG & SILICON TAG" required>
       </div>
       <div class="form-group">
         <label>스펙 및 비고</label>
-        <input type="text" id="input-spec" placeholder="예: 30수 코튼, 5호 비슬론 지퍼">
+        <input type="text" id="input-spec" placeholder="예: 7140 SET">
       </div>
       <div class="form-group">
-        <label>예정일 (ETD)</label>
-        <input type="date" id="input-date">
+        <label>주문일 (발주일)</label>
+        <input type="date" id="input-order-date">
+      </div>
+      <div class="form-group">
+        <label>출고 예정일 (ETD)</label>
+        <input type="date" id="input-etd-date">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-cancel" onclick="closeModal()">취소</button>
@@ -270,7 +274,8 @@
       id: Date.now(),
       name: document.getElementById('input-name').value,
       spec: document.getElementById('input-spec').value,
-      date: document.getElementById('input-date').value || '-'
+      orderDate: document.getElementById('input-order-date').value || '-',
+      etdDate: document.getElementById('input-etd-date').value || '-'
     };
 
     scmData[category].push(newItem);
@@ -304,10 +309,10 @@
       scmData[cat].forEach(item => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${cat.toUpperCase()}</td>
           <td><b>${item.name}</b></td>
           <td>${item.spec}</td>
-          <td>${item.date}</td>
+          <td>${item.orderDate}</td>
+          <td>${item.etdDate}</td>
           <td><button class="btn-delete" onclick="deleteItem('${cat}', ${item.id})">삭제</button></td>
         `;
         tbody.appendChild(tr);
