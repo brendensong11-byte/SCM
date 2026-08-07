@@ -3,38 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>부자재 관리 대시보드</title>
+  <title>SCM 통합 관리 대시보드</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; }
     body { background-color: #f4f6f8; color: #333; padding: 20px; }
-    .container { max-width: 1000px; margin: 0 auto; }
+    .container { max-width: 1050px; margin: 0 auto; }
     
-    header { background: #fff; padding: 20px 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+    header { background: #fff; padding: 20px 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
     h1 { font-size: 20px; color: #111; font-weight: 700; }
     .btn-add { background: #2563eb; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; }
     .btn-add:hover { background: #1d4ed8; }
 
-    /* 섹션 스타일 */
+    /* 탭 메뉴 스타일 */
+    .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 0; flex-wrap: wrap; }
+    .tab-btn { padding: 10px 16px; border: none; background: none; font-size: 14px; font-weight: 600; color: #6b7280; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+    .tab-btn.active { color: #2563eb; border-bottom-color: #2563eb; font-weight: 700; }
+    
+    /* 탭 컨텐츠 제어 */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* 카드 및 테이블 스타일 */
     .section-card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
     .section-header { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; padding-bottom: 12px; border-bottom: 2px solid #e5e7eb; margin-bottom: 15px; }
-    .flag { font-size: 18px; }
     
-    /* 중국 카테고리 태그 */
     .cat-title { font-size: 14px; font-weight: 700; color: #4b5563; margin: 15px 0 8px 0; display: flex; align-items: center; gap: 6px; }
     .cat-title::before { content: ''; display: inline-block; width: 4px; height: 14px; background: #2563eb; border-radius: 2px; }
 
-    /* 테이블 스타일 */
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13.5px; }
     th { background: #f9fafb; color: #6b7280; font-weight: 600; padding: 10px 12px; border-bottom: 1px solid #e5e7eb; }
     td { padding: 12px; border-bottom: 1px solid #f3f4f6; color: #1f2937; }
-    tr:last-child td { border-bottom: none; }
     
-    /* 뱃지 */
     .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
     .badge-fixed { background: #e0e7ff; color: #3730a3; }
     .badge-main { background: #dcfce7; color: #166534; }
     .badge-sub { background: #f3f4f6; color: #4b5563; }
-    
     .wechat-id { font-family: monospace; font-weight: 600; color: #059669; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; }
   </style>
 </head>
@@ -42,132 +45,141 @@
 
 <div class="container">
   <header>
-    <h1>📦 부자재 통합 관리 (한국 & 중국)</h1>
-    <button class="btn-add" onclick="alert('업체 추가 폼을 연결하세요')">+ 업체/부자재 추가</button>
+    <h1>🏭 SCM 통합 관리 시스템</h1>
+    <button class="btn-add" onclick="alert('항목 추가 모달 연결')">+ 신규 항목 추가</button>
   </header>
 
-  <!-- 1. 한국 부자재 섹션 (고정 업체) -->
-  <section class="section-card">
-    <div class="section-header">
-      <span class="flag">🇰🇷</span>
-      <span>한국 부자재 (고정 거래처)</span>
+  <!-- 5개 상단 탭 메뉴 -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="openTab('factory')">🏭 공장 관리</button>
+    <button class="tab-btn" onclick="openTab('fabric')">🧵 원단 관리</button>
+    <button class="tab-btn" onclick="openTab('trim-kr')">🇰🇷 부자재 (코리아)</button>
+    <button class="tab-btn" onclick="openTab('trim-cn')">🇨🇳 부자재 (차이나)</button>
+    <button class="tab-btn" onclick="openTab('status')">📊 생산 일정/현황</button>
+  </div>
+
+  <!-- 1. 공장 관리 탭 -->
+  <div id="tab-factory" class="tab-content active">
+    <div class="section-card">
+      <div class="section-header">🏭 봉제 공장 목록</div>
+      <p style="color: #6b7280; font-size: 14px;">메인/서브 생산 공장 데이터 위치</p>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th style="width: 20%;">품목명</th>
-          <th style="width: 25%;">지정 업체명</th>
-          <th style="width: 25%;">연락처 / 담당자</th>
-          <th style="width: 30%;">비고 / 주요 스펙</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><b>메인 케어라벨 & 행택</b></td>
-          <td>동대문/성수 (B라벨) <span class="badge badge-fixed">고정</span></td>
-          <td>010-1234-5678 (김실장)</td>
-          <td>실크인쇄 라벨 + 코팅 행택 (KC인증)</td>
-        </tr>
-        <tr>
-          <td><b>스티커 / 지퍼백</b></td>
-          <td><i>(업체명 입력)</i></td>
-          <td><i>(연락처 입력)</i></td>
-          <td>국내 빠른 리오더용</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+  </div>
 
-  <!-- 2. 중국 부자재 섹션 (카테고리별 2~3개 메인 공장) -->
-  <section class="section-card">
-    <div class="section-header">
-      <span class="flag">🇨🇳</span>
-      <span>중국 부자재 (카테고리별 2~3개 핵심 공장)</span>
+  <!-- 2. 원단 관리 탭 -->
+  <div id="tab-fabric" class="tab-content">
+    <div class="section-card">
+      <div class="section-header">🧵 메인 원단 / 겉감 / 안감</div>
+      <p style="color: #6b7280; font-size: 14px;">원단 스펙 및 소싱처 위치</p>
     </div>
+  </div>
 
-    <!-- 지퍼 카테고리 -->
-    <div class="cat-title">지퍼 / 슬라이더 (Zippers)</div>
-    <table>
-      <thead>
-        <tr>
-          <th style="width: 15%;">구분</th>
-          <th style="width: 25%;">공장명 / 위치</th>
-          <th style="width: 25%;">WeChat (위챗)</th>
-          <th style="width: 35%;">스펙 / MOQ</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="badge badge-main">메인 (1순위)</span></td>
-          <td>광저우 중다 시장 (A지퍼)</td>
-          <td><span class="wechat-id">wx_zipper_gz</span></td>
-          <td>5호 비슬론 / 로고 슬라이더 (MOQ 5,000)</td>
-        </tr>
-        <tr>
-          <td><span class="badge badge-sub">서브 (2순위)</span></td>
-          <td><i>(서브 공장명)</i></td>
-          <td><span class="wechat-id">-</span></td>
-          <td>긴급 대응 / 기본 지퍼용</td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- 3. 부자재 코리아 탭 -->
+  <div id="tab-trim-kr" class="tab-content">
+    <section class="section-card">
+      <div class="section-header">🇰🇷 한국 부자재 (고정 거래처)</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 20%;">품목명</th>
+            <th style="width: 25%;">지정 업체명</th>
+            <th style="width: 25%;">연락처 / 담당자</th>
+            <th style="width: 30%;">비고 / 주요 스펙</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>메인 케어라벨 & 행택</b></td>
+            <td>동대문/성수 (B라벨) <span class="badge badge-fixed">고정</span></td>
+            <td>010-1234-5678 (김실장)</td>
+            <td>실크인쇄 라벨 + 코팅 행택 (KC인증)</td>
+          </tr>
+          <tr>
+            <td><b>스티커 / 지퍼백</b></td>
+            <td><i>(업체명 입력)</i></td>
+            <td><i>(연락처 입력)</i></td>
+            <td>국내 빠른 리오더용</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
 
-    <!-- 라벨/행택 카테고리 -->
-    <div class="cat-title">라벨 / 행택 (Labels & Tags)</div>
-    <table>
-      <thead>
-        <tr>
-          <th style="width: 15%;">구분</th>
-          <th style="width: 25%;">공장명 / 위치</th>
-          <th style="width: 25%;">WeChat (위챗)</th>
-          <th style="width: 35%;">스펙 / MOQ</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="badge badge-main">메인 (1순위)</span></td>
-          <td><i>(중국 메인 라벨 공장)</i></td>
-          <td><span class="wechat-id">-</span></td>
-          <td>메인 의류 직조 라벨</td>
-        </tr>
-        <tr>
-          <td><span class="badge badge-sub">서브 (2순위)</span></td>
-          <td><i>(서브 라벨 공장)</i></td>
-          <td><span class="wechat-id">-</span></td>
-          <td>특수 케어라벨/케어택</td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- 4. 부자재 차이나 탭 -->
+  <div id="tab-trim-cn" class="tab-content">
+    <section class="section-card">
+      <div class="section-header">🇨🇳 중국 부자재 (카테고리별 2~3개 핵심 공장)</div>
+      
+      <div class="cat-title">지퍼 / 슬라이더 (Zippers)</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 15%;">구분</th>
+            <th style="width: 25%;">공장명 / 위치</th>
+            <th style="width: 25%;">WeChat (위챗)</th>
+            <th style="width: 35%;">스펙 / MOQ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-main">메인 (1순위)</span></td>
+            <td>광저우 중다 시장 (A지퍼)</td>
+            <td><span class="wechat-id">wx_zipper_gz</span></td>
+            <td>5호 비슬론 / 로고 슬라이더 (MOQ 5,000)</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-sub">서브 (2순위)</span></td>
+            <td><i>(서브 공장명)</i></td>
+            <td><span class="wechat-id">-</span></td>
+            <td>긴급 대응 / 기본 지퍼용</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <!-- 밴드/기타 부자재 카테고리 -->
-    <div class="cat-title">엘라스틱 밴드 / 기타 부자재</div>
-    <table>
-      <thead>
-        <tr>
-          <th style="width: 15%;">구분</th>
-          <th style="width: 25%;">공장명 / 위치</th>
-          <th style="width: 25%;">WeChat (위챗)</th>
-          <th style="width: 35%;">스펙 / MOQ</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="badge badge-main">메인 (1순위)</span></td>
-          <td>샤오싱 커교 부자재시장</td>
-          <td><span class="wechat-id">wx_band_sx</span></td>
-          <td>고탄력 허리 E-BAND 40mm (MOQ 3,000Y)</td>
-        </tr>
-        <tr>
-          <td><span class="badge badge-sub">서브 (2순위)</span></td>
-          <td><i>(서브 밴드 공장)</i></td>
-          <td><span class="wechat-id">-</span></td>
-          <td>-</td>
-        </tr>
-      </tbody>
-    </table>
+      <div class="cat-title">라벨 / 행택 (Labels & Tags)</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 15%;">구분</th>
+            <th style="width: 25%;">공장명 / 위치</th>
+            <th style="width: 25%;">WeChat (위챗)</th>
+            <th style="width: 35%;">스펙 / MOQ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-main">메인 (1순위)</span></td>
+            <td><i>(중국 메인 라벨 공장)</i></td>
+            <td><span class="wechat-id">-</span></td>
+            <td>메인 의류 직조 라벨</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
 
-  </section>
+  <!-- 5. 생산 일정/현황 탭 -->
+  <div id="tab-status" class="tab-content">
+    <div class="section-card">
+      <div class="section-header">📊 4,000개 (베트남) / 3,000개 (한국) 생산 진행률</div>
+      <p style="color: #6b7280; font-size: 14px;">실시간 생산 스케줄 및 선적 예정일(ETD) 관리 위치</p>
+    </div>
+  </div>
+
 </div>
+
+<script>
+  function openTab(tabName) {
+    const contents = document.querySelectorAll('.tab-content');
+    contents.forEach(content => content.classList.remove('active'));
+
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+
+    document.getElementById('tab-' + tabName).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+</script>
 
 </body>
 </html>
