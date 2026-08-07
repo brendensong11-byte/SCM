@@ -3,468 +3,166 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SCM 통합 관리 시스템</title>
+  <title>SCM 통합 관리 시스템 (Multi-Brand)</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; }
-    body { background-color: #f4f6f8; color: #333; padding: 20px; }
-    .container { max-width: 1150px; margin: 0 auto; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: #f8fafc; color: #1e293b; padding: 20px; }
     
-    header { background: #fff; padding: 20px 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-    h1 { font-size: 20px; color: #111; font-weight: 700; }
-    .btn-add { background: #2563eb; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; }
-    .btn-add:hover { background: #1d4ed8; }
+    /* 헤더 및 브랜드 선택기 */
+    header { background: #fff; padding: 20px 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .header-left { display: flex; align-items: center; gap: 20px; }
+    h1 { font-size: 20px; font-weight: 700; color: #0f172a; }
+    .brand-selector { padding: 8px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 600; font-size: 14px; background: #f1f5f9; cursor: pointer; }
 
     /* 탭 메뉴 */
-    .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 0; flex-wrap: wrap; }
-    .tab-btn { padding: 10px 16px; border: none; background: none; font-size: 14px; font-weight: 600; color: #6b7280; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+    .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; }
+    .tab-btn { padding: 12px 18px; border: none; background: none; font-size: 14px; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
     .tab-btn.active { color: #2563eb; border-bottom-color: #2563eb; font-weight: 700; }
-    
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
 
-    /* 카드 및 테이블 */
+    /* 섹션 카드 & 테이블 */
     .section-card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .section-header { display: flex; align-items: center; justify-content: space-between; font-size: 16px; font-weight: 700; padding-bottom: 12px; border-bottom: 2px solid #e5e7eb; margin-bottom: 15px; }
-    
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-    th { background: #f9fafb; color: #6b7280; font-weight: 600; padding: 10px 10px; border-bottom: 1px solid #e5e7eb; white-space: nowrap; }
-    td { padding: 10px; border-bottom: 1px solid #f3f4f6; color: #1f2937; vertical-align: middle; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; font-size: 16px; font-weight: 700; padding-bottom: 12px; border-bottom: 2px solid #f1f5f9; margin-bottom: 15px; }
+
+    .btn-add { background: #2563eb; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; }
+    .btn-add:hover { background: #1d4ed8; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: #f8fafc; color: #475569; font-weight: 600; padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: left; }
+    td { padding: 12px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
 
     .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
-    .badge-process { background: #fef3c7; color: #d97706; }
-    .badge-done { background: #dcfce7; color: #15803d; }
-    .badge-cat { background: #e0e7ff; color: #3730a3; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    .badge-brand { background: #e0e7ff; color: #3730a3; }
+    .badge-season { background: #fef3c7; color: #d97706; }
+    .badge-status { background: #dcfce7; color: #15803d; }
 
-    /* 타임라인 UI */
-    .pipeline { display: flex; gap: 12px; margin-top: 15px; }
-    .pipe-step { flex: 1; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; text-align: center; }
+    /* 파이프라인 타임라인 */
+    .pipeline { display: flex; gap: 10px; margin-top: 10px; }
+    .pipe-step { flex: 1; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; text-align: center; }
     .pipe-step.active { border-color: #2563eb; background: #eff6ff; }
-    .pipe-title { font-size: 12px; font-weight: 700; color: #64748b; margin-bottom: 5px; }
-    .pipe-status { font-size: 14px; font-weight: 700; color: #1e293b; }
-    .pipe-date { font-size: 11px; color: #2563eb; margin-top: 4px; font-weight: 600; }
-
-    .target-badge { font-size: 12px; padding: 2px 6px; background: #e0e7ff; color: #3730a3; border-radius: 4px; font-weight: 600; }
-
-    /* 이미지 및 태그 스타일 */
-    .img-preview { width: 45px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #e5e7eb; cursor: pointer; }
-    .no-img { width: 45px; height: 45px; background: #f3f4f6; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #9ca3af; }
-    .item-tag { display: inline-block; background: #eff6ff; color: #1d4ed8; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 3px; margin-bottom: 3px; }
-
-    /* 모달 팝업 */
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); justify-content: center; align-items: center; z-index: 1000; }
-    .modal-overlay.active { display: flex; }
-    .modal-box { background: #fff; width: 500px; max-height: 90vh; overflow-y: auto; border-radius: 12px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
-    .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-    .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #9ca3af; }
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 12.5px; font-weight: 600; color: #374151; margin-bottom: 5px; }
-    .form-group input, .form-group select { width: 100%; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; }
-    .form-row { display: flex; gap: 10px; }
-    .form-row .form-group { flex: 1; }
-    
-    .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
-    .btn-submit { background: #2563eb; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; }
-    .btn-cancel { background: #e5e7eb; color: #374151; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; }
-    .btn-delete { background: #fee2e2; color: #dc2626; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; }
+    .pipe-title { font-size: 11px; font-weight: 600; color: #64748b; }
+    .pipe-status { font-size: 13px; font-weight: 700; color: #1e293b; margin-top: 2px; }
   </style>
 </head>
 <body>
 
-<div class="container">
   <header>
-    <h1>🏭 SCM 통합 관리 시스템</h1>
-    <button class="btn-add" onclick="openModal()">+ 신규 오더/자재 등록</button>
+    <div class="header-left">
+      <h1>🏭 SCM 통합 관리 시스템</h1>
+      <select id="brandFilter" class="brand-selector" onchange="renderData()">
+        <option value="ALL">전체 브랜드 보기</option>
+        <option value="BRD001">브랜드 A (LUX)</option>
+        <option value="BRD002">브랜드 B (CASUAL)</option>
+      </select>
+    </div>
+    <button class="btn-add" onclick="alert('신규 Style No. 등록 모달 준비 중')">+ 신규 Style 등록</button>
   </header>
 
-  <!-- 탭 메뉴 -->
+  <!-- 메인 탭 Menu -->
   <div class="nav-tabs">
-    <button class="tab-btn active" onclick="openTab('status')">📊 일정 현황</button>
-    <button class="tab-btn" onclick="openTab('fabric')">🧵 원사/원단 관리</button>
-    <button class="tab-btn" onclick="openTab('trim-kr')">🇰🇷 부자재 (코리아)</button>
-    <button class="tab-btn" onclick="openTab('trim-cn')">🇨🇳 부자재 (차이나)</button>
-    <button class="tab-btn" onclick="openTab('factory')">🏭 공장 관리</button>
+    <button class="tab-btn active">📊 Style & 생산 프로젝트</button>
+    <button class="tab-btn">🧵 원자재 Master</button>
+    <button class="tab-btn">🏭 공장/업체 Master</button>
+    <button class="tab-btn">📋 전체 일정 현황</button>
   </div>
 
-  <!-- 1. 일정 현황 탭 -->
-  <div id="tab-status" class="tab-content active">
-    <!-- 메인 타임라인 -->
-    <div class="section-card">
-      <div class="section-header">
-        <div>
-          <span class="target-badge">🇻🇳 베트남 납품건</span>
-          <span style="margin-left: 8px;">메인 4,000개 생산 파이프라인</span>
-        </div>
-        <span class="badge badge-process">공장 봉제 대기 중</span>
-      </div>
-      <div class="pipeline">
-        <div class="pipe-step">
-          <div class="pipe-title">1. 원사/원단 편직</div>
-          <div class="pipe-status">완료 <span class="badge badge-done">✓</span></div>
-          <div class="pipe-date">8/02 완료</div>
-        </div>
-        <div class="pipe-step">
-          <div class="pipe-title">2. 원단 염색/가공</div>
-          <div class="pipe-status">완료 <span class="badge badge-done">✓</span></div>
-          <div class="pipe-date">8/05 완료</div>
-        </div>
-        <div class="pipe-step">
-          <div class="pipe-title">3. 부자재 입고 (CN)</div>
-          <div class="pipe-status">진행 중 <span class="badge badge-process">⌛</span></div>
-          <div class="pipe-date">8/08 입고예정</div>
-        </div>
-        <div class="pipe-step active">
-          <div class="pipe-title">4. 공장 봉제/생산</div>
-          <div class="pipe-status">대기</div>
-          <div class="pipe-date">8/10 완료예정</div>
-        </div>
-        <div class="pipe-step">
-          <div class="pipe-title">5. 출고/해상운송</div>
-          <div class="pipe-status">대기</div>
-          <div class="pipe-date">8/17 도착목표</div>
-        </div>
-      </div>
+  <!-- Style 중심 프로젝트 데이터 카드 -->
+  <div class="section-card">
+    <div class="section-header">
+      <span>📦 브랜드별 Style No. 생산 프로젝트 파이프라인</span>
     </div>
-
-    <!-- 등록된 전체 일정 현황 타임라인 리스트 -->
-    <div class="section-card">
-      <div class="section-header">📋 최근 등록된 전체 발주/생산 일정 통합 목록</div>
-      <table>
-        <thead>
-          <tr>
-            <th>이미지</th>
-            <th>구분</th>
-            <th>업체/공장명</th>
-            <th>주문 품목 리스트</th>
-            <th>수량</th>
-            <th>발주일</th>
-            <th>출고 예정일 (ETD)</th>
-            <th>관리</th>
-          </tr>
-        </thead>
-        <tbody id="list-all-status"></tbody>
-      </table>
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>브랜드</th>
+          <th>시즌</th>
+          <th>Style No.</th>
+          <th>상품명</th>
+          <th>목표 수량</th>
+          <th>생산 파이프라인 현황</th>
+          <th>상태</th>
+        </tr>
+      </thead>
+      <tbody id="styleProjectList">
+        <!-- JS 랜더링 영역 -->
+      </tbody>
+    </table>
   </div>
 
-  <!-- 2. 원사/원단 관리 탭 -->
-  <div id="tab-fabric" class="tab-content">
-    <div class="section-card">
-      <div class="section-header">🧵 원사 수급 및 원단 가공 업체</div>
-      <table>
-        <thead>
-          <tr>
-            <th>이미지</th>
-            <th>업체명</th>
-            <th>주문 품목 리스트</th>
-            <th>수량</th>
-            <th>단가 / 총금액</th>
-            <th>발주일</th>
-            <th>출고 예정일 (ETD)</th>
-            <th>관리</th>
-          </tr>
-        </thead>
-        <tbody id="list-fabric"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 3. 부자재 코리아 탭 -->
-  <div id="tab-trim-kr" class="tab-content">
-    <div class="section-card">
-      <div class="section-header">🇰🇷 한국 부자재 업체</div>
-      <table>
-        <thead>
-          <tr>
-            <th>이미지</th>
-            <th>업체명</th>
-            <th>주문 품목 리스트</th>
-            <th>수량</th>
-            <th>단가 / 총금액</th>
-            <th>발주일</th>
-            <th>출고 예정일 (ETD)</th>
-            <th>관리</th>
-          </tr>
-        </thead>
-        <tbody id="list-trim-kr"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 4. 부자재 차이나 탭 -->
-  <div id="tab-trim-cn" class="tab-content">
-    <div class="section-card">
-      <div class="section-header">🇨🇳 중국 부자재 공장</div>
-      <table>
-        <thead>
-          <tr>
-            <th>이미지</th>
-            <th>공장명</th>
-            <th>주문 품목 리스트</th>
-            <th>수량</th>
-            <th>단가 / 총금액</th>
-            <th>발주일</th>
-            <th>출고 예정일 (ETD)</th>
-            <th>관리</th>
-          </tr>
-        </thead>
-        <tbody id="list-trim-cn"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 5. 공장 관리 탭 -->
-  <div id="tab-factory" class="tab-content">
-    <div class="section-card">
-      <div class="section-header">🏭 봉제 공장 관리</div>
-      <table>
-        <thead>
-          <tr>
-            <th>이미지</th>
-            <th>공장명</th>
-            <th>담당 오더 / 품목</th>
-            <th>생산 수량</th>
-            <th>공임 단가</th>
-            <th>투입일</th>
-            <th>완성 예정일 (ETD)</th>
-            <th>관리</th>
-          </tr>
-        </thead>
-        <tbody id="list-factory"></tbody>
-      </table>
-    </div>
-  </div>
-
-</div>
-
-<!-- 등록 모달 팝업 -->
-<div id="modal" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-header">
-      <span>➕ 신규 오더 / 자재 등록</span>
-      <button class="close-btn" onclick="closeModal()">&times;</button>
-    </div>
-    <form id="add-form" onsubmit="handleFormSubmit(event)">
-      <div class="form-group">
-        <label>구분 (카테고리)</label>
-        <select id="input-category">
-          <option value="fabric">원사/원단 업체</option>
-          <option value="trim-kr">한국 부자재</option>
-          <option value="trim-cn" selected>중국 부자재</option>
-          <option value="factory">봉제 공장</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>업체명 / 공장명</label>
-        <input type="text" id="input-name" placeholder="예: QINGDAO 林得瑞包装有限公司" required>
-      </div>
-      <div class="form-group">
-        <label>주문 품목 리스트 (쉼표 구분)</label>
-        <input type="text" id="input-items" placeholder="예: 메인택, 실리콘택, 케어라벨">
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>수량</label>
-          <input type="number" id="input-qty" placeholder="예: 7140" required>
-        </div>
-        <div class="form-group">
-          <label>단가 (원 또는 ￥)</label>
-          <input type="number" id="input-price" placeholder="예: 150">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>주문일 (발주일)</label>
-          <input type="date" id="input-order-date">
-        </div>
-        <div class="form-group">
-          <label>출고 예정일 (ETD)</label>
-          <input type="date" id="input-etd-date">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>주문 품목 이미지 첨부</label>
-        <input type="file" id="input-image" accept="image/*">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn-cancel" onclick="closeModal()">취소</button>
-        <button type="submit" class="btn-submit">등록하기</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<script>
-  let scmData = JSON.parse(localStorage.getItem('scmData')) || {
-    fabric: [],
-    'trim-kr': [],
-    'trim-cn': [],
-    factory: []
-  };
-
-  document.addEventListener('DOMContentLoaded', () => {
-    renderTables();
-  });
-
-  function openTab(tabName) {
-    const contents = document.querySelectorAll('.tab-content');
-    contents.forEach(content => content.classList.remove('active'));
-
-    const buttons = document.querySelectorAll('.tab-btn');
-    buttons.forEach(btn => btn.classList.remove('active'));
-
-    document.getElementById('tab-' + tabName).classList.add('active');
-    event.currentTarget.classList.add('active');
-  }
-
-  function openModal() {
-    document.getElementById('modal').classList.add('active');
-  }
-
-  function closeModal() {
-    document.getElementById('modal').classList.remove('active');
-  }
-
-  function handleFormSubmit(e) {
-    e.preventDefault();
-    const category = document.getElementById('input-category').value;
-    const itemsRaw = document.getElementById('input-items').value;
-    const itemsArr = itemsRaw ? itemsRaw.split(',').map(item => item.trim()).filter(Boolean) : [];
-    
-    const fileInput = document.getElementById('input-image');
-    const file = fileInput.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        saveItem(category, itemsArr, event.target.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      saveItem(category, itemsArr, null);
-    }
-  }
-
-  function saveItem(category, itemsArr, imgData) {
-    const qty = parseFloat(document.getElementById('input-qty').value) || 0;
-    const price = parseFloat(document.getElementById('input-price').value) || 0;
-
-    const newItem = {
-      id: Date.now(),
-      category: category,
-      name: document.getElementById('input-name').value,
-      items: itemsArr,
-      qty: qty,
-      price: price,
-      orderDate: document.getElementById('input-order-date').value || '-',
-      etdDate: document.getElementById('input-etd-date').value || '-',
-      image: imgData
+  <script>
+    // [데이터 모델 설계]: Brand -> Season -> Style No. -> Production Pipeline Structure
+    const DB = {
+      brands: [
+        { id: "BRD001", name: "브랜드 A (LUX)" },
+        { id: "BRD002", name: "브랜드 B (CASUAL)" }
+      ],
+      styles: [
+        {
+          styleNo: "ST26001",
+          brandId: "BRD001",
+          season: "2026 SS",
+          name: "쫀쫀 슬림 팬츠",
+          targetQty: "4,000개",
+          status: "봉제 진행 중",
+          pipeline: { fabric: "완료", subMaterial: "완료", sewing: "진행중", qc: "대기" }
+        },
+        {
+          styleNo: "ST26002",
+          brandId: "BRD002",
+          season: "2026 FW",
+          name: "오버핏 에어 티셔츠",
+          targetQty: "2,500개",
+          status: "원단 염색 중",
+          pipeline: { fabric: "진행중", subMaterial: "대기", sewing: "대기", qc: "대기" }
+        }
+      ]
     };
 
-    scmData[category].push(newItem);
-    localStorage.setItem('scmData', JSON.stringify(scmData));
+    function renderData() {
+      const selectedBrand = document.getElementById("brandFilter").value;
+      const tbody = document.getElementById("styleProjectList");
+      tbody.innerHTML = "";
 
-    renderTables();
-    closeModal();
-    document.getElementById('add-form').reset();
-  }
+      const filteredStyles = selectedBrand === "ALL" 
+        ? DB.styles 
+        : DB.styles.filter(s => s.brandId === selectedBrand);
 
-  function deleteItem(category, id) {
-    if (confirm('정말 삭제하시겠습니까?')) {
-      scmData[category] = scmData[category].filter(item => item.id !== id);
-      localStorage.setItem('scmData', JSON.stringify(scmData));
-      renderTables();
-    }
-  }
-
-  function getCategoryName(cat) {
-    switch(cat) {
-      case 'fabric': return '원사/원단';
-      case 'trim-kr': return '한국 부자재';
-      case 'trim-cn': return '중국 부자재';
-      case 'factory': return '공장 생산';
-      default: return cat;
-    }
-  }
-
-  function renderTables() {
-    const categories = ['fabric', 'trim-kr', 'trim-cn', 'factory'];
-    let allItems = [];
-
-    categories.forEach(cat => {
-      const tbody = document.getElementById(`list-${cat}`);
-      tbody.innerHTML = '';
-
-      scmData[cat].forEach(item => {
-        allItems.push(item);
-
-        const tr = document.createElement('tr');
-        
-        // 품목 태그
-        let itemsHtml = '-';
-        if (item.items && item.items.length > 0) {
-          itemsHtml = item.items.map(it => `<span class="item-tag">${it}</span>`).join('');
-        }
-
-        // 이미지
-        const imgHtml = item.image 
-          ? `<img src="${item.image}" class="img-preview" onclick="window.open('${item.image}')">`
-          : `<div class="no-img">No Img</div>`;
-
-        // 금액 계산
-        const totalPrice = (item.qty * item.price).toLocaleString();
-        const priceHtml = item.price ? `${item.price.toLocaleString()} / <b>${totalPrice}</b>` : '-';
-
+      filteredStyles.forEach(style => {
+        const brandObj = DB.brands.find(b => b.id === style.brandId);
+        const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${imgHtml}</td>
-          <td><b>${item.name}</b></td>
-          <td>${itemsHtml}</td>
-          <td><b>${item.qty ? item.qty.toLocaleString() : '-'}</b></td>
-          <td>${priceHtml}</td>
-          <td>${item.orderDate || '-'}</td>
-          <td>${item.etdDate || '-'}</td>
-          <td><button class="btn-delete" onclick="deleteItem('${cat}', ${item.id})">삭제</button></td>
+          <td><span class="badge badge-brand">${brandObj ? brandObj.name : style.brandId}</span></td>
+          <td><span class="badge badge-season">${style.season}</span></td>
+          <td><b>${style.styleNo}</b></td>
+          <td>${style.name}</td>
+          <td>${style.targetQty}</td>
+          <td>
+            <div class="pipeline">
+              <div class="pipe-step ${style.pipeline.fabric === '완료' ? 'active' : ''}">
+                <div class="pipe-title">원단</div>
+                <div class="pipe-status">${style.pipeline.fabric}</div>
+              </div>
+              <div class="pipe-step ${style.pipeline.subMaterial === '완료' ? 'active' : ''}">
+                <div class="pipe-title">부자재</div>
+                <div class="pipe-status">${style.pipeline.subMaterial}</div>
+              </div>
+              <div class="pipe-step ${style.pipeline.sewing === '진행중' ? 'active' : ''}">
+                <div class="pipe-title">봉제공장</div>
+                <div class="pipe-status">${style.pipeline.sewing}</div>
+              </div>
+              <div class="pipe-step">
+                <div class="pipe-title">QC/검수</div>
+                <div class="pipe-status">${style.pipeline.qc}</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge badge-status">${style.status}</span></td>
         `;
         tbody.appendChild(tr);
       });
-
-      if (scmData[cat].length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#9ca3af; padding:20px;">등록된 데이터가 없습니다.</td></tr>`;
-      }
-    });
-
-    // 📊 일정 현황 탭 통합 리스트 렌더링
-    const allStatusTbody = document.getElementById('list-all-status');
-    allStatusTbody.innerHTML = '';
-
-    if (allItems.length === 0) {
-      allStatusTbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#9ca3af; padding:20px;">등록된 전체 일정이 없습니다. 우측 상단 버튼을 통해 등록해보세요.</td></tr>`;
-    } else {
-      allItems.sort((a,b) => b.id - a.id).forEach(item => {
-        const tr = document.createElement('tr');
-        const imgHtml = item.image 
-          ? `<img src="${item.image}" class="img-preview" onclick="window.open('${item.image}')">`
-          : `<div class="no-img">No Img</div>`;
-        
-        let itemsHtml = '-';
-        if (item.items && item.items.length > 0) {
-          itemsHtml = item.items.map(it => `<span class="item-tag">${it}</span>`).join('');
-        }
-
-        tr.innerHTML = `
-          <td>${imgHtml}</td>
-          <td><span class="badge-cat">${getCategoryName(item.category)}</span></td>
-          <td><b>${item.name}</b></td>
-          <td>${itemsHtml}</td>
-          <td><b>${item.qty ? item.qty.toLocaleString() : '-'}</b></td>
-          <td>${item.orderDate || '-'}</td>
-          <td><b style="color:#2563eb;">${item.etdDate || '-'}</b></td>
-          <td><button class="btn-delete" onclick="deleteItem('${item.category}', ${item.id})">삭제</button></td>
-        `;
-        allStatusTbody.appendChild(tr);
-      });
     }
-  }
-</script>
 
+    // 초기 실행
+    window.onload = renderData;
+  </script>
 </body>
 </html>
