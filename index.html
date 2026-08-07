@@ -1,179 +1,173 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>China & Domestic Sourcing Master Dashboard</title>
-    <style>
-        :root { --primary: #1a73e8; --bg: #f8f9fa; --card-bg: #ffffff; --text: #202124; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        header { text-align: center; margin-bottom: 25px; }
-        h1 { margin: 0 0 10px 0; font-size: 24px; color: #1a0dab; }
-        
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
-        .tab-btn { background: #e8f0fe; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; color: #1967d2; white-space: nowrap; }
-        .tab-btn.active { background: var(--primary); color: white; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>부자재 관리 대시보드</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; }
+    body { background-color: #f4f6f8; color: #333; padding: 20px; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    
+    header { background: #fff; padding: 20px 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+    h1 { font-size: 20px; color: #111; font-weight: 700; }
+    .btn-add { background: #2563eb; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+    .btn-add:hover { background: #1d4ed8; }
 
-        .controls { display: flex; gap: 10px; margin-bottom: 20px; }
-        .search-bar { flex: 1; padding: 10px; border: 1px solid #dadce0; border-radius: 6px; font-size: 15px; }
-        
-        .card-list { display: grid; gap: 15px; }
-        .card { background: var(--card-bg); border: 1px solid #dadce0; border-radius: 8px; padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f3f4; padding-bottom: 10px; margin-bottom: 10px; }
-        .card-title { font-size: 18px; font-weight: bold; color: #202124; }
-        .badge { background: #e6f4ea; color: #137333; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-        .badge-cn { background: #fce8e6; color: #c5221f; }
-        .badge-kr { background: #e8f0fe; color: #1a73e8; }
-        
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; margin-bottom: 10px; font-size: 14px; }
-        .memo { background: #f1f3f4; padding: 10px; border-radius: 6px; font-size: 13px; color: #3c4043; }
-        
-        .add-form { background: white; padding: 20px; border-radius: 8px; border: 1px solid #dadce0; margin-bottom: 20px; display: none; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-        .form-grid input, .form-grid select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-        .btn-submit { background: #34a853; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
-    </style>
+    /* 섹션 스타일 */
+    .section-card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .section-header { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; padding-bottom: 12px; border-bottom: 2px solid #e5e7eb; margin-bottom: 15px; }
+    .flag { font-size: 18px; }
+    
+    /* 중국 카테고리 태그 */
+    .cat-title { font-size: 14px; font-weight: 700; color: #4b5563; margin: 15px 0 8px 0; display: flex; align-items: center; gap: 6px; }
+    .cat-title::before { content: ''; display: inline-block; width: 4px; height: 14px; background: #2563eb; border-radius: 2px; }
+
+    /* 테이블 스타일 */
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13.5px; }
+    th { background: #f9fafb; color: #6b7280; font-weight: 600; padding: 10px 12px; border-bottom: 1px solid #e5e7eb; }
+    td { padding: 12px; border-bottom: 1px solid #f3f4f6; color: #1f2937; }
+    tr:last-child td { border-bottom: none; }
+    
+    /* 뱃지 */
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+    .badge-fixed { background: #e0e7ff; color: #3730a3; }
+    .badge-main { background: #dcfce7; color: #166534; }
+    .badge-sub { background: #f3f4f6; color: #4b5563; }
+    
+    .wechat-id { font-family: monospace; font-weight: 600; color: #059669; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; }
+  </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1>🌐 Global Sourcing Master Dashboard</h1>
-        <p style="margin:0; color:#5f6368; font-size:14px;">국내 & 중국 부자재 / 원단 / 공장 글로벌 통합 관리</p>
-    </header>
+  <header>
+    <h1>📦 부자재 통합 관리 (한국 & 중국)</h1>
+    <button class="btn-add" onclick="alert('업체 추가 폼을 연결하세요')">+ 업체/부자재 추가</button>
+  </header>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('sub')">🔘 부자재 Master (국내/중국)</button>
-        <button class="tab-btn" onclick="switchTab('fabric')">🧵 원사/원단 Master</button>
-        <button class="tab-btn" onclick="switchTab('factory')">🏭 공장 Master</button>
-        <button class="tab-btn" onclick="switchTab('tracking')">📊 생산 트래킹</button>
+  <!-- 1. 한국 부자재 섹션 (고정 업체) -->
+  <section class="section-card">
+    <div class="section-header">
+      <span class="flag">🇰🇷</span>
+      <span>한국 부자재 (고정 거래처)</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 20%;">품목명</th>
+          <th style="width: 25%;">지정 업체명</th>
+          <th style="width: 25%;">연락처 / 담당자</th>
+          <th style="width: 30%;">비고 / 주요 스펙</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>메인 케어라벨 & 행택</b></td>
+          <td>동대문/성수 (B라벨) <span class="badge badge-fixed">고정</span></td>
+          <td>010-1234-5678 (김실장)</td>
+          <td>실크인쇄 라벨 + 코팅 행택 (KC인증)</td>
+        </tr>
+        <tr>
+          <td><b>스티커 / 지퍼백</b></td>
+          <td><i>(업체명 입력)</i></td>
+          <td><i>(연락처 입력)</i></td>
+          <td>국내 빠른 리오더용</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 2. 중국 부자재 섹션 (카테고리별 2~3개 메인 공장) -->
+  <section class="section-card">
+    <div class="section-header">
+      <span class="flag">🇨🇳</span>
+      <span>중국 부자재 (카테고리별 2~3개 핵심 공장)</span>
     </div>
 
-    <div class="controls">
-        <input type="text" id="searchInput" class="search-bar" placeholder="부자재명, 구분(국내/중국), 스펙, 업체명 검색..." onkeyup="renderCards()">
-        <button onclick="toggleForm()" style="padding: 10px 15px; background: #1a73e8; color: white; border: none; border-radius: 6px; cursor: pointer;">+ 부자재/항목 등록</button>
-    </div>
+    <!-- 지퍼 카테고리 -->
+    <div class="cat-title">지퍼 / 슬라이더 (Zippers)</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 15%;">구분</th>
+          <th style="width: 25%;">공장명 / 위치</th>
+          <th style="width: 25%;">WeChat (위챗)</th>
+          <th style="width: 35%;">스펙 / MOQ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-main">메인 (1순위)</span></td>
+          <td>광저우 중다 시장 (A지퍼)</td>
+          <td><span class="wechat-id">wx_zipper_gz</span></td>
+          <td>5호 비슬론 / 로고 슬라이더 (MOQ 5,000)</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-sub">서브 (2순위)</span></td>
+          <td><i>(서브 공장명)</i></td>
+          <td><span class="wechat-id">-</span></td>
+          <td>긴급 대응 / 기본 지퍼용</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div id="addForm" class="add-form">
-        <h3>신규 부자재/공급망 등록</h3>
-        <div class="form-grid">
-            <select id="inputOrigin">
-                <option value="🇨🇳 중국">🇨🇳 중국 직거래</option>
-                <option value="🇰🇷 국내">🇰🇷 국내 수급</option>
-            </select>
-            <input type="text" id="inputName" placeholder="부자재명 / 품번 (예: YKK 5호 비슬론)">
-            <input type="text" id="inputLoc" placeholder="업체명 및 위치 (예: 광저우 중다 / 동대문 종합상가)">
-            <input type="text" id="inputItem" placeholder="상세 스펙 (컬러, 규격, 재질)">
-            <input type="text" id="inputWechat" placeholder="연락처 / 위챗 / 담당자">
-            <input type="text" id="inputMoq" placeholder="MOQ / 단가 (RMB 또는 KRW)">
-            <input type="text" id="inputLead" placeholder="소요 리드타임 (예: 샘플 3일 / 메인 10일)">
-            <input type="text" id="inputCert" placeholder="검수/인증 상태 (예: BT컨펌완료, OK)">
-        </div>
-        <input type="text" id="inputMemo" placeholder="특이사항 메모 (최소발주수량, 히스토리 등)" style="width: 98%; padding: 8px; margin-bottom: 10px;">
-        <button class="btn-submit" onclick="addData()">저장하기</button>
-    </div>
+    <!-- 라벨/행택 카테고리 -->
+    <div class="cat-title">라벨 / 행택 (Labels & Tags)</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 15%;">구분</th>
+          <th style="width: 25%;">공장명 / 위치</th>
+          <th style="width: 25%;">WeChat (위챗)</th>
+          <th style="width: 35%;">스펙 / MOQ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-main">메인 (1순위)</span></td>
+          <td><i>(중국 메인 라벨 공장)</i></td>
+          <td><span class="wechat-id">-</span></td>
+          <td>메인 의류 직조 라벨</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-sub">서브 (2순위)</span></td>
+          <td><i>(서브 라벨 공장)</i></td>
+          <td><span class="wechat-id">-</span></td>
+          <td>특수 케어라벨/케어택</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div id="cardList" class="card-list"></div>
+    <!-- 밴드/기타 부자재 카테고리 -->
+    <div class="cat-title">엘라스틱 밴드 / 기타 부자재</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 15%;">구분</th>
+          <th style="width: 25%;">공장명 / 위치</th>
+          <th style="width: 25%;">WeChat (위챗)</th>
+          <th style="width: 35%;">스펙 / MOQ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-main">메인 (1순위)</span></td>
+          <td>샤오싱 커교 부자재시장</td>
+          <td><span class="wechat-id">wx_band_sx</span></td>
+          <td>고탄력 허리 E-BAND 40mm (MOQ 3,000Y)</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-sub">서브 (2순위)</span></td>
+          <td><i>(서브 밴드 공장)</i></td>
+          <td><span class="wechat-id">-</span></td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </section>
 </div>
 
-<script>
-    let currentTab = 'sub';
-    let db = {
-        sub: [
-            { origin: "🇨🇳 중국", name: "5호 비슬론 지퍼 (자체 로고 슬라이더)", loc: "광저우 중다 시장 (A지퍼)", item: "5호 슬랙스용 / 20cm / 컬러매칭", wechat: "wx_zipper_gz", moq: "5,000개 / 개당 1.2 RMB", lead: "메인 리드타임 7~10일", cert: "품질 검수 완료", memo: "무신사/자사몰 라인 전용. 메인 봉제 공장으로 직접 직송" },
-            { origin: "🇰🇷 국내", name: "메인 케어라벨 & 행택 세트", loc: "동대문/성수 (B라벨)", item: "실크인쇄 케어라벨 + 코팅 행택", wechat: "010-1234-5678 (김실장)", moq: "1,000세트 / 세트당 150원", lead: "리드타임 3~4일", cert: "KC인증 마크 포함", memo: "국내 리오더용 빠른 대응 가능. 텍스트 불량 유무 사전 체크 필수" },
-            { origin: "🇨🇳 중국", name: "고탄력 허리 E-BAND (40mm)", loc: "샤오싱 커교 부자재시장", item: "소프트 폴리 밴드 / 변형 적음", wechat: "wx_band_sx", moq: "3,000야드 / Y당 0.8 RMB", lead: "리드타임 5일", cert: "세탁 수축률 테스트 통과", memo: "모브온 홈쇼핑 메인 팬츠용 (수량 대량 발주 시 단가 네고 가능)" }
-        ],
-        fabric: [
-            { origin: "🇨🇳 중국", name: "4WAY 스트레치 (Poly 88% Spandex 12%)", loc: "샤오싱 커교", item: "240gsm / 흡습속건 / 슬랙스용", wechat: "wx_fabric01", moq: "3,000Y (12.5 RMB)", lead: "BT 3일 / 메인 15일", cert: "OEKO-TEX", memo: "홈쇼핑 메인 팬츠용 Swatch 보유" }
-        ],
-        factory: [
-            { origin: "🇨🇳 중국", name: "A봉제 (광저우 파위)", loc: "광저우", item: "슬랙스/우븐 전문", wechat: "wxid_1234", moq: "1,000개", lead: "라인 3개 보유", cert: "BSCI 인증", memo: "소량 반응생산 대응 빠름" }
-        ],
-        tracking: [
-            { origin: "🇨🇳 중국", name: "[26FW 모브온] PA-01 슬랙스", loc: "광저우 A봉제", item: "진행상태: 지퍼/밴드 입고 완료 ➔ 봉제 진행 중", wechat: "목표 출고일: 10/15", moq: "30,000개", lead: "D-35", cert: "검수 완료", memo: "중국산 지퍼 09/01 공장 투입 완료" }
-        ]
-    };
-
-    function switchTab(tab) {
-        currentTab = tab;
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        renderCards();
-    }
-
-    function toggleForm() {
-        const form = document.getElementById('addForm');
-        form.style.display = form.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function addData() {
-        const name = document.getElementById('inputName').value;
-        if(!name) return alert('명칭/품번을 입력해주세요.');
-
-        const newItem = {
-            origin: document.getElementById('inputOrigin').value,
-            name: name,
-            loc: document.getElementById('inputLoc').value || "-",
-            item: document.getElementById('inputItem').value || "-",
-            wechat: document.getElementById('inputWechat').value || "-",
-            moq: document.getElementById('inputMoq').value || "-",
-            lead: document.getElementById('inputLead').value || "-",
-            cert: document.getElementById('inputCert').value || "-",
-            memo: document.getElementById('inputMemo').value || "-"
-        };
-
-        db[currentTab].push(newItem);
-        renderCards();
-        toggleForm();
-        document.querySelectorAll('#addForm input').forEach(i => i.value = '');
-    }
-
-    function renderCards() {
-        const listContainer = document.getElementById('cardList');
-        const search = document.getElementById('searchInput').value.toLowerCase();
-        listContainer.innerHTML = '';
-
-        const dataList = db[currentTab] || [];
-        const filtered = dataList.filter(item => 
-            (item.origin && item.origin.toLowerCase().includes(search)) ||
-            item.name.toLowerCase().includes(search) || 
-            item.loc.toLowerCase().includes(search) || 
-            item.item.toLowerCase().includes(search)
-        );
-
-        if(filtered.length === 0) {
-            listContainer.innerHTML = '<div style="text-align:center; padding:40px; color:#70757a;">등록된 데이터가 없거나 검색 결과가 없습니다.</div>';
-            return;
-        }
-
-        filtered.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            const badgeClass = item.origin && item.origin.includes('중국') ? 'badge-cn' : 'badge-kr';
-            card.innerHTML = `
-                <div class="card-header">
-                    <div>
-                        <span class="badge ${badgeClass}" style="margin-right:8px;">${item.origin || '미지정'}</span>
-                        <span class="card-title">${item.name}</span>
-                    </div>
-                    <span class="badge">${item.cert}</span>
-                </div>
-                <div class="info-grid">
-                    <div>📍 <b>구매처/위치:</b> ${item.loc}</div>
-                    <div>📦 <b>스펙/규격:</b> ${item.item}</div>
-                    <div>💬 <b>연락처/위챗:</b> ${item.wechat}</div>
-                    <div>💰 <b>MOQ/단가:</b> ${item.moq}</div>
-                    <div>⏱️ <b>리드타임:</b> ${item.lead || '-'}</div>
-                </div>
-                <div class="memo">📝 <b>인수인계/특이사항 메모:</b> ${item.memo}</div>
-            `;
-            listContainer.appendChild(card);
-        });
-    }
-
-    renderCards();
-</script>
 </body>
 </html>
