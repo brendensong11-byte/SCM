@@ -11,7 +11,7 @@
     
     header { background: #fff; padding: 20px 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
     h1 { font-size: 20px; color: #111; font-weight: 700; }
-    .btn-add { background: #2563eb; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+    .btn-add { background: #2563eb; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; }
     .btn-add:hover { background: #1d4ed8; }
 
     /* 탭 메뉴 */
@@ -31,11 +31,11 @@
     td { padding: 12px; border-bottom: 1px solid #f3f4f6; color: #1f2937; }
 
     .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
-    .badge-process { background: #fef3c7; color: #d97706; } /* 진행중 */
-    .badge-done { background: #dcfce7; color: #15803d; }    /* 완료 */
-    .badge-ready { background: #f3f4f6; color: #6b7280; }   /* 대기 */
+    .badge-process { background: #fef3c7; color: #d97706; }
+    .badge-done { background: #dcfce7; color: #15803d; }
+    .badge-ready { background: #f3f4f6; color: #6b7280; }
 
-    /* 일정 현황 전용 타임라인 UI */
+    /* 타임라인 UI */
     .pipeline { display: flex; gap: 12px; margin-top: 15px; }
     .pipe-step { flex: 1; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; text-align: center; }
     .pipe-step.active { border-color: #2563eb; background: #eff6ff; }
@@ -44,6 +44,20 @@
     .pipe-date { font-size: 11px; color: #2563eb; margin-top: 4px; font-weight: 600; }
 
     .target-badge { font-size: 12px; padding: 2px 6px; background: #e0e7ff; color: #3730a3; border-radius: 4px; font-weight: 600; }
+
+    /* 모달 팝업 */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); justify-content: center; align-items: center; z-index: 1000; }
+    .modal-overlay.active { display: flex; }
+    .modal-box { background: #fff; width: 450px; border-radius: 12px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+    .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+    .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #9ca3af; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+    .form-group input, .form-group select { width: 100%; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13.5px; }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+    .btn-submit { background: #2563eb; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+    .btn-cancel { background: #e5e7eb; color: #374151; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+    .btn-delete { background: #fee2e2; color: #dc2626; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -51,10 +65,10 @@
 <div class="container">
   <header>
     <h1>🏭 SCM 통합 관리 시스템</h1>
-    <button class="btn-add" onclick="alert('데이터 입력 모달 연결')">+ 신규 오더/자재 등록</button>
+    <button class="btn-add" onclick="openModal()">+ 신규 오더/자재 등록</button>
   </header>
 
-  <!-- 탭 메뉴 (이름 변경: 생산 일정/현황 -> 일정 현황) -->
+  <!-- 탭 메뉴 -->
   <div class="nav-tabs">
     <button class="tab-btn active" onclick="openTab('status')">📊 일정 현황</button>
     <button class="tab-btn" onclick="openTab('fabric')">🧵 원사/원단 관리</button>
@@ -63,10 +77,8 @@
     <button class="tab-btn" onclick="openTab('factory')">🏭 공장 관리</button>
   </div>
 
-  <!-- 1. 일정 현황 탭 (각 탭의 데이터가 자동으로 모이는 곳) -->
+  <!-- 1. 일정 현황 탭 -->
   <div id="tab-status" class="tab-content active">
-    
-    <!-- 오더 1: 베트남 4,000개 -->
     <div class="section-card">
       <div class="section-header">
         <div>
@@ -75,8 +87,6 @@
         </div>
         <span class="badge badge-process">공장 봉제 대기 중</span>
       </div>
-      
-      <!-- 파이프라인 타임라인 UI -->
       <div class="pipeline">
         <div class="pipe-step">
           <div class="pipe-title">1. 원사/원단 편직</div>
@@ -105,41 +115,6 @@
         </div>
       </div>
     </div>
-
-    <!-- 오더 2: 한국 3,000개 -->
-    <div class="section-card">
-      <div class="section-header">
-        <div>
-          <span class="target-badge">🇰🇷 한국 납품건</span>
-          <span style="margin-left: 8px;">메인 3,000개 생산 파이프라인</span>
-        </div>
-        <span class="badge badge-ready">원단 가공 단계</span>
-      </div>
-      
-      <div class="pipeline">
-        <div class="pipe-step">
-          <div class="pipe-title">1. 원사/원단 편직</div>
-          <div class="pipe-status">완료 <span class="badge badge-done">✓</span></div>
-          <div class="pipe-date">8/04 완료</div>
-        </div>
-        <div class="pipe-step active">
-          <div class="pipe-title">2. 원단 염색/가공</div>
-          <div class="pipe-status">진행 중 <span class="badge badge-process">⌛</span></div>
-          <div class="pipe-date">8/11 완료예정</div>
-        </div>
-        <div class="pipe-step">
-          <div class="pipe-title">3. 부자재 준비 (KR)</div>
-          <div class="pipe-status">대기</div>
-          <div class="pipe-date">8/13 예정</div>
-        </div>
-        <div class="pipe-step">
-          <div class="pipe-title">4. 국내 공장 봉제</div>
-          <div class="pipe-status">대기</div>
-          <div class="pipe-date">8/20 예정</div>
-        </div>
-      </div>
-    </div>
-
   </div>
 
   <!-- 2. 원사/원단 관리 탭 -->
@@ -152,21 +127,11 @@
             <th>구분</th>
             <th>업체명</th>
             <th>원사/원단 스펙</th>
-            <th>발주일</th>
-            <th>완공 예정일(ETD)</th>
-            <th>상태</th>
+            <th>예정일(ETD)</th>
+            <th>관리</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>원사/편직</td>
-            <td>(추가할 업체명)</td>
-            <td>30수 싱글 뷰티 코튼</td>
-            <td>2026-08-01</td>
-            <td>2026-08-05</td>
-            <td><span class="badge badge-done">가공완료</span></td>
-          </tr>
-        </tbody>
+        <tbody id="list-fabric"></tbody>
       </table>
     </div>
   </div>
@@ -180,20 +145,12 @@
           <tr>
             <th>품목명</th>
             <th>업체명</th>
-            <th>연락처</th>
-            <th>납품 예정일</th>
-            <th>상태</th>
+            <th>스펙 / 비고</th>
+            <th>예정일</th>
+            <th>관리</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>케어라벨 & 행택</td>
-            <td>성수 B라벨</td>
-            <td>010-1234-5678</td>
-            <td>2026-08-12</td>
-            <td><span class="badge badge-process">발주완료</span></td>
-          </tr>
-        </tbody>
+        <tbody id="list-trim-kr"></tbody>
       </table>
     </div>
   </div>
@@ -201,26 +158,18 @@
   <!-- 4. 부자재 차이나 탭 -->
   <div id="tab-trim-cn" class="tab-content">
     <div class="section-card">
-      <div class="section-header">🇨🇳 중국 부자재 공장 (2~3개 핵심 관리)</div>
+      <div class="section-header">🇨🇳 중국 부자재 공장</div>
       <table>
         <thead>
           <tr>
             <th>품목</th>
             <th>공장명</th>
-            <th>WeChat</th>
-            <th>출고 예정일</th>
-            <th>상태</th>
+            <th>스펙 / WeChat</th>
+            <th>예정일</th>
+            <th>관리</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>지퍼/슬라이더</td>
-            <td>광저우 중다 A지퍼</td>
-            <td>wx_zipper_gz</td>
-            <td>2026-08-08</td>
-            <td><span class="badge badge-process">생산중</span></td>
-          </tr>
-        </tbody>
+        <tbody id="list-trim-cn"></tbody>
       </table>
     </div>
   </div>
@@ -228,33 +177,73 @@
   <!-- 5. 공장 관리 탭 -->
   <div id="tab-factory" class="tab-content">
     <div class="section-card">
-      <div class="section-header">🏭 봉제 공장 (디자인 전달 및 봉제 투입)</div>
+      <div class="section-header">🏭 봉제 공장 관리</div>
       <table>
         <thead>
           <tr>
             <th>공장명</th>
             <th>담당 오더</th>
-            <th>투입 예정일</th>
-            <th>완성 목표일</th>
-            <th>상태</th>
+            <th>스펙 / 비고</th>
+            <th>예정일</th>
+            <th>관리</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>베트남 메인 공장</td>
-            <td>4,000개 오더</td>
-            <td>2026-08-09</td>
-            <td>2026-08-11</td>
-            <td><span class="badge badge-ready">자재 대기중</span></td>
-          </tr>
-        </tbody>
+        <tbody id="list-factory"></tbody>
       </table>
     </div>
   </div>
 
 </div>
 
+<!-- 등록 모달 팝업 -->
+<div id="modal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span>➕ 신규 업체 / 자재 등록</span>
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+    </div>
+    <form id="add-form" onsubmit="handleFormSubmit(event)">
+      <div class="form-group">
+        <label>구분 (카테고리)</label>
+        <select id="input-category">
+          <option value="fabric">원사/원단 업체</option>
+          <option value="trim-kr">한국 부자재</option>
+          <option value="trim-cn">중국 부자재</option>
+          <option value="factory">봉제 공장</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>업체명 / 품목명</label>
+        <input type="text" id="input-name" placeholder="예: 성수 B라벨, 중다지퍼" required>
+      </div>
+      <div class="form-group">
+        <label>스펙 및 비고</label>
+        <input type="text" id="input-spec" placeholder="예: 30수 코튼, 5호 비슬론 지퍼">
+      </div>
+      <div class="form-group">
+        <label>예정일 (ETD)</label>
+        <input type="date" id="input-date">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" onclick="closeModal()">취소</button>
+        <button type="submit" class="btn-submit">등록하기</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
+  let scmData = JSON.parse(localStorage.getItem('scmData')) || {
+    fabric: [],
+    'trim-kr': [],
+    'trim-cn': [],
+    factory: []
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderTables();
+  });
+
   function openTab(tabName) {
     const contents = document.querySelectorAll('.tab-content');
     contents.forEach(content => content.classList.remove('active'));
@@ -264,6 +253,66 @@
 
     document.getElementById('tab-' + tabName).classList.add('active');
     event.currentTarget.classList.add('active');
+  }
+
+  function openModal() {
+    document.getElementById('modal').classList.add('active');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    const category = document.getElementById('input-category').value;
+    const newItem = {
+      id: Date.now(),
+      name: document.getElementById('input-name').value,
+      spec: document.getElementById('input-spec').value,
+      date: document.getElementById('input-date').value || '-'
+    };
+
+    scmData[category].push(newItem);
+    localStorage.setItem('scmData', JSON.stringify(scmData));
+
+    renderTables();
+    closeModal();
+    document.getElementById('add-form').reset();
+  }
+
+  function deleteItem(category, id) {
+    if (confirm('정말 삭제하시겠습니까?')) {
+      scmData[category] = scmData[category].filter(item => item.id !== id);
+      localStorage.setItem('scmData', JSON.stringify(scmData));
+      renderTables();
+    }
+  }
+
+  function renderTables() {
+    const categories = ['fabric', 'trim-kr', 'trim-cn', 'factory'];
+
+    categories.forEach(cat => {
+      const tbody = document.getElementById(`list-${cat}`);
+      tbody.innerHTML = '';
+
+      if (scmData[cat].length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#9ca3af; padding:20px;">등록된 데이터가 없습니다.</td></tr>`;
+        return;
+      }
+
+      scmData[cat].forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${cat.toUpperCase()}</td>
+          <td><b>${item.name}</b></td>
+          <td>${item.spec}</td>
+          <td>${item.date}</td>
+          <td><button class="btn-delete" onclick="deleteItem('${cat}', ${item.id})">삭제</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    });
   }
 </script>
 
