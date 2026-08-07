@@ -7,7 +7,7 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; }
     body { background-color: #f4f6f8; color: #333; padding: 20px; }
-    .container { max-width: 1100px; margin: 0 auto; }
+    .container { max-width: 1150px; margin: 0 auto; }
     
     header { background: #fff; padding: 20px 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
     h1 { font-size: 20px; color: #111; font-weight: 700; }
@@ -26,14 +26,14 @@
     .section-card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
     .section-header { display: flex; align-items: center; justify-content: space-between; font-size: 16px; font-weight: 700; padding-bottom: 12px; border-bottom: 2px solid #e5e7eb; margin-bottom: 15px; }
     
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13.5px; }
-    th { background: #f9fafb; color: #6b7280; font-weight: 600; padding: 10px 12px; border-bottom: 1px solid #e5e7eb; }
-    td { padding: 12px; border-bottom: 1px solid #f3f4f6; color: #1f2937; vertical-align: middle; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+    th { background: #f9fafb; color: #6b7280; font-weight: 600; padding: 10px 10px; border-bottom: 1px solid #e5e7eb; white-space: nowrap; }
+    td { padding: 10px; border-bottom: 1px solid #f3f4f6; color: #1f2937; vertical-align: middle; }
 
     .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
     .badge-process { background: #fef3c7; color: #d97706; }
     .badge-done { background: #dcfce7; color: #15803d; }
-    .badge-ready { background: #f3f4f6; color: #6b7280; }
+    .badge-cat { background: #e0e7ff; color: #3730a3; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; }
 
     /* 타임라인 UI */
     .pipeline { display: flex; gap: 12px; margin-top: 15px; }
@@ -45,15 +45,20 @@
 
     .target-badge { font-size: 12px; padding: 2px 6px; background: #e0e7ff; color: #3730a3; border-radius: 4px; font-weight: 600; }
 
+    /* 이미지 및 태그 스타일 */
+    .img-preview { width: 45px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #e5e7eb; cursor: pointer; }
+    .no-img { width: 45px; height: 45px; background: #f3f4f6; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #9ca3af; }
+    .item-tag { display: inline-block; background: #eff6ff; color: #1d4ed8; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 3px; margin-bottom: 3px; }
+
     /* 모달 팝업 */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); justify-content: center; align-items: center; z-index: 1000; }
     .modal-overlay.active { display: flex; }
-    .modal-box { background: #fff; width: 480px; border-radius: 12px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+    .modal-box { background: #fff; width: 500px; max-height: 90vh; overflow-y: auto; border-radius: 12px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
     .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
     .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #9ca3af; }
     .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13.5px; }
+    .form-group label { display: block; font-size: 12.5px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+    .form-group input, .form-group select { width: 100%; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; }
     .form-row { display: flex; gap: 10px; }
     .form-row .form-group { flex: 1; }
     
@@ -61,8 +66,6 @@
     .btn-submit { background: #2563eb; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; }
     .btn-cancel { background: #e5e7eb; color: #374151; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; }
     .btn-delete { background: #fee2e2; color: #dc2626; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; }
-    
-    .item-tag { display: inline-block; background: #eef2ff; color: #4338ca; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: 600; margin-right: 4px; margin-bottom: 4px; }
   </style>
 </head>
 <body>
@@ -84,6 +87,7 @@
 
   <!-- 1. 일정 현황 탭 -->
   <div id="tab-status" class="tab-content active">
+    <!-- 메인 타임라인 -->
     <div class="section-card">
       <div class="section-header">
         <div>
@@ -120,6 +124,26 @@
         </div>
       </div>
     </div>
+
+    <!-- 등록된 전체 일정 현황 타임라인 리스트 -->
+    <div class="section-card">
+      <div class="section-header">📋 최근 등록된 전체 발주/생산 일정 통합 목록</div>
+      <table>
+        <thead>
+          <tr>
+            <th>이미지</th>
+            <th>구분</th>
+            <th>업체/공장명</th>
+            <th>주문 품목 리스트</th>
+            <th>수량</th>
+            <th>발주일</th>
+            <th>출고 예정일 (ETD)</th>
+            <th>관리</th>
+          </tr>
+        </thead>
+        <tbody id="list-all-status"></tbody>
+      </table>
+    </div>
   </div>
 
   <!-- 2. 원사/원단 관리 탭 -->
@@ -129,10 +153,12 @@
       <table>
         <thead>
           <tr>
+            <th>이미지</th>
             <th>업체명</th>
-            <th>품목 / 세부 구성</th>
-            <th>발주 수량</th>
-            <th>주문일 (발주일)</th>
+            <th>주문 품목 리스트</th>
+            <th>수량</th>
+            <th>단가 / 총금액</th>
+            <th>발주일</th>
             <th>출고 예정일 (ETD)</th>
             <th>관리</th>
           </tr>
@@ -149,10 +175,12 @@
       <table>
         <thead>
           <tr>
+            <th>이미지</th>
             <th>업체명</th>
-            <th>품목 / 세부 구성</th>
-            <th>발주 수량</th>
-            <th>주문일 (발주일)</th>
+            <th>주문 품목 리스트</th>
+            <th>수량</th>
+            <th>단가 / 총금액</th>
+            <th>발주일</th>
             <th>출고 예정일 (ETD)</th>
             <th>관리</th>
           </tr>
@@ -169,10 +197,12 @@
       <table>
         <thead>
           <tr>
+            <th>이미지</th>
             <th>공장명</th>
-            <th>포함 부자재 품목</th>
-            <th>발주 수량</th>
-            <th>주문일 (발주일)</th>
+            <th>주문 품목 리스트</th>
+            <th>수량</th>
+            <th>단가 / 총금액</th>
+            <th>발주일</th>
             <th>출고 예정일 (ETD)</th>
             <th>관리</th>
           </tr>
@@ -189,9 +219,11 @@
       <table>
         <thead>
           <tr>
+            <th>이미지</th>
             <th>공장명</th>
-            <th>담당 오더 / 비고</th>
+            <th>담당 오더 / 품목</th>
             <th>생산 수량</th>
+            <th>공임 단가</th>
             <th>투입일</th>
             <th>완성 예정일 (ETD)</th>
             <th>관리</th>
@@ -226,12 +258,18 @@
         <input type="text" id="input-name" placeholder="예: QINGDAO 林得瑞包装有限公司" required>
       </div>
       <div class="form-group">
-        <label>세부 품목 (쉼표로 구분 가능)</label>
-        <input type="text" id="input-items" placeholder="예: MAIN TAG, SILICON TAG, MAIN LABEL">
+        <label>주문 품목 리스트 (쉼표 구분)</label>
+        <input type="text" id="input-items" placeholder="예: 메인택, 실리콘택, 케어라벨">
       </div>
-      <div class="form-group">
-        <label>발주 / 생산 수량</label>
-        <input type="text" id="input-qty" placeholder="예: 7,140 SET 또는 4,000 EA" required>
+      <div class="form-row">
+        <div class="form-group">
+          <label>수량</label>
+          <input type="number" id="input-qty" placeholder="예: 7140" required>
+        </div>
+        <div class="form-group">
+          <label>단가 (원 또는 ￥)</label>
+          <input type="number" id="input-price" placeholder="예: 150">
+        </div>
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -242,6 +280,10 @@
           <label>출고 예정일 (ETD)</label>
           <input type="date" id="input-etd-date">
         </div>
+      </div>
+      <div class="form-group">
+        <label>주문 품목 이미지 첨부</label>
+        <input type="file" id="input-image" accept="image/*">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-cancel" onclick="closeModal()">취소</button>
@@ -286,17 +328,36 @@
     e.preventDefault();
     const category = document.getElementById('input-category').value;
     const itemsRaw = document.getElementById('input-items').value;
-    
-    // 쉼표로 분리하여 태그 배열 생성
     const itemsArr = itemsRaw ? itemsRaw.split(',').map(item => item.trim()).filter(Boolean) : [];
+    
+    const fileInput = document.getElementById('input-image');
+    const file = fileInput.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        saveItem(category, itemsArr, event.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      saveItem(category, itemsArr, null);
+    }
+  }
+
+  function saveItem(category, itemsArr, imgData) {
+    const qty = parseFloat(document.getElementById('input-qty').value) || 0;
+    const price = parseFloat(document.getElementById('input-price').value) || 0;
 
     const newItem = {
       id: Date.now(),
+      category: category,
       name: document.getElementById('input-name').value,
       items: itemsArr,
-      qty: document.getElementById('input-qty').value,
+      qty: qty,
+      price: price,
       orderDate: document.getElementById('input-order-date').value || '-',
-      etdDate: document.getElementById('input-etd-date').value || '-'
+      etdDate: document.getElementById('input-etd-date').value || '-',
+      image: imgData
     };
 
     scmData[category].push(newItem);
@@ -315,41 +376,93 @@
     }
   }
 
+  function getCategoryName(cat) {
+    switch(cat) {
+      case 'fabric': return '원사/원단';
+      case 'trim-kr': return '한국 부자재';
+      case 'trim-cn': return '중국 부자재';
+      case 'factory': return '공장 생산';
+      default: return cat;
+    }
+  }
+
   function renderTables() {
     const categories = ['fabric', 'trim-kr', 'trim-cn', 'factory'];
+    let allItems = [];
 
     categories.forEach(cat => {
       const tbody = document.getElementById(`list-${cat}`);
       tbody.innerHTML = '';
 
-      if (scmData[cat].length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#9ca3af; padding:20px;">등록된 데이터가 없습니다. 기존에 잘못 들어간 데이터가 있다면 삭제 후 새로 등록해보세요.</td></tr>`;
-        return;
-      }
-
       scmData[cat].forEach(item => {
+        allItems.push(item);
+
         const tr = document.createElement('tr');
         
-        // 품목 태그 생성 UI
+        // 품목 태그
         let itemsHtml = '-';
         if (item.items && item.items.length > 0) {
           itemsHtml = item.items.map(it => `<span class="item-tag">${it}</span>`).join('');
-        } else if (item.spec) {
-          // 기존 구버전 데이터 호환
-          itemsHtml = item.spec;
         }
 
+        // 이미지
+        const imgHtml = item.image 
+          ? `<img src="${item.image}" class="img-preview" onclick="window.open('${item.image}')">`
+          : `<div class="no-img">No Img</div>`;
+
+        // 금액 계산
+        const totalPrice = (item.qty * item.price).toLocaleString();
+        const priceHtml = item.price ? `${item.price.toLocaleString()} / <b>${totalPrice}</b>` : '-';
+
         tr.innerHTML = `
+          <td>${imgHtml}</td>
           <td><b>${item.name}</b></td>
           <td>${itemsHtml}</td>
-          <td><b style="color:#2563eb;">${item.qty || '-'}</b></td>
+          <td><b>${item.qty ? item.qty.toLocaleString() : '-'}</b></td>
+          <td>${priceHtml}</td>
           <td>${item.orderDate || '-'}</td>
           <td>${item.etdDate || '-'}</td>
           <td><button class="btn-delete" onclick="deleteItem('${cat}', ${item.id})">삭제</button></td>
         `;
         tbody.appendChild(tr);
       });
+
+      if (scmData[cat].length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#9ca3af; padding:20px;">등록된 데이터가 없습니다.</td></tr>`;
+      }
     });
+
+    // 📊 일정 현황 탭 통합 리스트 렌더링
+    const allStatusTbody = document.getElementById('list-all-status');
+    allStatusTbody.innerHTML = '';
+
+    if (allItems.length === 0) {
+      allStatusTbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#9ca3af; padding:20px;">등록된 전체 일정이 없습니다. 우측 상단 버튼을 통해 등록해보세요.</td></tr>`;
+    } else {
+      allItems.sort((a,b) => b.id - a.id).forEach(item => {
+        const tr = document.createElement('tr');
+        const imgHtml = item.image 
+          ? `<img src="${item.image}" class="img-preview" onclick="window.open('${item.image}')">`
+          : `<div class="no-img">No Img</div>`;
+        
+        let itemsHtml = '-';
+        if (item.items && item.items.length > 0) {
+          itemsHtml = item.items.map(it => `<span class="item-tag">${it}</span>`).join('');
+        }
+
+        tr.innerHTML = `
+          <td>${imgHtml}</td>
+          <td><span class="badge-cat">${getCategoryName(item.category)}</span></td>
+          <td><b>${item.name}</b></td>
+          <td>${itemsHtml}</td>
+          <td><b>${item.qty ? item.qty.toLocaleString() : '-'}</b></td>
+          <td>${item.orderDate || '-'}</td>
+          <td><b style="color:#2563eb;">${item.etdDate || '-'}</b></td>
+          <td><button class="btn-delete" onclick="deleteItem('${item.category}', ${item.id})">삭제</button></td>
+        `;
+        allStatusTbody.appendChild(tr);
+      });
+    }
   }
 </script>
 
