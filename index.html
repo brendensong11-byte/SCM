@@ -72,17 +72,25 @@
         .accordion-row.open { display: table-row; }
         .accordion-container { padding: 16px 20px; border-left: 4px solid var(--primary-color); }
 
-        /* Step Process Bar (진행 공정 바) */
-        .step-process-bar { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
-        .step-item {
-            flex: 1; min-width: 130px; background: #e2e8f0; padding: 8px 12px; border-radius: 6px;
-            font-size: 0.8rem; text-align: center; font-weight: bold; color: var(--text-muted); position: relative;
+        /* Interactive Step Process Bar (클릭 가능한 공정 탭) */
+        .step-process-bar { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px; }
+        .step-btn {
+            flex: 1; min-width: 130px; background: #e2e8f0; padding: 10px 12px; border-radius: 6px;
+            font-size: 0.85rem; text-align: center; font-weight: bold; color: var(--text-muted);
+            border: 2px solid transparent; cursor: pointer; transition: all 0.2s;
         }
-        .step-item.active { background: #3b82f6; color: white; }
-        .step-item.done { background: #10b981; color: white; }
-        .step-item.stuck { background: #f59e0b; color: white; animation: pulse 1.5s infinite; }
+        .step-btn:hover { border-color: #94a3b8; }
+        .step-btn.selected { border-color: #1e40af !important; box-shadow: 0 0 0 2px rgba(37,99,235,0.3); }
+        .step-btn.done { background: #10b981; color: white; }
+        .step-btn.stuck { background: #f59e0b; color: white; animation: pulse 1.5s infinite; }
+        .step-btn.active { background: #3b82f6; color: white; }
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+
+        /* Step Detail Box (공정별 세부 현황) */
+        .step-detail-box {
+            background: white; border: 1px solid var(--border-color); border-radius: 6px; padding: 14px 16px; margin-bottom: 12px;
+        }
 
         /* D-Day Badges */
         .dday-tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; }
@@ -96,10 +104,12 @@
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #1d4ed8); border-radius: 5px; transition: width 0.3s; }
         .progress-text { font-size: 0.8rem; font-weight: bold; min-width: 35px; text-align: right; }
 
-        /* Sub Table */
+        /* Sub Table & Inputs */
         .sub-table { width: 100%; background: white; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); margin-top: 10px; }
         .sub-table th { background: #edf2f7; font-size: 0.8rem; }
         .sub-table td { font-size: 0.85rem; padding: 8px 12px; }
+        .memo-input { width: 100%; padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.85rem; }
+        .memo-input:focus { border-color: var(--primary-color); outline: none; background: #f0f9ff; }
 
         /* Calendar View */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; background: var(--card-bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); }
@@ -239,14 +249,28 @@
 const initialData = [
     {
         id: 'ST26001', name: '쫀쫀팬츠', brand: 'Brand A', season: '2026 FW', finalDelivery: '2026-10-15',
+        activeStep: 2,
+        stepsData: {
+            1: { status: '완료', vendor: '내부 샘플실', dueDate: '2026-07-25', memo: 'QC 확정 완료 및 패턴 최종 승인' },
+            3: { status: '대기', vendor: '한신봉제', dueDate: '2026-09-10', memo: '부자재 입고 완료 후 봉제投入 예정' },
+            4: { status: '대기', vendor: '인터텍 검수', dueDate: '2026-09-25', memo: '검수 스케줄 협의 완료' },
+            5: { status: '대기', vendor: '물류창고 A', dueDate: '2026-10-15', memo: '입고 대기 중' }
+        },
         items: [
             { name: 'YKK 지퍼', supplier: 'YKK 코리아', qty: '1,000 EA', orderDate: '2026-08-01', dueDate: '2026-08-12', memo: '출고 준비 중', completed: false },
-            { name: '메인 라벨', supplier: '태양기획', qty: '2,000 EA', orderDate: '2026-08-02', dueDate: '2026-08-15', memo: '', completed: true },
+            { name: '메인 라벨', supplier: '태양기획', qty: '2,000 EA', orderDate: '2026-08-02', dueDate: '2026-08-15', memo: '샘플 확인 완료', completed: true },
             { name: '메인 단추', supplier: '금성단추', qty: '1,000 EA', orderDate: '2026-08-03', dueDate: '2026-08-18', memo: '도금 진행중', completed: false }
         ]
     },
     {
         id: 'ST26002', name: '와이드 슬랙스', brand: 'Brand A', season: '2026 FW', finalDelivery: '2026-09-30',
+        activeStep: 2,
+        stepsData: {
+            1: { status: '완료', vendor: '내부 샘플실', dueDate: '2026-07-20', memo: '승인 완료' },
+            3: { status: '대기', vendor: '대성텍스타일', dueDate: '2026-08-25', memo: '원단 대기' },
+            4: { status: '대기', vendor: '인터텍 검수', dueDate: '2026-09-15', memo: '-' },
+            5: { status: '대기', vendor: '물류창고 A', dueDate: '2026-09-30', memo: '-' }
+        },
         items: [
             { name: '케어 라벨', supplier: '태양기획', qty: '500 EA', orderDate: '2026-08-05', dueDate: '2026-08-10', memo: '입고 완료', completed: true }
         ]
@@ -257,16 +281,16 @@ let expandedStyleId = null;
 let currentCalDate = new Date(2026, 7, 1);
 
 function loadStyles() {
-    const stored = localStorage.getItem('verso_styles_v4');
+    const stored = localStorage.getItem('verso_styles_v5');
     if (!stored) {
-        localStorage.setItem('verso_styles_v4', JSON.stringify(initialData));
+        localStorage.setItem('verso_styles_v5', JSON.stringify(initialData));
         return initialData;
     }
     return JSON.parse(stored);
 }
 
 function saveStylesToStorage(data) {
-    localStorage.setItem('verso_styles_v4', JSON.stringify(data));
+    localStorage.setItem('verso_styles_v5', JSON.stringify(data));
 }
 
 // D-Day 계산
@@ -366,33 +390,20 @@ function renderWorkerTable() {
         tbody.appendChild(trMain);
 
         // 아코디언 펼침 행
+        const activeStep = item.activeStep || 2;
         const trSub = document.createElement('tr');
         trSub.className = `accordion-row ${isExpanded ? 'open' : ''}`;
         trSub.innerHTML = `
             <td colspan="8" style="padding: 0;">
                 <div class="accordion-container">
-                    ${renderStepProcessBar(item)}
+                    <div style="font-size:0.85rem; font-weight:bold; margin-bottom:6px; color:var(--text-muted);">
+                        📌 현재 진행 단계 (각 단계를 클릭하여 상세 현황 조회):
+                    </div>
                     
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; margin-bottom:8px;">
-                        <h4 style="font-size:0.95rem;">📦 부자재 세부 리스트 및 입고 관리</h4>
-                        <div style="display:flex; gap:8px;">
-                            <span style="font-size:0.85rem; color:var(--text-muted); align-self:center;">완제품 목표일:</span>
-                            <input type="date" value="${item.finalDelivery || ''}" onchange="updateFinalDelivery('${item.id}', this.value)" style="padding:2px 6px;">
-                        </div>
-                    </div>
+                    ${renderStepProcessBar(item, activeStep)}
 
-                    ${renderSubItemsTable(item)}
-
-                    <!-- 부자재 인라인 추가 폼 -->
-                    <div style="background:#fff; padding:10px; border-radius:6px; border:1px solid var(--border-color); margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-                        <strong style="font-size:0.85rem;">+ 부자재 추가:</strong>
-                        <input type="text" id="add-name-${item.id}" placeholder="부자재명 (예: YKK 지퍼)" style="width:140px;">
-                        <input type="text" id="add-supplier-${item.id}" placeholder="거래처" style="width:110px;">
-                        <input type="text" id="add-qty-${item.id}" placeholder="수량/단위" style="width:90px;">
-                        <input type="date" id="add-duedate-${item.id}" style="width:130px;">
-                        <input type="text" id="add-memo-${item.id}" placeholder="메모" style="flex:1; min-width:120px;">
-                        <button class="btn btn-sm" onclick="addInlineSubTask('${item.id}')">등록</button>
-                    </div>
+                    <!-- 공정 단계별 상세 보기 영역 -->
+                    ${renderStepDetailContent(item, activeStep)}
                 </div>
             </td>
         `;
@@ -405,12 +416,12 @@ function renderWorkerTable() {
     document.getElementById('cnt-total').innerText = filtered.length;
 }
 
-// 공정 단계(병목) 프로그레스 바 생성
-function renderStepProcessBar(item) {
+// 클릭 가능한 공정 단계(1~5단계) 탭 생성
+function renderStepProcessBar(item, activeStep) {
     const total = item.items ? item.items.length : 0;
     const completed = item.items ? item.items.filter(i => i.completed).length : 0;
     
-    let step2Class = 'step-item';
+    let step2Class = 'step-btn';
     let step2Text = '2. 부자재 진행';
     if (total > 0 && completed === total) {
         step2Class += ' done';
@@ -421,20 +432,75 @@ function renderStepProcessBar(item) {
     }
 
     return `
-        <div style="font-size:0.85rem; font-weight:bold; margin-bottom:6px; color:var(--text-muted);">
-            📌 현재 진행 단계 (병목 구간 확인):
-        </div>
         <div class="step-process-bar">
-            <div class="step-item done">1. 샘플/기획 ✓</div>
-            <div class="${step2Class}">${step2Text}</div>
-            <div class="step-item ${completed === total && total > 0 ? 'active' : ''}">3. 원단/봉제</div>
-            <div class="step-item">4. 검수/QC</div>
-            <div class="step-item ${item.finalDelivery && completed === total ? 'done' : ''}">5. 최종 입고</div>
+            <button class="step-btn done ${activeStep === 1 ? 'selected' : ''}" onclick="selectStep('${item.id}', 1)">1. 샘플/기획 ✓</button>
+            <button class="${step2Class} ${activeStep === 2 ? 'selected' : ''}" onclick="selectStep('${item.id}', 2)">${step2Text}</button>
+            <button class="step-btn ${completed === total && total > 0 ? 'active' : ''} ${activeStep === 3 ? 'selected' : ''}" onclick="selectStep('${item.id}', 3)">3. 원단/봉제</button>
+            <button class="step-btn ${activeStep === 4 ? 'selected' : ''}" onclick="selectStep('${item.id}', 4)">4. 검수/QC</button>
+            <button class="step-btn ${item.finalDelivery && completed === total ? 'done' : ''} ${activeStep === 5 ? 'selected' : ''}" onclick="selectStep('${item.id}', 5)">5. 최종 입고</button>
         </div>
     `;
 }
 
-// 하위 부자재 세부 테이블 생성
+// 선택된 탭에 따른 상세 현황 내용 생성
+function renderStepDetailContent(item, activeStep) {
+    // 2단계 (부자재) 선택 시 기존 부자재 세부 리스트 및 체크박스 표시
+    if (activeStep === 2) {
+        return `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; margin-bottom:8px;">
+                <h4 style="font-size:0.95rem;">📦 부자재 세부 리스트 및 입고 관리</h4>
+                <div style="display:flex; gap:8px;">
+                    <span style="font-size:0.85rem; color:var(--text-muted); align-self:center;">완제품 목표일:</span>
+                    <input type="date" value="${item.finalDelivery || ''}" onchange="updateFinalDelivery('${item.id}', this.value)" style="padding:2px 6px;">
+                </div>
+            </div>
+
+            ${renderSubItemsTable(item)}
+
+            <!-- 부자재 인라인 추가 폼 -->
+            <div style="background:#fff; padding:10px; border-radius:6px; border:1px solid var(--border-color); margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                <strong style="font-size:0.85rem;">+ 부자재 추가:</strong>
+                <input type="text" id="add-name-${item.id}" placeholder="부자재명 (예: YKK 지퍼)" style="width:140px;">
+                <input type="text" id="add-supplier-${item.id}" placeholder="거래처" style="width:110px;">
+                <input type="text" id="add-qty-${item.id}" placeholder="수량/단위" style="width:90px;">
+                <input type="date" id="add-duedate-${item.id}" style="width:130px;">
+                <input type="text" id="add-memo-${item.id}" placeholder="비고/메모" style="flex:1; min-width:120px;">
+                <button class="btn btn-sm" onclick="addInlineSubTask('${item.id}')">등록</button>
+            </div>
+        `;
+    }
+
+    // 1, 3, 4, 5단계 선택 시 해당 공정 전용 세부 현황판 표시
+    const stepTitles = { 1: '1️⃣ 샘플 / 기획 단계 현황', 3: '3️⃣ 원단 / 봉제 공정 현황', 4: '4️⃣ 검수 / QC 현황', 5: '5️⃣ 최종 창고 입고 현황' };
+    const stepInfo = (item.stepsData && item.stepsData[activeStep]) ? item.stepsData[activeStep] : { status: '진행중', vendor: '-', dueDate: '-', memo: '' };
+
+    return `
+        <div class="step-detail-box">
+            <h4 style="font-size:0.95rem; margin-bottom:10px; color:var(--primary-color);">${stepTitles[activeStep]}</h4>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px; font-size:0.85rem;">
+                <div><strong>공정 상태:</strong> 
+                    <select onchange="updateStepData('${item.id}', ${activeStep}, 'status', this.value)" style="padding:2px 6px;">
+                        <option value="대기" ${stepInfo.status === '대기' ? 'selected' : ''}>대기</option>
+                        <option value="진행중" ${stepInfo.status === '진행중' ? 'selected' : ''}>진행중</option>
+                        <option value="완료" ${stepInfo.status === '완료' ? 'selected' : ''}>완료</option>
+                    </select>
+                </div>
+                <div><strong>담당 / 협력업체:</strong> 
+                    <input type="text" value="${stepInfo.vendor || ''}" onchange="updateStepData('${item.id}', ${activeStep}, 'vendor', this.value)" placeholder="업체명 입력" style="padding:2px 6px; width:130px;">
+                </div>
+                <div><strong>완료 목표일:</strong> 
+                    <input type="date" value="${stepInfo.dueDate || ''}" onchange="updateStepData('${item.id}', ${activeStep}, 'dueDate', this.value)" style="padding:2px 6px;">
+                </div>
+            </div>
+            <div style="margin-top:10px; font-size:0.85rem;">
+                <strong>공정 메모 / 전달사항:</strong>
+                <input type="text" class="memo-input" value="${stepInfo.memo || ''}" onchange="updateStepData('${item.id}', ${activeStep}, 'memo', this.value)" placeholder="해당 공정 관련 메모 작성..." style="margin-top:4px;">
+            </div>
+        </div>
+    `;
+}
+
+// 하위 부자재 세부 테이블 생성 (비고/메모 실시간 수정 가능한 Input 적용)
 function renderSubItemsTable(item) {
     if (!item.items || item.items.length === 0) {
         return `<div style="font-size:0.85rem; color:#888; padding:8px; background:white; border-radius:4px; text-align:center;">등록된 부자재가 없습니다. 아래 입력란에서 추가하세요.</div>`;
@@ -452,7 +518,9 @@ function renderSubItemsTable(item) {
                 <td>${sub.qty || '-'}</td>
                 <td>${sub.dueDate || '-'}</td>
                 <td><span class="dday-tag ${sub.completed ? 'tag-normal' : dday.tagClass}">${sub.completed ? '입고완료' : dday.text}</span></td>
-                <td>${sub.memo || '-'}</td>
+                <td>
+                    <input type="text" class="memo-input" value="${sub.memo || ''}" onchange="updateSubTaskMemo('${item.id}', ${idx}, this.value)" placeholder="메모 수정...">
+                </td>
                 <td><button class="btn btn-danger btn-sm" onclick="deleteSubTask('${item.id}', ${idx})">삭제</button></td>
             </tr>
         `;
@@ -468,13 +536,46 @@ function renderSubItemsTable(item) {
                     <th>수량</th>
                     <th>입고 예정일</th>
                     <th>D-Day</th>
-                    <th>비고/메모</th>
+                    <th>비고/메모 (실시간 수정 가능)</th>
                     <th style="width:50px;">삭제</th>
                 </tr>
             </thead>
             <tbody>${rows}</tbody>
         </table>
     `;
+}
+
+// 공정 단계 탭 클릭 시 선택 변경
+function selectStep(styleId, stepNum) {
+    const styles = loadStyles();
+    const target = styles.find(s => s.id === styleId);
+    if (target) {
+        target.activeStep = stepNum;
+        saveStylesToStorage(styles);
+        renderWorkerTable();
+    }
+}
+
+// 공정 단계별 상세 데이터 업데이트
+function updateStepData(styleId, stepNum, key, value) {
+    const styles = loadStyles();
+    const target = styles.find(s => s.id === styleId);
+    if (target) {
+        if (!target.stepsData) target.stepsData = {};
+        if (!target.stepsData[stepNum]) target.stepsData[stepNum] = {};
+        target.stepsData[stepNum][key] = value;
+        saveStylesToStorage(styles);
+    }
+}
+
+// 부자재 메모 실시간 수정 기능
+function updateSubTaskMemo(styleId, idx, newMemo) {
+    const styles = loadStyles();
+    const target = styles.find(s => s.id === styleId);
+    if (target && target.items[idx]) {
+        target.items[idx].memo = newMemo;
+        saveStylesToStorage(styles);
+    }
 }
 
 // 아코디언 토글
@@ -644,6 +745,7 @@ function saveStyle() {
         name: name,
         brand: document.getElementById('newBrand').value,
         season: document.getElementById('newSeason').value,
+        activeStep: 2,
         items: []
     });
     saveStylesToStorage(styles);
