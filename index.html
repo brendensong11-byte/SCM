@@ -23,7 +23,7 @@
         h1 { font-size: 1.5rem; font-weight: bold; }
 
         /* Navigation Tabs */
-        .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 0; }
+        .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); }
         .tab-btn {
             padding: 10px 20px; font-weight: bold; font-size: 0.95rem; border: none; background: none;
             cursor: pointer; color: var(--text-muted); border-bottom: 3px solid transparent; margin-bottom: -2px;
@@ -33,7 +33,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Controls & Controls Bar */
+        /* Controls & Filters */
         .controls-bar {
             display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;
             background: var(--card-bg); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color);
@@ -57,12 +57,32 @@
         .card .title { font-size: 0.8rem; color: var(--text-muted); font-weight: bold; }
         .card .value { font-size: 1.4rem; font-weight: bold; margin-top: 4px; }
 
-        /* Tables */
+        /* Tables & Accordion */
         .table-container { background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-color); overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
         th, td { padding: 10px 14px; border-bottom: 1px solid var(--border-color); }
         th { background-color: #f8fafc; font-weight: 600; color: var(--text-muted); }
-        tr.clickable:hover { background-color: #f1f5f9; cursor: pointer; }
+        
+        tr.main-row { cursor: pointer; transition: background 0.2s; }
+        tr.main-row:hover { background-color: #f1f5f9; }
+        tr.main-row.open { background-color: #eff6ff; }
+
+        /* Accordion Expansion Box */
+        .accordion-row { display: none; background-color: #f8fafc; }
+        .accordion-row.open { display: table-row; }
+        .accordion-container { padding: 16px 20px; border-left: 4px solid var(--primary-color); }
+
+        /* Step Process Bar (진행 공정 바) */
+        .step-process-bar { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
+        .step-item {
+            flex: 1; min-width: 130px; background: #e2e8f0; padding: 8px 12px; border-radius: 6px;
+            font-size: 0.8rem; text-align: center; font-weight: bold; color: var(--text-muted); position: relative;
+        }
+        .step-item.active { background: #3b82f6; color: white; }
+        .step-item.done { background: #10b981; color: white; }
+        .step-item.stuck { background: #f59e0b; color: white; animation: pulse 1.5s infinite; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
         /* D-Day Badges */
         .dday-tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; }
@@ -71,13 +91,17 @@
         .tag-normal { background-color: var(--tag-normal-bg); color: var(--tag-normal-txt); }
 
         /* Progress Bar (진행률 %) */
-        .progress-container { display: flex; align-items: center; gap: 8px; width: 100%; max-width: 200px; }
+        .progress-container { display: flex; align-items: center; gap: 8px; width: 100%; max-width: 160px; }
         .progress-bar-bg { flex: 1; height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #1d4ed8); border-radius: 5px; transition: width 0.3s; }
         .progress-text { font-size: 0.8rem; font-weight: bold; min-width: 35px; text-align: right; }
 
-        /* Calendar View (결정권자용) */
-        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        /* Sub Table */
+        .sub-table { width: 100%; background: white; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); margin-top: 10px; }
+        .sub-table th { background: #edf2f7; font-size: 0.8rem; }
+        .sub-table td { font-size: 0.85rem; padding: 8px 12px; }
+
+        /* Calendar View */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; background: var(--card-bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); }
         .cal-day-header { text-align: center; font-weight: bold; font-size: 0.85rem; color: var(--text-muted); padding: 6px 0; }
         .cal-cell { min-height: 90px; background: #fafafa; border: 1px solid #edf2f7; border-radius: 4px; padding: 4px; font-size: 0.75rem; }
@@ -87,14 +111,11 @@
 
         /* Modal */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); justify-content: center; align-items: center; z-index: 1000; }
-        .modal { background: white; width: 90%; max-width: 900px; max-height: 85vh; overflow-y: auto; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); }
-        .modal-sm { max-width: 450px; }
+        .modal { background: white; width: 90%; max-width: 450px; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .modal-body { display: flex; flex-direction: column; gap: 16px; }
+        .modal-body { display: flex; flex-direction: column; gap: 12px; }
         .form-group { display: flex; flex-direction: column; gap: 4px; }
-        .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
-        .sub-table { width: 100%; font-size: 0.85rem; margin-top: 8px; }
-        .sub-table th { background: #f1f5f9; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
     </style>
 </head>
 <body>
@@ -110,18 +131,22 @@
     <button class="tab-btn" onclick="switchTab('executiveTab', this)">📅 Master Roadmap (통합 진행률)</button>
 </div>
 
-<!-- ================= 탭 1: 실무 작업자용 화면 ================= -->
+<!-- ================= 탭 1: Work Management (작업 관리) ================= -->
 <div id="workerTab" class="tab-content active">
     <div class="controls-bar">
         <div class="filter-group">
+            <label for="searchInput">검색</label>
+            <input type="text" id="searchInput" placeholder="상품명 또는 스타일 번호..." onkeyup="renderWorkerTable()">
+        </div>
+        <div class="filter-group">
             <label for="seasonFilter">시즌</label>
-            <select id="seasonFilter" onchange="renderAll()">
+            <select id="seasonFilter" onchange="renderWorkerTable()">
                 <option value="ALL">전체 시즌</option> <option value="2026 FW" selected>2026 FW</option> <option value="2027 SS">2027 SS</option>
             </select>
         </div>
         <div class="filter-group">
             <label for="brandFilter">브랜드</label>
-            <select id="brandFilter" onchange="renderAll()">
+            <select id="brandFilter" onchange="renderWorkerTable()">
                 <option value="ALL">전체 브랜드</option> <option value="Brand A">Brand A</option> <option value="Brand B">Brand B</option>
             </select>
         </div>
@@ -138,14 +163,14 @@
         <table>
             <thead>
                 <tr>
+                    <th style="width: 30px;"></th>
                     <th>스타일 번호</th>
                     <th>상품명</th>
                     <th>브랜드 / 시즌</th>
-                    <th>등록 부자재 수</th>
+                    <th>등록 부자재</th>
                     <th>최종 입고 예정일</th>
                     <th>D-Day</th>
                     <th>진행률 (%)</th>
-                    <th>관리</th>
                 </tr>
             </thead>
             <tbody id="styleTableBody"></tbody>
@@ -153,23 +178,20 @@
     </div>
 </div>
 
-<!-- ================= 탭 2: 결정권자 관제 화면 ================= -->
+<!-- ================= 탭 2: Master Roadmap (통합 진행률) ================= -->
 <div id="executiveTab" class="tab-content">
-    <!-- 달력 컨트롤 -->
     <div class="controls-bar" style="justify-content: space-between;">
         <div style="display:flex; align-items:center; gap:12px;">
             <button class="btn btn-secondary btn-sm" onclick="changeMonth(-1)">◀ 이전달</button>
             <h3 id="calMonthTitle" style="font-size: 1.1rem;">2026년 8월</h3>
             <button class="btn btn-secondary btn-sm" onclick="changeMonth(1)">다음달 ▶</button>
         </div>
-        <span style="font-size: 0.85rem; color: var(--text-muted);">* 달력 내 항목 클릭 시 해당 스타일의 상세 정보를 확인합니다.</span>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">* 달력 내 항목 클릭 시 Work Management 탭의 해당 항목으로 연동됩니다.</span>
     </div>
 
-    <!-- 월별 달력 -->
     <div class="calendar-grid" id="calendarGrid"></div>
 
-    <!-- 하단 스타일별 진행률 로드맵 -->
-    <h3 style="margin: 24px 0 12px 0; font-size: 1.1rem;">📊 스타일별 전체 진행 현황 (Progress %)</h3>
+    <h3 style="margin: 24px 0 12px 0; font-size: 1.1rem;">📊 스타일별 전체 공정 현황</h3>
     <div class="table-container">
         <table>
             <thead>
@@ -186,52 +208,9 @@
     </div>
 </div>
 
-<!-- Modal: 스타일 상세 및 부자재 관제 모달 -->
-<div class="modal-overlay" id="detailModal">
-    <div class="modal">
-        <div class="modal-header">
-            <h3 id="detailTitle">스타일 상세 관제</h3>
-            <button onclick="closeModal('detailModal')" style="border:none; background:none; cursor:pointer; font-size:1.2rem;">✕</button>
-        </div>
-        <div class="modal-body">
-            <div class="form-group" style="background:#f8fafc; padding:12px; border-radius:6px; margin-bottom:8px;">
-                <label>🏁 완제품 최종 입고 목표일 설정</label>
-                <div style="display:flex; gap:8px;">
-                    <input type="date" id="finalDeliveryDate">
-                    <button class="btn btn-sm" onclick="saveFinalDeliveryDate()">목표일 저장</button>
-                </div>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h4>📦 부자재 및 세부 항목별 일정</h4>
-                <button class="btn btn-sm" onclick="openSubTaskModal()">+ 부자재 항목 추가</button>
-            </div>
-            
-            <table class="sub-table">
-                <thead>
-                    <tr>
-                        <th>부자재/작업명</th>
-                        <th>공급/거래처</th>
-                        <th>수량</th>
-                        <th>발주일</th>
-                        <th>입고 예정일</th>
-                        <th>D-Day</th>
-                        <th>메모</th>
-                        <th>삭제</th>
-                    </tr>
-                </thead>
-                <tbody id="subTaskTableBody"></tbody>
-            </table>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('detailModal')">닫기</button>
-        </div>
-    </div>
-</div>
-
 <!-- Modal: 신규 Style 등록 -->
 <div class="modal-overlay" id="styleModal">
-    <div class="modal modal-sm">
+    <div class="modal">
         <div class="modal-header">
             <h3>신규 Style 등록</h3>
             <button onclick="closeModal('styleModal')" style="border:none; background:none; cursor:pointer;">✕</button>
@@ -255,61 +234,39 @@
     </div>
 </div>
 
-<!-- Modal: 세부 부자재 추가 -->
-<div class="modal-overlay" id="subTaskModal">
-    <div class="modal modal-sm">
-        <div class="modal-header">
-            <h3>+ 부자재/작업 항목 추가</h3>
-            <button onclick="closeModal('subTaskModal')" style="border:none; background:none; cursor:pointer;">✕</button>
-        </div>
-        <div class="modal-body">
-            <div class="form-group"><label>부자재/작업명</label><input type="text" id="subName" placeholder="예: YKK 3호 지퍼"></div>
-            <div class="form-group"><label>거래처명</label><input type="text" id="subSupplier" placeholder="예: YKK 코리아"></div>
-            <div class="form-group"><label>발주 수량</label><input type="text" id="subQty" placeholder="예: 1,000 EA"></div>
-            <div class="form-group"><label>발주일</label><input type="date" id="subOrderDate"></div>
-            <div class="form-group"><label>입고 예정일 (Target)</label><input type="date" id="subDueDate"></div>
-            <div class="form-group"><label>비고 / 메모</label><input type="text" id="subMemo" placeholder="예: 도금 작업 예정"></div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('subTaskModal')">취소</button>
-            <button class="btn" onclick="saveSubTask()">추가하기</button>
-        </div>
-    </div>
-</div>
-
 <script>
-// Initial Mock Data
+// 데이터 구조
 const initialData = [
     {
         id: 'ST26001', name: '쫀쫀팬츠', brand: 'Brand A', season: '2026 FW', finalDelivery: '2026-10-15',
         items: [
-            { name: 'YKK 지퍼', supplier: 'YKK 코리아', qty: '1,000 EA', orderDate: '2026-08-01', dueDate: '2026-08-12', memo: '출고 준비 중' },
-            { name: '메인 라벨', supplier: '태양기획', qty: '2,000 EA', orderDate: '2026-08-02', dueDate: '2026-08-15', memo: '' },
-            { name: '메인 단추', supplier: '금성단추', qty: '1,000 EA', orderDate: '2026-08-03', dueDate: '2026-08-18', memo: '도금 진행중' }
+            { name: 'YKK 지퍼', supplier: 'YKK 코리아', qty: '1,000 EA', orderDate: '2026-08-01', dueDate: '2026-08-12', memo: '출고 준비 중', completed: false },
+            { name: '메인 라벨', supplier: '태양기획', qty: '2,000 EA', orderDate: '2026-08-02', dueDate: '2026-08-15', memo: '', completed: true },
+            { name: '메인 단추', supplier: '금성단추', qty: '1,000 EA', orderDate: '2026-08-03', dueDate: '2026-08-18', memo: '도금 진행중', completed: false }
         ]
     },
     {
         id: 'ST26002', name: '와이드 슬랙스', brand: 'Brand A', season: '2026 FW', finalDelivery: '2026-09-30',
         items: [
-            { name: '케어 라벨', supplier: '태양기획', qty: '500 EA', orderDate: '2026-08-05', dueDate: '2026-08-10', memo: '오늘 도착 예정' }
+            { name: '케어 라벨', supplier: '태양기획', qty: '500 EA', orderDate: '2026-08-05', dueDate: '2026-08-10', memo: '입고 완료', completed: true }
         ]
     }
 ];
 
-let activeStyleId = null;
-let currentCalDate = new Date(2026, 7, 1); // 2026년 8월 기본 세팅
+let expandedStyleId = null;
+let currentCalDate = new Date(2026, 7, 1);
 
 function loadStyles() {
-    const stored = localStorage.getItem('verso_styles_v3');
+    const stored = localStorage.getItem('verso_styles_v4');
     if (!stored) {
-        localStorage.setItem('verso_styles_v3', JSON.stringify(initialData));
+        localStorage.setItem('verso_styles_v4', JSON.stringify(initialData));
         return initialData;
     }
     return JSON.parse(stored);
 }
 
 function saveStylesToStorage(data) {
-    localStorage.setItem('verso_styles_v3', JSON.stringify(data));
+    localStorage.setItem('verso_styles_v4', JSON.stringify(data));
 }
 
 // D-Day 계산
@@ -329,32 +286,25 @@ function calculateDDay(targetDateStr) {
     return { text: `D-${diffDays}`, diffDays: diffDays, tagClass: 'tag-normal' };
 }
 
-// 공정 진행률 (%) 자동 계산 (부자재 및 완제품목표 등록 기반)
+// 공정 진행률 (%) 자동 계산
 function calculateProgress(item) {
     if (!item.items || item.items.length === 0) return 10;
     const totalItems = item.items.length;
     let completedItems = 0;
     
     item.items.forEach(sub => {
-        const dday = calculateDDay(sub.dueDate);
-        if (dday.diffDays <= 0) completedItems++;
+        if (sub.completed) completedItems++;
     });
 
-    const subProgress = Math.round((completedItems / totalItems) * 70); // 부자재 비중 70%
-    const finalBonus = item.finalDelivery ? 10 : 0; // 완제품 일정 등록시 10%
+    const subProgress = Math.round((completedItems / totalItems) * 70);
+    const finalBonus = item.finalDelivery ? 10 : 0;
     return Math.min(100, 20 + subProgress + finalBonus);
 }
 
-// 전체 화면 랜더링
-function renderAll() {
-    renderWorkerTable();
-    renderCalendar();
-    renderExecTable();
-}
-
-// 1. 실무자용 테이블 랜더링
+// 1. 아코디언 방식의 작업 관리 테이블 랜더링
 function renderWorkerTable() {
     const styles = loadStyles();
+    const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
     const seasonVal = document.getElementById('seasonFilter').value;
     const brandVal = document.getElementById('brandFilter').value;
     const tbody = document.getElementById('styleTableBody');
@@ -363,17 +313,21 @@ function renderWorkerTable() {
     let cntUrgent = 0, cntSoon = 0, cntNormal = 0;
 
     const filtered = styles.filter(item => {
-        return (seasonVal === 'ALL' || item.season === seasonVal) &&
-               (brandVal === 'ALL' || item.brand === brandVal);
+        const matchSearch = item.name.toLowerCase().includes(searchVal) || item.id.toLowerCase().includes(searchVal);
+        const matchSeason = seasonVal === 'ALL' || item.season === seasonVal;
+        const matchBrand = brandVal === 'ALL' || item.brand === brandVal;
+        return matchSearch && matchSeason && matchBrand;
     });
 
     filtered.forEach(item => {
         let latestDueDate = '-';
         let minDiffDays = 999;
         let representativeDDay = { text: '-', tagClass: 'tag-normal' };
+        let uncompletedCount = 0;
 
         if (item.items && item.items.length > 0) {
             item.items.forEach(sub => {
+                if (!sub.completed) uncompletedCount++;
                 const dday = calculateDDay(sub.dueDate);
                 if (dday.diffDays < minDiffDays) {
                     minDiffDays = dday.diffDays;
@@ -388,15 +342,18 @@ function renderWorkerTable() {
         else cntNormal++;
 
         const progress = calculateProgress(item);
+        const isExpanded = (expandedStyleId === item.id);
 
-        const tr = document.createElement('tr');
-        tr.className = 'clickable';
-        tr.onclick = () => openDetailModal(item.id);
-        tr.innerHTML = `
+        // 메인 행
+        const trMain = document.createElement('tr');
+        trMain.className = `main-row ${isExpanded ? 'open' : ''}`;
+        trMain.onclick = () => toggleAccordion(item.id);
+        trMain.innerHTML = `
+            <td style="text-align:center;">${isExpanded ? '▲' : '▼'}</td>
             <td><strong>${item.id}</strong></td>
             <td><strong>${item.name}</strong></td>
             <td>${item.brand} / ${item.season}</td>
-            <td>${item.items ? item.items.length : 0}개 항목</td>
+            <td>${item.items ? item.items.length : 0}개 항목 (${item.items ? item.items.length - uncompletedCount : 0} 완료)</td>
             <td>${latestDueDate}</td>
             <td><span class="dday-tag ${representativeDDay.tagClass}">${representativeDDay.text}</span></td>
             <td>
@@ -405,9 +362,41 @@ function renderWorkerTable() {
                     <span class="progress-text">${progress}%</span>
                 </div>
             </td>
-            <td><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openDetailModal('${item.id}')">상세 일정</button></td>
         `;
-        tbody.appendChild(tr);
+        tbody.appendChild(trMain);
+
+        // 아코디언 펼침 행
+        const trSub = document.createElement('tr');
+        trSub.className = `accordion-row ${isExpanded ? 'open' : ''}`;
+        trSub.innerHTML = `
+            <td colspan="8" style="padding: 0;">
+                <div class="accordion-container">
+                    ${renderStepProcessBar(item)}
+                    
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; margin-bottom:8px;">
+                        <h4 style="font-size:0.95rem;">📦 부자재 세부 리스트 및 입고 관리</h4>
+                        <div style="display:flex; gap:8px;">
+                            <span style="font-size:0.85rem; color:var(--text-muted); align-self:center;">완제품 목표일:</span>
+                            <input type="date" value="${item.finalDelivery || ''}" onchange="updateFinalDelivery('${item.id}', this.value)" style="padding:2px 6px;">
+                        </div>
+                    </div>
+
+                    ${renderSubItemsTable(item)}
+
+                    <!-- 부자재 인라인 추가 폼 -->
+                    <div style="background:#fff; padding:10px; border-radius:6px; border:1px solid var(--border-color); margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                        <strong style="font-size:0.85rem;">+ 부자재 추가:</strong>
+                        <input type="text" id="add-name-${item.id}" placeholder="부자재명 (예: YKK 지퍼)" style="width:140px;">
+                        <input type="text" id="add-supplier-${item.id}" placeholder="거래처" style="width:110px;">
+                        <input type="text" id="add-qty-${item.id}" placeholder="수량/단위" style="width:90px;">
+                        <input type="date" id="add-duedate-${item.id}" style="width:130px;">
+                        <input type="text" id="add-memo-${item.id}" placeholder="메모" style="flex:1; min-width:120px;">
+                        <button class="btn btn-sm" onclick="addInlineSubTask('${item.id}')">등록</button>
+                    </div>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(trSub);
     });
 
     document.getElementById('cnt-urgent').innerText = cntUrgent;
@@ -416,7 +405,145 @@ function renderWorkerTable() {
     document.getElementById('cnt-total').innerText = filtered.length;
 }
 
-// 2. 결정권자용 달력 랜더링
+// 공정 단계(병목) 프로그레스 바 생성
+function renderStepProcessBar(item) {
+    const total = item.items ? item.items.length : 0;
+    const completed = item.items ? item.items.filter(i => i.completed).length : 0;
+    
+    let step2Class = 'step-item';
+    let step2Text = '2. 부자재 진행';
+    if (total > 0 && completed === total) {
+        step2Class += ' done';
+        step2Text = '2. 부자재 완료 ✓';
+    } else if (total > 0) {
+        step2Class += ' stuck';
+        step2Text = `2. 부자재 대기중 (${completed}/${total})`;
+    }
+
+    return `
+        <div style="font-size:0.85rem; font-weight:bold; margin-bottom:6px; color:var(--text-muted);">
+            📌 현재 진행 단계 (병목 구간 확인):
+        </div>
+        <div class="step-process-bar">
+            <div class="step-item done">1. 샘플/기획 ✓</div>
+            <div class="${step2Class}">${step2Text}</div>
+            <div class="step-item ${completed === total && total > 0 ? 'active' : ''}">3. 원단/봉제</div>
+            <div class="step-item">4. 검수/QC</div>
+            <div class="step-item ${item.finalDelivery && completed === total ? 'done' : ''}">5. 최종 입고</div>
+        </div>
+    `;
+}
+
+// 하위 부자재 세부 테이블 생성
+function renderSubItemsTable(item) {
+    if (!item.items || item.items.length === 0) {
+        return `<div style="font-size:0.85rem; color:#888; padding:8px; background:white; border-radius:4px; text-align:center;">등록된 부자재가 없습니다. 아래 입력란에서 추가하세요.</div>`;
+    }
+
+    let rows = item.items.map((sub, idx) => {
+        const dday = calculateDDay(sub.dueDate);
+        return `
+            <tr>
+                <td style="text-align:center;">
+                    <input type="checkbox" ${sub.completed ? 'checked' : ''} onchange="toggleSubTaskComplete('${item.id}', ${idx})">
+                </td>
+                <td><strong style="${sub.completed ? 'text-decoration:line-through; color:#888;' : ''}">${sub.name}</strong></td>
+                <td>${sub.supplier || '-'}</td>
+                <td>${sub.qty || '-'}</td>
+                <td>${sub.dueDate || '-'}</td>
+                <td><span class="dday-tag ${sub.completed ? 'tag-normal' : dday.tagClass}">${sub.completed ? '입고완료' : dday.text}</span></td>
+                <td>${sub.memo || '-'}</td>
+                <td><button class="btn btn-danger btn-sm" onclick="deleteSubTask('${item.id}', ${idx})">삭제</button></td>
+            </tr>
+        `;
+    }).join('');
+
+    return `
+        <table class="sub-table">
+            <thead>
+                <tr>
+                    <th style="width:40px;">입고</th>
+                    <th>부자재/작업명</th>
+                    <th>공급/거래처</th>
+                    <th>수량</th>
+                    <th>입고 예정일</th>
+                    <th>D-Day</th>
+                    <th>비고/메모</th>
+                    <th style="width:50px;">삭제</th>
+                </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+        </table>
+    `;
+}
+
+// 아코디언 토글
+function toggleAccordion(styleId) {
+    expandedStyleId = (expandedStyleId === styleId) ? null : styleId;
+    renderWorkerTable();
+}
+
+// 부자재 체크박스 변경
+function toggleSubTaskComplete(styleId, idx) {
+    const styles = loadStyles();
+    const target = styles.find(s => s.id === styleId);
+    if (target && target.items[idx]) {
+        target.items[idx].completed = !target.items[idx].completed;
+        saveStylesToStorage(styles);
+        renderWorkerTable();
+        renderExecTable();
+    }
+}
+
+// 완제품 목표일 변경
+function updateFinalDelivery(styleId, dateVal) {
+    const styles = loadStyles();
+    const target = styles.find(s => s.id === styleId);
+    if (target) {
+        target.finalDelivery = dateVal;
+        saveStylesToStorage(styles);
+        renderExecTable();
+    }
+}
+
+// 인라인 부자재 추가
+function addInlineSubTask(styleId) {
+    const name = document.getElementById(`add-name-${styleId}`).value.trim();
+    if (!name) { alert('부자재명을 입력해주세요.'); return; }
+
+    const newItem = {
+        name: name,
+        supplier: document.getElementById(`add-supplier-${styleId}`).value.trim(),
+        qty: document.getElementById(`add-qty-${styleId}`).value.trim(),
+        dueDate: document.getElementById(`add-duedate-${styleId}`).value,
+        memo: document.getElementById(`add-memo-${styleId}`).value.trim(),
+        completed: false
+    };
+
+    const styles = loadStyles();
+    const target = styles.find(s => s.id === styleId);
+    if (target) {
+        if (!target.items) target.items = [];
+        target.items.push(newItem);
+        saveStylesToStorage(styles);
+        renderWorkerTable();
+        renderCalendar();
+    }
+}
+
+function deleteSubTask(styleId, idx) {
+    if (!confirm('이 부자재 항목을 삭제하시겠습니까?')) return;
+    const styles = loadStyles();
+    const target = styles.find(s => s.id === styleId);
+    if (target) {
+        target.items.splice(idx, 1);
+        saveStylesToStorage(styles);
+        renderWorkerTable();
+        renderCalendar();
+    }
+}
+
+// 2. 달력 관제 랜더링
 function renderCalendar() {
     const year = currentCalDate.getFullYear();
     const month = currentCalDate.getMonth();
@@ -442,30 +569,29 @@ function renderCalendar() {
         let eventsHtml = '';
 
         styles.forEach(s => {
-            // 부자재 일정
             if (s.items) {
                 s.items.forEach(sub => {
                     if (sub.dueDate === dateStr) {
-                        eventsHtml += `<div class="cal-event" onclick="openDetailModal('${s.id}')">[${s.name}] ${sub.name}</div>`;
+                        eventsHtml += `<div class="cal-event" onclick="jumpToStyle('${s.id}')">[${s.name}] ${sub.name}</div>`;
                     }
                 });
             }
-            // 완제품 입고 일정
             if (s.finalDelivery === dateStr) {
-                eventsHtml += `<div class="cal-event final" onclick="openDetailModal('${s.id}')">🏁 [${s.name}] 완제품 입고</div>`;
+                eventsHtml += `<div class="cal-event final" onclick="jumpToStyle('${s.id}')">🏁 [${s.name}] 완제품 입고</div>`;
             }
         });
 
-        calGrid.innerHTML += `
-            <div class="cal-cell">
-                <div class="date-num">${day}</div>
-                ${eventsHtml}
-            </div>
-        `;
+        calGrid.innerHTML += `<div class="cal-cell"><div class="date-num">${day}</div>${eventsHtml}</div>`;
     }
 }
 
-// 3. 결정권자용 하단 진행률 표 랜더링
+function jumpToStyle(styleId) {
+    switchTab('workerTab', document.querySelectorAll('.tab-btn')[0]);
+    expandedStyleId = styleId;
+    renderWorkerTable();
+}
+
+// 3. 하단 전체 공정 진행률 랜더링
 function renderExecTable() {
     const styles = loadStyles();
     const tbody = document.getElementById('execProgressTableBody');
@@ -474,19 +600,19 @@ function renderExecTable() {
     styles.forEach(item => {
         const progress = calculateProgress(item);
         const tr = document.createElement('tr');
-        tr.className = 'clickable';
-        tr.onclick = () => openDetailModal(item.id);
+        tr.style.cursor = 'pointer';
+        tr.onclick = () => jumpToStyle(item.id);
         tr.innerHTML = `
             <td><strong>${item.id}</strong></td>
             <td><strong>${item.name}</strong></td>
-            <td>${item.finalDelivery ? item.finalDelivery : '미설정'}</td>
+            <td>${item.finalDelivery || '미설정'}</td>
             <td>
                 <div class="progress-container">
                     <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progress}%;"></div></div>
                     <span class="progress-text">${progress}%</span>
                 </div>
             </td>
-            <td>${progress >= 90 ? '🏁 완성 단계' : progress >= 50 ? '🟡 부자재/생산 진행 중' : '⚪ 초기 단계'}</td>
+            <td>${progress >= 90 ? '🏁 완제품 입고 단계' : progress >= 50 ? '🟡 봉제/생산 진행 중' : '⚪ 부자재 입고 대기'}</td>
         `;
         tbody.appendChild(tr);
     });
@@ -504,106 +630,8 @@ function switchTab(tabId, btnEl) {
     btnEl.classList.add('active');
 }
 
-// Modal Handlers
 function openModal(id) { document.getElementById(id).style.display = 'flex'; }
 function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-function openDetailModal(styleId) {
-    activeStyleId = styleId;
-    const styles = loadStyles();
-    const target = styles.find(s => s.id === styleId);
-    if (!target) return;
-
-    document.getElementById('detailTitle').innerText = `[${target.id}] ${target.name} - 상세 관제`;
-    document.getElementById('finalDeliveryDate').value = target.finalDelivery || '';
-    renderSubTasks();
-    openModal('detailModal');
-}
-
-function renderSubTasks() {
-    const styles = loadStyles();
-    const target = styles.find(s => s.id === activeStyleId);
-    const tbody = document.getElementById('subTaskTableBody');
-    tbody.innerHTML = '';
-
-    if (!target || !target.items || target.items.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#888;">등록된 부자재 항목이 없습니다.</td></tr>';
-        return;
-    }
-
-    target.items.forEach((sub, idx) => {
-        const dday = calculateDDay(sub.dueDate);
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td><strong>${sub.name}</strong></td>
-            <td>${sub.supplier || '-'}</td>
-            <td>${sub.qty || '-'}</td>
-            <td>${sub.orderDate || '-'}</td>
-            <td>${sub.dueDate || '-'}</td>
-            <td><span class="dday-tag ${dday.tagClass}">${dday.text}</span></td>
-            <td>${sub.memo || '-'}</td>
-            <td><button class="btn btn-danger btn-sm" onclick="deleteSubTask(${idx})">삭제</button></td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-function saveFinalDeliveryDate() {
-    const val = document.getElementById('finalDeliveryDate').value;
-    const styles = loadStyles();
-    const targetIdx = styles.findIndex(s => s.id === activeStyleId);
-    if (targetIdx !== -1) {
-        styles[targetIdx].finalDelivery = val;
-        saveStylesToStorage(styles);
-        alert('완제품 목표 입고일이 저장되었습니다.');
-        renderAll();
-    }
-}
-
-function openSubTaskModal() {
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('subOrderDate').value = today;
-    document.getElementById('subDueDate').value = today;
-    openModal('subTaskModal');
-}
-
-function saveSubTask() {
-    const name = document.getElementById('subName').value.trim();
-    if (!name) { alert('부자재/작업명을 입력해주세요.'); return; }
-
-    const newItem = {
-        name: name,
-        supplier: document.getElementById('subSupplier').value.trim(),
-        qty: document.getElementById('subQty').value.trim(),
-        orderDate: document.getElementById('subOrderDate').value,
-        dueDate: document.getElementById('subDueDate').value,
-        memo: document.getElementById('subMemo').value.trim()
-    };
-
-    const styles = loadStyles();
-    const targetIdx = styles.findIndex(s => s.id === activeStyleId);
-    if (targetIdx !== -1) {
-        if (!styles[targetIdx].items) styles[targetIdx].items = [];
-        styles[targetIdx].items.push(newItem);
-        saveStylesToStorage(styles);
-    }
-
-    closeModal('subTaskModal');
-    renderSubTasks();
-    renderAll();
-}
-
-function deleteSubTask(itemIdx) {
-    if (!confirm('이 부자재 항목을 삭제하시겠습니까?')) return;
-    const styles = loadStyles();
-    const targetIdx = styles.findIndex(s => s.id === activeStyleId);
-    if (targetIdx !== -1) {
-        styles[targetIdx].items.splice(itemIdx, 1);
-        saveStylesToStorage(styles);
-    }
-    renderSubTasks();
-    renderAll();
-}
 
 function saveStyle() {
     const styleNo = document.getElementById('newStyleNo').value.trim();
@@ -623,10 +651,15 @@ function saveStyle() {
     closeModal('styleModal');
     document.getElementById('newStyleNo').value = '';
     document.getElementById('newProductName').value = '';
-    renderAll();
+    renderWorkerTable();
+    renderExecTable();
 }
 
-window.onload = renderAll;
+window.onload = () => {
+    renderWorkerTable();
+    renderCalendar();
+    renderExecTable();
+};
 </script>
 </body>
 </html>
