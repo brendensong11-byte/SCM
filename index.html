@@ -1,767 +1,861 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VERSO SCM - 통합 공급망 관제 시스템</title>
-    <style>
-        :root {
-            --bg-color: #f4f6f8;
-            --card-bg: #ffffff;
-            --border-color: #e1e4e8;
-            --primary-color: #2563eb;
-            --text-color: #1f2937;
-            --text-muted: #6b7280;
-            --tag-urgent-bg: #fee2e2; --tag-urgent-txt: #991b1b;
-            --tag-soon-bg: #fef3c7;   --tag-soon-txt: #92400e;
-            --tag-normal-bg: #d1fae5; --tag-normal-txt: #065f46;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); padding: 20px; line-height: 1.5; }
-        
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        h1 { font-size: 1.5rem; font-weight: bold; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* Navigation Tabs */
-        .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); }
-        .tab-btn {
-            padding: 10px 20px; font-weight: bold; font-size: 0.95rem; border: none; background: none;
-            cursor: pointer; color: var(--text-muted); border-bottom: 3px solid transparent; margin-bottom: -2px;
-        }
-        .tab-btn.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
+  <title>VERSO | Multi-Brand SCM Engine</title>
 
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Noto Sans KR",
+        sans-serif;
+    }
 
-        /* Controls & Filters */
-        .controls-bar {
-            display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;
-            background: var(--card-bg); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color);
-        }
-        .filter-group { display: flex; align-items: center; gap: 6px; }
-        label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
-        select, input { padding: 6px 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
-        
-        .btn {
-            padding: 8px 14px; background-color: var(--primary-color); color: white; border: none;
-            border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem;
-        }
-        .btn:hover { opacity: 0.9; }
-        .btn-secondary { background-color: #6c757d; }
-        .btn-sm { padding: 4px 8px; font-size: 0.75rem; }
-        .btn-danger { background-color: #ef4444; }
+    body {
+      background: #f5f6f8;
+      color: #1f2937;
+      padding: 24px;
+    }
 
-        /* Summary Cards */
-        .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
-        .card { background: var(--card-bg); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; }
-        .card .title { font-size: 0.8rem; color: var(--text-muted); font-weight: bold; }
-        .card .value { font-size: 1.4rem; font-weight: bold; margin-top: 4px; }
+    /* =========================
+       전체 기본
+    ========================= */
 
-        /* Tables & Accordion */
-        .table-container { background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-color); overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
-        th, td { padding: 10px 14px; border-bottom: 1px solid var(--border-color); }
-        th { background-color: #f8fafc; font-weight: 600; color: var(--text-muted); }
-        
-        tr.main-row { cursor: pointer; transition: background 0.2s; }
-        tr.main-row:hover { background-color: #f1f5f9; }
-        tr.main-row.open { background-color: #eff6ff; }
+    button,
+    select {
+      font-family: inherit;
+    }
 
-        /* Accordion Expansion Box */
-        .accordion-row { display: none; background-color: #f8fafc; }
-        .accordion-row.open { display: table-row; }
-        .accordion-container { padding: 16px 20px; border-left: 4px solid var(--primary-color); }
+    /* =========================
+       헤더
+    ========================= */
 
-        /* Interactive Step Process Bar (클릭 가능한 공정 탭) */
-        .step-process-bar { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px; }
-        .step-btn {
-            flex: 1; min-width: 130px; background: #e2e8f0; padding: 10px 12px; border-radius: 6px;
-            font-size: 0.85rem; text-align: center; font-weight: bold; color: var(--text-muted);
-            border: 2px solid transparent; cursor: pointer; transition: all 0.2s;
-        }
-        .step-btn:hover { border-color: #94a3b8; }
-        .step-btn.selected { border-color: #1e40af !important; box-shadow: 0 0 0 2px rgba(37,99,235,0.3); }
-        .step-btn.done { background: #10b981; color: white; }
-        .step-btn.stuck { background: #f59e0b; color: white; animation: pulse 1.5s infinite; }
-        .step-btn.active { background: #3b82f6; color: white; }
+    header {
+      background: #ffffff;
+      padding: 18px 22px;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      margin-bottom: 18px;
 
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
-        /* Step Detail Box (공정별 세부 현황) */
-        .step-detail-box {
-            background: white; border: 1px solid var(--border-color); border-radius: 6px; padding: 14px 16px; margin-bottom: 12px;
-        }
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
 
-        /* D-Day Badges */
-        .dday-tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; }
-        .tag-urgent { background-color: var(--tag-urgent-bg); color: var(--tag-urgent-txt); }
-        .tag-soon { background-color: var(--tag-soon-bg); color: var(--tag-soon-txt); }
-        .tag-normal { background-color: var(--tag-normal-bg); color: var(--tag-normal-txt); }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
 
-        /* Progress Bar (진행률 %) */
-        .progress-container { display: flex; align-items: center; gap: 8px; width: 100%; max-width: 160px; }
-        .progress-bar-bg { flex: 1; height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #1d4ed8); border-radius: 5px; transition: width 0.3s; }
-        .progress-text { font-size: 0.8rem; font-weight: bold; min-width: 35px; text-align: right; }
+    h1 {
+      font-size: 19px;
+      font-weight: 750;
+      color: #111827;
+      letter-spacing: -0.3px;
+    }
 
-        /* Sub Table & Inputs */
-        .sub-table { width: 100%; background: white; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); margin-top: 10px; }
-        .sub-table th { background: #edf2f7; font-size: 0.8rem; }
-        .sub-table td { font-size: 0.85rem; padding: 8px 12px; }
-        .memo-input { width: 100%; padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.85rem; }
-        .memo-input:focus { border-color: var(--primary-color); outline: none; background: #f0f9ff; }
+    .brand-selector {
+      min-width: 180px;
+      padding: 9px 12px;
 
-        /* Calendar View */
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; background: var(--card-bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); }
-        .cal-day-header { text-align: center; font-weight: bold; font-size: 0.85rem; color: var(--text-muted); padding: 6px 0; }
-        .cal-cell { min-height: 90px; background: #fafafa; border: 1px solid #edf2f7; border-radius: 4px; padding: 4px; font-size: 0.75rem; }
-        .cal-cell .date-num { font-weight: bold; color: var(--text-muted); margin-bottom: 4px; }
-        .cal-event { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; padding: 2px 4px; border-radius: 3px; margin-bottom: 3px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
-        .cal-event.final { background: #dcfce7; color: #15803d; border-color: #bbf7d0; font-weight: bold; }
+      border: 1px solid #d1d5db;
+      border-radius: 7px;
 
-        /* Modal */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); justify-content: center; align-items: center; z-index: 1000; }
-        .modal { background: white; width: 90%; max-width: 450px; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .modal-body { display: flex; flex-direction: column; gap: 12px; }
-        .form-group { display: flex; flex-direction: column; gap: 4px; }
-        .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
-    </style>
+      background: #ffffff;
+      color: #374151;
+
+      font-size: 13px;
+      font-weight: 600;
+
+      cursor: pointer;
+      outline: none;
+    }
+
+    .brand-selector:hover {
+      border-color: #9ca3af;
+    }
+
+    .brand-selector:focus {
+      border-color: #64748b;
+      box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.10);
+    }
+
+    /* =========================
+       버튼
+    ========================= */
+
+    .btn-add {
+      background: #111827;
+      color: #ffffff;
+
+      border: 1px solid #111827;
+      border-radius: 7px;
+
+      padding: 9px 15px;
+
+      font-size: 13px;
+      font-weight: 650;
+
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .btn-add:hover {
+      background: #374151;
+      border-color: #374151;
+    }
+
+    /* =========================
+       탭 메뉴
+    ========================= */
+
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+
+      margin-bottom: 18px;
+
+      border-bottom: 1px solid #dfe3e8;
+      padding-bottom: 0;
+
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      position: relative;
+
+      padding: 10px 15px;
+
+      border: 1px solid transparent;
+      border-bottom: none;
+
+      background: transparent;
+
+      color: #6b7280;
+
+      font-size: 13px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      border-radius: 7px 7px 0 0;
+
+      white-space: nowrap;
+
+      transition: 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: #374151;
+      background: #f9fafb;
+    }
+
+    .tab-btn.active {
+      color: #111827;
+
+      background: #ffffff;
+
+      border-color: #dfe3e8;
+
+      font-weight: 700;
+
+      margin-bottom: -1px;
+    }
+
+    .tab-btn.active::after {
+      content: "";
+
+      position: absolute;
+
+      left: 12px;
+      right: 12px;
+      bottom: -1px;
+
+      height: 2px;
+
+      background: #111827;
+    }
+
+    /* =========================
+       카드
+    ========================= */
+
+    .section-card {
+      background: #ffffff;
+
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+
+      padding: 20px;
+
+      margin-bottom: 18px;
+
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.035);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      font-size: 15px;
+      font-weight: 700;
+
+      color: #111827;
+
+      padding-bottom: 13px;
+      border-bottom: 1px solid #edf0f2;
+
+      margin-bottom: 14px;
+    }
+
+    /* =========================
+       테이블
+    ========================= */
+
+    table {
+      width: 100%;
+
+      border-collapse: collapse;
+
+      font-size: 13px;
+    }
+
+    th {
+      background: #f8f9fa;
+
+      color: #6b7280;
+
+      font-size: 11px;
+      font-weight: 700;
+
+      padding: 10px;
+
+      border-bottom: 1px solid #e5e7eb;
+
+      text-align: left;
+
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 13px 10px;
+
+      border-bottom: 1px solid #f0f1f3;
+
+      vertical-align: middle;
+
+      color: #374151;
+    }
+
+    tbody tr:hover {
+      background: #fafafa;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* =========================
+       배지
+       - 색을 최소화
+    ========================= */
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+
+      padding: 4px 8px;
+
+      border-radius: 5px;
+
+      font-size: 11px;
+      font-weight: 650;
+
+      white-space: nowrap;
+    }
+
+    .badge-brand {
+      background: #ffffff;
+      color: #374151;
+      border: 1px solid #d1d5db;
+    }
+
+    .badge-season {
+      background: #f8fafc;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+    }
+
+    .badge-status {
+      background: #f8fafc;
+      color: #374151;
+      border: 1px solid #cbd5e1;
+    }
+
+    /* =========================
+       Style No.
+    ========================= */
+
+    .style-no {
+      font-weight: 750;
+      color: #111827;
+      letter-spacing: 0.2px;
+    }
+
+    /* =========================
+       파이프라인
+    ========================= */
+
+    .pipeline {
+      display: flex;
+
+      gap: 6px;
+
+      min-width: 470px;
+    }
+
+    .pipe-step {
+      flex: 1;
+
+      min-width: 95px;
+
+      background: #ffffff;
+
+      border: 1px solid #e2e5e9;
+
+      border-radius: 6px;
+
+      padding: 8px 9px;
+
+      text-align: center;
+
+      transition: 0.15s ease;
+    }
+
+    .pipe-step:hover {
+      border-color: #b8bec7;
+      background: #fafafa;
+    }
+
+    .pipe-step.active {
+      border-color: #64748b;
+      background: #f8fafc;
+    }
+
+    .pipe-title {
+      font-size: 10px;
+
+      font-weight: 650;
+
+      color: #6b7280;
+
+      margin-bottom: 3px;
+    }
+
+    .pipe-status {
+      font-size: 12px;
+
+      font-weight: 700;
+
+      color: #1f2937;
+
+      margin-top: 2px;
+    }
+
+    /* =========================
+       상태별 텍스트
+       색상 대신 기호와 굵기로 구분
+    ========================= */
+
+    .status-done {
+      color: #374151;
+    }
+
+    .status-progress {
+      color: #111827;
+      font-weight: 750;
+    }
+
+    .status-wait {
+      color: #9ca3af;
+    }
+
+    /* =========================
+       반응형
+    ========================= */
+
+    @media (max-width: 900px) {
+
+      body {
+        padding: 12px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+      }
+
+      .header-left {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+
+      .brand-selector {
+        width: 100%;
+      }
+
+      .btn-add {
+        width: 100%;
+      }
+
+      .section-card {
+        padding: 14px;
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 950px;
+      }
+
+      .nav-tabs {
+        overflow-x: auto;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header>
-    <h1>VERSO SCM <span style="font-size: 0.9rem; color: var(--text-muted); font-weight: normal;">| 통합 관제 시스템</span></h1>
-    <button class="btn" onclick="openModal('styleModal')">+ 신규 Style 등록</button>
-</header>
+  <!-- =========================
+       HEADER
+  ========================= -->
 
-<!-- 메인 상단 탭 -->
-<div class="nav-tabs">
-    <button class="tab-btn active" onclick="switchTab('workerTab', this)">📋 Work Management (작업 관리)</button>
-    <button class="tab-btn" onclick="switchTab('executiveTab', this)">📅 Master Roadmap (통합 진행률)</button>
-</div>
+  <header>
 
-<!-- ================= 탭 1: Work Management (작업 관리) ================= -->
-<div id="workerTab" class="tab-content active">
-    <div class="controls-bar">
-        <div class="filter-group">
-            <label for="searchInput">검색</label>
-            <input type="text" id="searchInput" placeholder="상품명 또는 스타일 번호..." onkeyup="renderWorkerTable()">
-        </div>
-        <div class="filter-group">
-            <label for="seasonFilter">시즌</label>
-            <select id="seasonFilter" onchange="renderWorkerTable()">
-                <option value="ALL">전체 시즌</option> <option value="2026 FW" selected>2026 FW</option> <option value="2027 SS">2027 SS</option>
-            </select>
-        </div>
-        <div class="filter-group">
-            <label for="brandFilter">브랜드</label>
-            <select id="brandFilter" onchange="renderWorkerTable()">
-                <option value="ALL">전체 브랜드</option> <option value="Brand A">Brand A</option> <option value="Brand B">Brand B</option>
-            </select>
-        </div>
+    <div class="header-left">
+
+      <h1>VERSO | Multi-Brand SCM Engine</h1>
+
+      <select
+        id="brandFilter"
+        class="brand-selector"
+        onchange="renderData()"
+      >
+        <option value="ALL">전체 브랜드</option>
+
+        <option value="BRD001">
+          스노야 (SNOYA)
+        </option>
+
+        <option value="BRD002">
+          모브온 (MOV ON)
+        </option>
+      </select>
+
     </div>
 
-    <div class="summary-cards">
-        <div class="card"><span class="title">입고 임박/경과 (D-Day 이하)</span><span class="value" id="cnt-urgent">0</span></div>
-        <div class="card"><span class="title">3일 이내 입고 예정 (D-1~3)</span><span class="value" id="cnt-soon">0</span></div>
-        <div class="card"><span class="title">여유 있음 (D-4 이상)</span><span class="value" id="cnt-normal">0</span></div>
-        <div class="card"><span class="title">총 관리 스타일</span><span class="value" id="cnt-total">0</span></div>
+    <button
+      class="btn-add"
+      onclick="alert('신규 Style No. 등록 기능은 다음 단계에서 연결합니다.')"
+    >
+      + 신규 Style 등록
+    </button>
+
+  </header>
+
+
+  <!-- =========================
+       TAB MENU
+  ========================= -->
+
+  <div class="nav-tabs">
+
+    <button class="tab-btn active">
+      Style & 생산 프로젝트
+    </button>
+
+    <button class="tab-btn">
+      원자재 Master
+    </button>
+
+    <button class="tab-btn">
+      공장 / 업체 Master
+    </button>
+
+    <button class="tab-btn">
+      전체 일정 현황
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       STYLE PROJECT
+  ========================= -->
+
+  <div class="section-card">
+
+    <div class="section-header">
+
+      <span>
+        Style No. 생산 프로젝트
+      </span>
+
     </div>
 
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 30px;"></th>
-                    <th>스타일 번호</th>
-                    <th>상품명</th>
-                    <th>브랜드 / 시즌</th>
-                    <th>등록 부자재</th>
-                    <th>최종 입고 예정일</th>
-                    <th>D-Day</th>
-                    <th>진행률 (%)</th>
-                </tr>
-            </thead>
-            <tbody id="styleTableBody"></tbody>
-        </table>
-    </div>
-</div>
 
-<!-- ================= 탭 2: Master Roadmap (통합 진행률) ================= -->
-<div id="executiveTab" class="tab-content">
-    <div class="controls-bar" style="justify-content: space-between;">
-        <div style="display:flex; align-items:center; gap:12px;">
-            <button class="btn btn-secondary btn-sm" onclick="changeMonth(-1)">◀ 이전달</button>
-            <h3 id="calMonthTitle" style="font-size: 1.1rem;">2026년 8월</h3>
-            <button class="btn btn-secondary btn-sm" onclick="changeMonth(1)">다음달 ▶</button>
-        </div>
-        <span style="font-size: 0.85rem; color: var(--text-muted);">* 달력 내 항목 클릭 시 Work Management 탭의 해당 항목으로 연동됩니다.</span>
-    </div>
+    <table>
 
-    <div class="calendar-grid" id="calendarGrid"></div>
+      <thead>
 
-    <h3 style="margin: 24px 0 12px 0; font-size: 1.1rem;">📊 스타일별 전체 공정 현황</h3>
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>스타일 번호</th>
-                    <th>상품명</th>
-                    <th>완제품 목표 입고일</th>
-                    <th>공정 진행률 (%)</th>
-                    <th>상태 요약</th>
-                </tr>
-            </thead>
-            <tbody id="execProgressTableBody"></tbody>
-        </table>
-    </div>
-</div>
+        <tr>
 
-<!-- Modal: 신규 Style 등록 -->
-<div class="modal-overlay" id="styleModal">
-    <div class="modal">
-        <div class="modal-header">
-            <h3>신규 Style 등록</h3>
-            <button onclick="closeModal('styleModal')" style="border:none; background:none; cursor:pointer;">✕</button>
-        </div>
-        <div class="modal-body">
-            <div class="form-group"><label>스타일 번호</label><input type="text" id="newStyleNo" placeholder="예: ST26005"></div>
-            <div class="form-group"><label>상품명</label><input type="text" id="newProductName" placeholder="예: 쫀쫀팬츠"></div>
-            <div class="form-group">
-                <label>브랜드</label>
-                <select id="newBrand"><option value="Brand A">Brand A</option><option value="Brand B">Brand B</option></select>
-            </div>
-            <div class="form-group">
-                <label>시즌</label>
-                <select id="newSeason"><option value="2026 FW">2026 FW</option><option value="2027 SS">2027 SS</option></select>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('styleModal')">취소</button>
-            <button class="btn" onclick="saveStyle()">저장하기</button>
-        </div>
-    </div>
-</div>
+          <th>브랜드</th>
 
-<script>
-// 데이터 구조
-const initialData = [
-    {
-        id: 'ST26001', name: '쫀쫀팬츠', brand: 'Brand A', season: '2026 FW', finalDelivery: '2026-10-15',
-        activeStep: 2,
-        stepsData: {
-            1: { status: '완료', vendor: '내부 샘플실', dueDate: '2026-07-25', memo: 'QC 확정 완료 및 패턴 최종 승인' },
-            3: { status: '대기', vendor: '한신봉제', dueDate: '2026-09-10', memo: '부자재 입고 완료 후 봉제投入 예정' },
-            4: { status: '대기', vendor: '인터텍 검수', dueDate: '2026-09-25', memo: '검수 스케줄 협의 완료' },
-            5: { status: '대기', vendor: '물류창고 A', dueDate: '2026-10-15', memo: '입고 대기 중' }
+          <th>시즌</th>
+
+          <th>Style No.</th>
+
+          <th>상품명</th>
+
+          <th>목표 수량</th>
+
+          <th>생산 파이프라인</th>
+
+          <th>현재 상태</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody id="styleProjectList">
+
+        <!-- JS 렌더링 -->
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
+
+  <script>
+
+    /*
+      VERSO DATA MODEL
+
+      Brand
+        ↓
+      Season
+        ↓
+      Style No.
+        ↓
+      Production Pipeline
+    */
+
+    const DB = {
+
+      brands: [
+
+        {
+          id: "BRD001",
+          name: "스노야 (SNOYA)"
         },
-        items: [
-            { name: 'YKK 지퍼', supplier: 'YKK 코리아', qty: '1,000 EA', orderDate: '2026-08-01', dueDate: '2026-08-12', memo: '출고 준비 중', completed: false },
-            { name: '메인 라벨', supplier: '태양기획', qty: '2,000 EA', orderDate: '2026-08-02', dueDate: '2026-08-15', memo: '샘플 확인 완료', completed: true },
-            { name: '메인 단추', supplier: '금성단추', qty: '1,000 EA', orderDate: '2026-08-03', dueDate: '2026-08-18', memo: '도금 진행중', completed: false }
-        ]
-    },
-    {
-        id: 'ST26002', name: '와이드 슬랙스', brand: 'Brand A', season: '2026 FW', finalDelivery: '2026-09-30',
-        activeStep: 2,
-        stepsData: {
-            1: { status: '완료', vendor: '내부 샘플실', dueDate: '2026-07-20', memo: '승인 완료' },
-            3: { status: '대기', vendor: '대성텍스타일', dueDate: '2026-08-25', memo: '원단 대기' },
-            4: { status: '대기', vendor: '인터텍 검수', dueDate: '2026-09-15', memo: '-' },
-            5: { status: '대기', vendor: '물류창고 A', dueDate: '2026-09-30', memo: '-' }
-        },
-        items: [
-            { name: '케어 라벨', supplier: '태양기획', qty: '500 EA', orderDate: '2026-08-05', dueDate: '2026-08-10', memo: '입고 완료', completed: true }
-        ]
-    }
-];
 
-let expandedStyleId = null;
-let currentCalDate = new Date(2026, 7, 1);
-
-function loadStyles() {
-    const stored = localStorage.getItem('verso_styles_v5');
-    if (!stored) {
-        localStorage.setItem('verso_styles_v5', JSON.stringify(initialData));
-        return initialData;
-    }
-    return JSON.parse(stored);
-}
-
-function saveStylesToStorage(data) {
-    localStorage.setItem('verso_styles_v5', JSON.stringify(data));
-}
-
-// D-Day 계산
-function calculateDDay(targetDateStr) {
-    if (!targetDateStr) return { text: '-', diffDays: 999, tagClass: 'tag-normal' };
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const target = new Date(targetDateStr);
-    target.setHours(0, 0, 0, 0);
-    
-    const diffTime = target - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 0) return { text: 'D-Day', diffDays: 0, tagClass: 'tag-urgent' };
-    if (diffDays < 0) return { text: `D+${Math.abs(diffDays)}`, diffDays: diffDays, tagClass: 'tag-urgent' };
-    if (diffDays <= 3) return { text: `D-${diffDays}`, diffDays: diffDays, tagClass: 'tag-soon' };
-    return { text: `D-${diffDays}`, diffDays: diffDays, tagClass: 'tag-normal' };
-}
-
-// 공정 진행률 (%) 자동 계산
-function calculateProgress(item) {
-    if (!item.items || item.items.length === 0) return 10;
-    const totalItems = item.items.length;
-    let completedItems = 0;
-    
-    item.items.forEach(sub => {
-        if (sub.completed) completedItems++;
-    });
-
-    const subProgress = Math.round((completedItems / totalItems) * 70);
-    const finalBonus = item.finalDelivery ? 10 : 0;
-    return Math.min(100, 20 + subProgress + finalBonus);
-}
-
-// 1. 아코디언 방식의 작업 관리 테이블 랜더링
-function renderWorkerTable() {
-    const styles = loadStyles();
-    const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
-    const seasonVal = document.getElementById('seasonFilter').value;
-    const brandVal = document.getElementById('brandFilter').value;
-    const tbody = document.getElementById('styleTableBody');
-    tbody.innerHTML = '';
-
-    let cntUrgent = 0, cntSoon = 0, cntNormal = 0;
-
-    const filtered = styles.filter(item => {
-        const matchSearch = item.name.toLowerCase().includes(searchVal) || item.id.toLowerCase().includes(searchVal);
-        const matchSeason = seasonVal === 'ALL' || item.season === seasonVal;
-        const matchBrand = brandVal === 'ALL' || item.brand === brandVal;
-        return matchSearch && matchSeason && matchBrand;
-    });
-
-    filtered.forEach(item => {
-        let latestDueDate = '-';
-        let minDiffDays = 999;
-        let representativeDDay = { text: '-', tagClass: 'tag-normal' };
-        let uncompletedCount = 0;
-
-        if (item.items && item.items.length > 0) {
-            item.items.forEach(sub => {
-                if (!sub.completed) uncompletedCount++;
-                const dday = calculateDDay(sub.dueDate);
-                if (dday.diffDays < minDiffDays) {
-                    minDiffDays = dday.diffDays;
-                    representativeDDay = dday;
-                    latestDueDate = sub.dueDate;
-                }
-            });
+        {
+          id: "BRD002",
+          name: "모브온 (MOV ON)"
         }
 
-        if (minDiffDays <= 0) cntUrgent++;
-        else if (minDiffDays <= 3) cntSoon++;
-        else cntNormal++;
+      ],
 
-        const progress = calculateProgress(item);
-        const isExpanded = (expandedStyleId === item.id);
 
-        // 메인 행
-        const trMain = document.createElement('tr');
-        trMain.className = `main-row ${isExpanded ? 'open' : ''}`;
-        trMain.onclick = () => toggleAccordion(item.id);
-        trMain.innerHTML = `
-            <td style="text-align:center;">${isExpanded ? '▲' : '▼'}</td>
-            <td><strong>${item.id}</strong></td>
-            <td><strong>${item.name}</strong></td>
-            <td>${item.brand} / ${item.season}</td>
-            <td>${item.items ? item.items.length : 0}개 항목 (${item.items ? item.items.length - uncompletedCount : 0} 완료)</td>
-            <td>${latestDueDate}</td>
-            <td><span class="dday-tag ${representativeDDay.tagClass}">${representativeDDay.text}</span></td>
-            <td>
-                <div class="progress-container">
-                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progress}%;"></div></div>
-                    <span class="progress-text">${progress}%</span>
-                </div>
-            </td>
-        `;
-        tbody.appendChild(trMain);
+      styles: [
 
-        // 아코디언 펼침 행
-        const activeStep = item.activeStep || 2;
-        const trSub = document.createElement('tr');
-        trSub.className = `accordion-row ${isExpanded ? 'open' : ''}`;
-        trSub.innerHTML = `
-            <td colspan="8" style="padding: 0;">
-                <div class="accordion-container">
-                    <div style="font-size:0.85rem; font-weight:bold; margin-bottom:6px; color:var(--text-muted);">
-                        📌 현재 진행 단계 (각 단계를 클릭하여 상세 현황 조회):
-                    </div>
-                    
-                    ${renderStepProcessBar(item, activeStep)}
+        {
+          styleNo: "ST26001",
 
-                    <!-- 공정 단계별 상세 보기 영역 -->
-                    ${renderStepDetailContent(item, activeStep)}
-                </div>
-            </td>
-        `;
-        tbody.appendChild(trSub);
-    });
+          brandId: "BRD001",
 
-    document.getElementById('cnt-urgent').innerText = cntUrgent;
-    document.getElementById('cnt-soon').innerText = cntSoon;
-    document.getElementById('cnt-normal').innerText = cntNormal;
-    document.getElementById('cnt-total').innerText = filtered.length;
-}
+          season: "2026 SS",
 
-// 클릭 가능한 공정 단계(1~5단계) 탭 생성
-function renderStepProcessBar(item, activeStep) {
-    const total = item.items ? item.items.length : 0;
-    const completed = item.items ? item.items.filter(i => i.completed).length : 0;
-    
-    let step2Class = 'step-btn';
-    let step2Text = '2. 부자재 진행';
-    if (total > 0 && completed === total) {
-        step2Class += ' done';
-        step2Text = '2. 부자재 완료 ✓';
-    } else if (total > 0) {
-        step2Class += ' stuck';
-        step2Text = `2. 부자재 대기중 (${completed}/${total})`;
-    }
+          name: "쫀쫀 슬림 팬츠",
 
-    return `
-        <div class="step-process-bar">
-            <button class="step-btn done ${activeStep === 1 ? 'selected' : ''}" onclick="selectStep('${item.id}', 1)">1. 샘플/기획 ✓</button>
-            <button class="${step2Class} ${activeStep === 2 ? 'selected' : ''}" onclick="selectStep('${item.id}', 2)">${step2Text}</button>
-            <button class="step-btn ${completed === total && total > 0 ? 'active' : ''} ${activeStep === 3 ? 'selected' : ''}" onclick="selectStep('${item.id}', 3)">3. 원단/봉제</button>
-            <button class="step-btn ${activeStep === 4 ? 'selected' : ''}" onclick="selectStep('${item.id}', 4)">4. 검수/QC</button>
-            <button class="step-btn ${item.finalDelivery && completed === total ? 'done' : ''} ${activeStep === 5 ? 'selected' : ''}" onclick="selectStep('${item.id}', 5)">5. 최종 입고</button>
-        </div>
-    `;
-}
+          targetQty: "4,000개",
 
-// 선택된 탭에 따른 상세 현황 내용 생성
-function renderStepDetailContent(item, activeStep) {
-    // 2단계 (부자재) 선택 시 기존 부자재 세부 리스트 및 체크박스 표시
-    if (activeStep === 2) {
-        return `
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; margin-bottom:8px;">
-                <h4 style="font-size:0.95rem;">📦 부자재 세부 리스트 및 입고 관리</h4>
-                <div style="display:flex; gap:8px;">
-                    <span style="font-size:0.85rem; color:var(--text-muted); align-self:center;">완제품 목표일:</span>
-                    <input type="date" value="${item.finalDelivery || ''}" onchange="updateFinalDelivery('${item.id}', this.value)" style="padding:2px 6px;">
-                </div>
-            </div>
+          status: "봉제 진행 중",
 
-            ${renderSubItemsTable(item)}
+          pipeline: {
 
-            <!-- 부자재 인라인 추가 폼 -->
-            <div style="background:#fff; padding:10px; border-radius:6px; border:1px solid var(--border-color); margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-                <strong style="font-size:0.85rem;">+ 부자재 추가:</strong>
-                <input type="text" id="add-name-${item.id}" placeholder="부자재명 (예: YKK 지퍼)" style="width:140px;">
-                <input type="text" id="add-supplier-${item.id}" placeholder="거래처" style="width:110px;">
-                <input type="text" id="add-qty-${item.id}" placeholder="수량/단위" style="width:90px;">
-                <input type="date" id="add-duedate-${item.id}" style="width:130px;">
-                <input type="text" id="add-memo-${item.id}" placeholder="비고/메모" style="flex:1; min-width:120px;">
-                <button class="btn btn-sm" onclick="addInlineSubTask('${item.id}')">등록</button>
-            </div>
-        `;
-    }
+            fabric: "완료",
 
-    // 1, 3, 4, 5단계 선택 시 해당 공정 전용 세부 현황판 표시
-    const stepTitles = { 1: '1️⃣ 샘플 / 기획 단계 현황', 3: '3️⃣ 원단 / 봉제 공정 현황', 4: '4️⃣ 검수 / QC 현황', 5: '5️⃣ 최종 창고 입고 현황' };
-    const stepInfo = (item.stepsData && item.stepsData[activeStep]) ? item.stepsData[activeStep] : { status: '진행중', vendor: '-', dueDate: '-', memo: '' };
+            subMaterial: "완료",
 
-    return `
-        <div class="step-detail-box">
-            <h4 style="font-size:0.95rem; margin-bottom:10px; color:var(--primary-color);">${stepTitles[activeStep]}</h4>
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px; font-size:0.85rem;">
-                <div><strong>공정 상태:</strong> 
-                    <select onchange="updateStepData('${item.id}', ${activeStep}, 'status', this.value)" style="padding:2px 6px;">
-                        <option value="대기" ${stepInfo.status === '대기' ? 'selected' : ''}>대기</option>
-                        <option value="진행중" ${stepInfo.status === '진행중' ? 'selected' : ''}>진행중</option>
-                        <option value="완료" ${stepInfo.status === '완료' ? 'selected' : ''}>완료</option>
-                    </select>
-                </div>
-                <div><strong>담당 / 협력업체:</strong> 
-                    <input type="text" value="${stepInfo.vendor || ''}" onchange="updateStepData('${item.id}', ${activeStep}, 'vendor', this.value)" placeholder="업체명 입력" style="padding:2px 6px; width:130px;">
-                </div>
-                <div><strong>완료 목표일:</strong> 
-                    <input type="date" value="${stepInfo.dueDate || ''}" onchange="updateStepData('${item.id}', ${activeStep}, 'dueDate', this.value)" style="padding:2px 6px;">
-                </div>
-            </div>
-            <div style="margin-top:10px; font-size:0.85rem;">
-                <strong>공정 메모 / 전달사항:</strong>
-                <input type="text" class="memo-input" value="${stepInfo.memo || ''}" onchange="updateStepData('${item.id}', ${activeStep}, 'memo', this.value)" placeholder="해당 공정 관련 메모 작성..." style="margin-top:4px;">
-            </div>
-        </div>
-    `;
-}
+            sewing: "진행중",
 
-// 하위 부자재 세부 테이블 생성 (비고/메모 실시간 수정 가능한 Input 적용)
-function renderSubItemsTable(item) {
-    if (!item.items || item.items.length === 0) {
-        return `<div style="font-size:0.85rem; color:#888; padding:8px; background:white; border-radius:4px; text-align:center;">등록된 부자재가 없습니다. 아래 입력란에서 추가하세요.</div>`;
-    }
+            qc: "대기"
 
-    let rows = item.items.map((sub, idx) => {
-        const dday = calculateDDay(sub.dueDate);
-        return `
-            <tr>
-                <td style="text-align:center;">
-                    <input type="checkbox" ${sub.completed ? 'checked' : ''} onchange="toggleSubTaskComplete('${item.id}', ${idx})">
-                </td>
-                <td><strong style="${sub.completed ? 'text-decoration:line-through; color:#888;' : ''}">${sub.name}</strong></td>
-                <td>${sub.supplier || '-'}</td>
-                <td>${sub.qty || '-'}</td>
-                <td>${sub.dueDate || '-'}</td>
-                <td><span class="dday-tag ${sub.completed ? 'tag-normal' : dday.tagClass}">${sub.completed ? '입고완료' : dday.text}</span></td>
-                <td>
-                    <input type="text" class="memo-input" value="${sub.memo || ''}" onchange="updateSubTaskMemo('${item.id}', ${idx}, this.value)" placeholder="메모 수정...">
-                </td>
-                <td><button class="btn btn-danger btn-sm" onclick="deleteSubTask('${item.id}', ${idx})">삭제</button></td>
-            </tr>
-        `;
-    }).join('');
+          }
 
-    return `
-        <table class="sub-table">
-            <thead>
-                <tr>
-                    <th style="width:40px;">입고</th>
-                    <th>부자재/작업명</th>
-                    <th>공급/거래처</th>
-                    <th>수량</th>
-                    <th>입고 예정일</th>
-                    <th>D-Day</th>
-                    <th>비고/메모 (실시간 수정 가능)</th>
-                    <th style="width:50px;">삭제</th>
-                </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-        </table>
-    `;
-}
+        },
 
-// 공정 단계 탭 클릭 시 선택 변경
-function selectStep(styleId, stepNum) {
-    const styles = loadStyles();
-    const target = styles.find(s => s.id === styleId);
-    if (target) {
-        target.activeStep = stepNum;
-        saveStylesToStorage(styles);
-        renderWorkerTable();
-    }
-}
 
-// 공정 단계별 상세 데이터 업데이트
-function updateStepData(styleId, stepNum, key, value) {
-    const styles = loadStyles();
-    const target = styles.find(s => s.id === styleId);
-    if (target) {
-        if (!target.stepsData) target.stepsData = {};
-        if (!target.stepsData[stepNum]) target.stepsData[stepNum] = {};
-        target.stepsData[stepNum][key] = value;
-        saveStylesToStorage(styles);
-    }
-}
+        {
 
-// 부자재 메모 실시간 수정 기능
-function updateSubTaskMemo(styleId, idx, newMemo) {
-    const styles = loadStyles();
-    const target = styles.find(s => s.id === styleId);
-    if (target && target.items[idx]) {
-        target.items[idx].memo = newMemo;
-        saveStylesToStorage(styles);
-    }
-}
+          styleNo: "ST26002",
 
-// 아코디언 토글
-function toggleAccordion(styleId) {
-    expandedStyleId = (expandedStyleId === styleId) ? null : styleId;
-    renderWorkerTable();
-}
+          brandId: "BRD002",
 
-// 부자재 체크박스 변경
-function toggleSubTaskComplete(styleId, idx) {
-    const styles = loadStyles();
-    const target = styles.find(s => s.id === styleId);
-    if (target && target.items[idx]) {
-        target.items[idx].completed = !target.items[idx].completed;
-        saveStylesToStorage(styles);
-        renderWorkerTable();
-        renderExecTable();
-    }
-}
+          season: "2026 FW",
 
-// 완제품 목표일 변경
-function updateFinalDelivery(styleId, dateVal) {
-    const styles = loadStyles();
-    const target = styles.find(s => s.id === styleId);
-    if (target) {
-        target.finalDelivery = dateVal;
-        saveStylesToStorage(styles);
-        renderExecTable();
-    }
-}
+          name: "오버핏 에어 티셔츠",
 
-// 인라인 부자재 추가
-function addInlineSubTask(styleId) {
-    const name = document.getElementById(`add-name-${styleId}`).value.trim();
-    if (!name) { alert('부자재명을 입력해주세요.'); return; }
+          targetQty: "2,500개",
 
-    const newItem = {
-        name: name,
-        supplier: document.getElementById(`add-supplier-${styleId}`).value.trim(),
-        qty: document.getElementById(`add-qty-${styleId}`).value.trim(),
-        dueDate: document.getElementById(`add-duedate-${styleId}`).value,
-        memo: document.getElementById(`add-memo-${styleId}`).value.trim(),
-        completed: false
+          status: "원단 염색 중",
+
+          pipeline: {
+
+            fabric: "진행중",
+
+            subMaterial: "대기",
+
+            sewing: "대기",
+
+            qc: "대기"
+
+          }
+
+        }
+
+      ]
+
     };
 
-    const styles = loadStyles();
-    const target = styles.find(s => s.id === styleId);
-    if (target) {
-        if (!target.items) target.items = [];
-        target.items.push(newItem);
-        saveStylesToStorage(styles);
-        renderWorkerTable();
-        renderCalendar();
-    }
-}
 
-function deleteSubTask(styleId, idx) {
-    if (!confirm('이 부자재 항목을 삭제하시겠습니까?')) return;
-    const styles = loadStyles();
-    const target = styles.find(s => s.id === styleId);
-    if (target) {
-        target.items.splice(idx, 1);
-        saveStylesToStorage(styles);
-        renderWorkerTable();
-        renderCalendar();
-    }
-}
+    /* =========================
+       STYLE DATA RENDER
+    ========================= */
 
-// 2. 달력 관제 랜더링
-function renderCalendar() {
-    const year = currentCalDate.getFullYear();
-    const month = currentCalDate.getMonth();
-    document.getElementById('calMonthTitle').innerText = `${year}년 ${month + 1}월`;
+    function renderData() {
 
-    const calGrid = document.getElementById('calendarGrid');
-    calGrid.innerHTML = '';
+      const selectedBrand =
+        document.getElementById("brandFilter").value;
 
-    const days = ['일', '월', '화', '수', '목', '금', '토'];
-    days.forEach(d => calGrid.innerHTML += `<div class="cal-day-header">${d}</div>`);
+      const tbody =
+        document.getElementById("styleProjectList");
 
-    const firstDay = new Date(year, month, 1).getDay();
-    const lastDate = new Date(year, month + 1, 0).getDate();
+      tbody.innerHTML = "";
 
-    for (let i = 0; i < firstDay; i++) {
-        calGrid.innerHTML += `<div class="cal-cell" style="background:#f1f5f9;"></div>`;
-    }
 
-    const styles = loadStyles();
+      const filteredStyles =
+        selectedBrand === "ALL"
 
-    for (let day = 1; day <= lastDate; day++) {
-        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        let eventsHtml = '';
+          ? DB.styles
 
-        styles.forEach(s => {
-            if (s.items) {
-                s.items.forEach(sub => {
-                    if (sub.dueDate === dateStr) {
-                        eventsHtml += `<div class="cal-event" onclick="jumpToStyle('${s.id}')">[${s.name}] ${sub.name}</div>`;
-                    }
-                });
-            }
-            if (s.finalDelivery === dateStr) {
-                eventsHtml += `<div class="cal-event final" onclick="jumpToStyle('${s.id}')">🏁 [${s.name}] 완제품 입고</div>`;
-            }
-        });
+          : DB.styles.filter(
+              style =>
+                style.brandId === selectedBrand
+            );
 
-        calGrid.innerHTML += `<div class="cal-cell"><div class="date-num">${day}</div>${eventsHtml}</div>`;
-    }
-}
 
-function jumpToStyle(styleId) {
-    switchTab('workerTab', document.querySelectorAll('.tab-btn')[0]);
-    expandedStyleId = styleId;
-    renderWorkerTable();
-}
+      filteredStyles.forEach(style => {
 
-// 3. 하단 전체 공정 진행률 랜더링
-function renderExecTable() {
-    const styles = loadStyles();
-    const tbody = document.getElementById('execProgressTableBody');
-    tbody.innerHTML = '';
+        const brandObj =
+          DB.brands.find(
+            brand =>
+              brand.id === style.brandId
+          );
 
-    styles.forEach(item => {
-        const progress = calculateProgress(item);
-        const tr = document.createElement('tr');
-        tr.style.cursor = 'pointer';
-        tr.onclick = () => jumpToStyle(item.id);
+
+        const tr =
+          document.createElement("tr");
+
+
         tr.innerHTML = `
-            <td><strong>${item.id}</strong></td>
-            <td><strong>${item.name}</strong></td>
-            <td>${item.finalDelivery || '미설정'}</td>
-            <td>
-                <div class="progress-container">
-                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progress}%;"></div></div>
-                    <span class="progress-text">${progress}%</span>
+
+          <td>
+
+            <span class="badge badge-brand">
+
+              ${
+                brandObj
+                  ? brandObj.name
+                  : style.brandId
+              }
+
+            </span>
+
+          </td>
+
+
+          <td>
+
+            <span class="badge badge-season">
+
+              ${style.season}
+
+            </span>
+
+          </td>
+
+
+          <td>
+
+            <span class="style-no">
+
+              ${style.styleNo}
+
+            </span>
+
+          </td>
+
+
+          <td>
+
+            ${style.name}
+
+          </td>
+
+
+          <td>
+
+            ${style.targetQty}
+
+          </td>
+
+
+          <td>
+
+            <div class="pipeline">
+
+
+              <div
+                class="pipe-step ${
+                  style.pipeline.fabric === "완료"
+                    ? "active"
+                    : ""
+                }"
+              >
+
+                <div class="pipe-title">
+                  원단
                 </div>
-            </td>
-            <td>${progress >= 90 ? '🏁 완제품 입고 단계' : progress >= 50 ? '🟡 봉제/생산 진행 중' : '⚪ 부자재 입고 대기'}</td>
+
+                <div class="pipe-status">
+                  ${style.pipeline.fabric}
+                </div>
+
+              </div>
+
+
+              <div
+                class="pipe-step ${
+                  style.pipeline.subMaterial === "완료"
+                    ? "active"
+                    : ""
+                }"
+              >
+
+                <div class="pipe-title">
+                  부자재
+                </div>
+
+                <div class="pipe-status">
+                  ${style.pipeline.subMaterial}
+                </div>
+
+              </div>
+
+
+              <div
+                class="pipe-step ${
+                  style.pipeline.sewing === "진행중"
+                    ? "active"
+                    : ""
+                }"
+              >
+
+                <div class="pipe-title">
+                  봉제공장
+                </div>
+
+                <div class="pipe-status">
+                  ${style.pipeline.sewing}
+                </div>
+
+              </div>
+
+
+              <div class="pipe-step">
+
+                <div class="pipe-title">
+                  QC / 검수
+                </div>
+
+                <div class="pipe-status">
+                  ${style.pipeline.qc}
+                </div>
+
+              </div>
+
+
+            </div>
+
+          </td>
+
+
+          <td>
+
+            <span class="badge badge-status">
+
+              ${style.status}
+
+            </span>
+
+          </td>
+
         `;
+
+
         tbody.appendChild(tr);
-    });
-}
 
-function changeMonth(delta) {
-    currentCalDate.setMonth(currentCalDate.getMonth() + delta);
-    renderCalendar();
-}
+      });
 
-function switchTab(tabId, btnEl) {
-    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(tb => tb.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    btnEl.classList.add('active');
-}
+    }
 
-function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-function saveStyle() {
-    const styleNo = document.getElementById('newStyleNo').value.trim();
-    const name = document.getElementById('newProductName').value.trim();
-    if (!styleNo || !name) { alert('스타일 번호와 상품명을 입력하세요.'); return; }
+    /* =========================
+       초기 실행
+    ========================= */
 
-    const styles = loadStyles();
-    styles.push({
-        id: styleNo,
-        name: name,
-        brand: document.getElementById('newBrand').value,
-        season: document.getElementById('newSeason').value,
-        activeStep: 2,
-        items: []
-    });
-    saveStylesToStorage(styles);
+    window.onload = function() {
 
-    closeModal('styleModal');
-    document.getElementById('newStyleNo').value = '';
-    document.getElementById('newProductName').value = '';
-    renderWorkerTable();
-    renderExecTable();
-}
+      renderData();
 
-window.onload = () => {
-    renderWorkerTable();
-    renderCalendar();
-    renderExecTable();
-};
-</script>
+    };
+
+  </script>
+
 </body>
 </html>
