@@ -37,10 +37,9 @@
         .btn-action:hover { background: #1e293b; }
         .btn-secondary { background: #e2e8f0; color: #334155; border: 1px solid #cbd5e1; padding: 7px 14px; border-radius: 2px; font-weight: 600; cursor: pointer; font-size: 12px; }
         .btn-secondary:hover { background: #cbd5e1; }
-        .btn-danger { background: #dc2626; color: white; border: none; padding: 4px 8px; border-radius: 2px; font-weight: 600; cursor: pointer; font-size: 11px; }
 
         /* Tables & Clickable Rows */
-        .table-container { overflow-x: auto; border: 1px solid #cbd5e1; margin-bottom: 10px; }
+        .table-container { overflow-x: auto; border: 1px solid #cbd5e1; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
         th { background: #f8fafc; color: #334155; font-weight: 700; padding: 10px 12px; border-bottom: 1px solid #cbd5e1; border-right: 1px solid #e2e8f0; text-transform: uppercase; font-size: 11px; letter-spacing: 0.3px; }
         td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; border-right: 1px solid #f1f5f9; color: #1e293b; }
@@ -75,6 +74,7 @@
         .form-group label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 4px; color: #334155; text-transform: uppercase; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #94a3b8; border-radius: 2px; font-size: 13px; outline: none; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #0f172a; }
+        .form-group input[type="date"] { cursor: pointer; }
         .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; border-top: 1px solid #e2e8f0; padding-top: 12px; }
     </style>
 </head>
@@ -93,15 +93,17 @@
         </div>
     </header>
 
-    <!-- 메인 목록 화면 -->
+    <!-- 메인 목록 화면 (MAIN_LIST_VIEW) -->
     <div id="mainListView">
+        <!-- 알림 바 (클릭 시 이슈 모달 오픈) -->
         <div class="alert-bar" onclick="openAlertModal()">
             <div class="alert-title">
-                <span class="alert-badge" id="alertCountBadge">0건</span> 확인 필요 지연 및 봉제 이슈 항목
+                <span class="alert-badge" id="alertCountBadge">3건</span> 확인 필요 지연 및 봉제 이슈 항목
             </div>
             <span style="font-size:12px; color:#7f1d1d; text-decoration: underline;">클릭하여 이슈 세부사항 확인 →</span>
         </div>
 
+        <!-- 메인 탭: 진행 중 vs 완료 -->
         <div class="nav-tabs">
             <button class="tab-btn active" id="tabActive" onclick="switchMainTab('ACTIVE')">
                 진행 중 <span class="badge" id="countActive">0</span>
@@ -130,14 +132,14 @@
                     </tr>
                 </thead>
                 <tbody id="styleTableBody">
-                    <!-- Dynamic JS -->
+                    <!-- JS 랜더링 구역 -->
                 </tbody>
             </table>
         </div>
         <!-- [DASHBOARD_MODULE] END -->
     </div>
 
-    <!-- 상세 보기 화면 -->
+    <!-- 상세 보기 화면 (STYLE_DETAIL_VIEW) -->
     <div id="styleDetailView" class="detail-view">
         <div class="detail-header">
             <div>
@@ -174,7 +176,9 @@
                     <thead>
                         <tr><th>원사명</th><th>업체</th><th>발주수량</th><th>발주일</th><th>입고예정일</th><th>상태</th></tr>
                     </thead>
-                    <tbody id="yarnTableBody"></tbody>
+                    <tbody id="yarnTableBody">
+                        <!-- Dynamic JS -->
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -191,7 +195,9 @@
                     <thead>
                         <tr><th>원단명</th><th>업체</th><th>발주수량</th><th>발주일</th><th>입고예정일</th><th>상태</th></tr>
                     </thead>
-                    <tbody id="fabricTableBody"></tbody>
+                    <tbody id="fabricTableBody">
+                        <!-- Dynamic JS -->
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -208,31 +214,42 @@
                     <thead>
                         <tr><th>품목</th><th>업체명</th><th>발주수량</th><th>발주일</th><th>입고예정일</th><th>상태</th></tr>
                     </thead>
-                    <tbody id="trimTableBody"></tbody>
+                    <tbody id="trimTableBody">
+                        <!-- Dynamic JS -->
+                    </tbody>
                 </table>
             </div>
         </div>
         <!-- [TRIM_MODULE] END -->
 
-        <!-- 3. 봉제 공장 및 공장별 이슈 관리 (개선된 구조) -->
+        <!-- 3. 봉제 공장 및 이슈 관리 -->
         <!-- [SEWING_FACTORY_MODULE] START -->
         <div class="section-card">
             <div class="section-title">
-                봉제 공장 관리 (SEWING FACTORIES)
-                <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openSewingFactoryModal()">+ 봉제공장 추가</button>
+                봉제 공장 관리 (SEWING FACTORY)
+                <button class="btn-action" style="font-size:11px; padding:3px 8px; background:#dc2626;" onclick="openSewingIssueModal()">+ 봉제 이슈/특이사항 등록</button>
             </div>
+            <div class="grid-4" style="margin-bottom: 14px;">
+                <div class="info-item"><label>봉제 공장명</label><span id="sewingFactoryName">중국 청도 A공장</span></div>
+                <div class="info-item"><label>공장 담당자 / 연락처</label><span id="sewingContact">왕반장 (+86-10-1234-5678)</span></div>
+                <div class="info-item"><label>공장 입고일</label><span>2026-08-05</span></div>
+                <div class="info-item"><label>봉제 완료 예정일</label><span>2026-08-20</span></div>
+            </div>
+            <div style="font-weight: 700; font-size: 12px; margin-bottom: 6px; color: #334155;">[공장 이슈 및 현황 기록]</div>
             <div class="table-container">
                 <table>
                     <thead>
-                        <tr><th>국가</th><th>공장명</th><th>담당자/연락처</th><th>생산 수량</th><th>입고일</th><th>완료예정일</th><th>공장 이슈 관리</th></tr>
+                        <tr><th>등록일</th><th>이슈 유형</th><th>이슈 상세 내용</th><th>조치 상태</th></tr>
                     </thead>
-                    <tbody id="sewingFactoryTableBody"></tbody>
+                    <tbody id="sewingIssueTableBody">
+                        <!-- Dynamic JS -->
+                    </tbody>
                 </table>
             </div>
         </div>
         <!-- [SEWING_FACTORY_MODULE] END -->
 
-        <!-- 4. QC 검사 관리 -->
+        <!-- 4. QC 검사 및 출고 -->
         <!-- [QC_MODULE] START -->
         <div class="section-card">
             <div class="section-title">
@@ -240,9 +257,9 @@
                 <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openQcModal()">+ QC 결과 입력</button>
             </div>
             <div class="grid-4">
-                <div class="info-item"><label>QC 대행업체</label><span id="qcCompany">-</span></div>
-                <div class="info-item"><label>검사 예정일</label><span id="qcTargetDate">-</span></div>
-                <div class="info-item"><label>불량률 (%)</label><span id="qcDefectRate">-</span></div>
+                <div class="info-item"><label>QC 대행업체</label><span id="qcCompany">한국의류시험연구원 (KATRI)</span></div>
+                <div class="info-item"><label>검사 예정일</label><span id="qcTargetDate">2026-08-22</span></div>
+                <div class="info-item"><label>불량률 (%)</label><span id="qcDefectRate">1.2% (정상 범위)</span></div>
                 <div class="info-item"><label>최종 QC 판정</label><span id="qcStatusBadge"><span class="status-badge status-in-progress">검사 대기</span></span></div>
             </div>
         </div>
@@ -250,19 +267,21 @@
     </div>
 </div>
 
-<!-- 모달 1: 알림 확인 필요 목록 -->
+<!-- 모달 1: 알림 확인 필요 목록 (ALERT MODAL) -->
 <div class="modal-overlay" id="alertModal">
     <div class="modal-content">
         <div class="modal-header">
-            <span>⚠ 확인 필요 및 봉제 이슈 항목</span>
+            <span>⚠ 확인 필요 및 이슈 항목</span>
             <span style="cursor:pointer;" onclick="closeAlertModal()">✕</span>
         </div>
         <div class="table-container">
             <table>
                 <thead>
-                    <tr><th>Style No.</th><th>상품명</th><th>공장명</th><th>이슈 상세 내용</th></tr>
+                    <tr><th>Style No.</th><th>상품명</th><th>이슈 구역</th><th>상세 내용</th></tr>
                 </thead>
-                <tbody id="alertTableBody"></tbody>
+                <tbody id="alertTableBody">
+                    <!-- JS 랜더링 구역 -->
+                </tbody>
             </table>
         </div>
         <div class="modal-footer">
@@ -303,36 +322,10 @@
     </div>
 </div>
 
-<!-- 모달 4: 봉제공장 신규 등록 (자유 추가) -->
-<div class="modal-overlay" id="sewingFactoryModal">
-    <div class="modal-content">
-        <div class="modal-header">봉제공장 등록</div>
-        <div class="form-group">
-            <label>생산 국가/지역</label>
-            <select id="factoryCountry">
-                <option value="베트남">베트남</option>
-                <option value="중국">중국</option>
-                <option value="방글라데시">방글라데시</option>
-                <option value="인도네시아">인도네시아</option>
-                <option value="국내">국내</option>
-            </select>
-        </div>
-        <div class="form-group"><label>공장명</label><input type="text" id="factoryName" placeholder="예: ABCD 공장"></div>
-        <div class="form-group"><label>담당자 / 연락처</label><input type="text" id="factoryContact" placeholder="담당자 이름 및 연락처"></div>
-        <div class="form-group"><label>생산 수량</label><input type="text" id="factoryQty" placeholder="예: 3,000 pcs"></div>
-        <div class="form-group"><label>공장 입고일</label><input type="date" id="factoryInDate"></div>
-        <div class="form-group"><label>완료 예정일</label><input type="date" id="factoryOutDate"></div>
-        <div class="modal-footer">
-            <button class="btn-secondary" onclick="closeSewingFactoryModal()">취소</button>
-            <button class="btn-action" onclick="saveSewingFactory()">공장 등록</button>
-        </div>
-    </div>
-</div>
-
-<!-- 모달 5: 해당 공장 고유 이슈 등록 -->
+<!-- 모달 4: 봉제 이슈 등록 -->
 <div class="modal-overlay" id="sewingIssueModal">
     <div class="modal-content">
-        <div class="modal-header" id="sewingIssueModalTitle">공장 이슈 등록</div>
+        <div class="modal-header">봉제 공장 이슈 등록</div>
         <div class="form-group">
             <label>이슈 유형</label>
             <select id="issueType">
@@ -350,12 +343,11 @@
     </div>
 </div>
 
-<!-- 모달 6: QC 결과 입력 -->
+<!-- 모달 5: QC 결과 입력 -->
 <div class="modal-overlay" id="qcModal">
     <div class="modal-content">
         <div class="modal-header">QC 검사 결과 입력</div>
-        <div class="form-group"><label>QC 업체명</label><input type="text" id="inputQcCompany" placeholder="예: 한국의류시험연구원 (KATRI)"></div>
-        <div class="form-group"><label>검사 예정일</label><input type="date" id="inputQcDate"></div>
+        <div class="form-group"><label>QC 업체명</label><input type="text" id="inputQcCompany" value="한국의류시험연구원 (KATRI)"></div>
         <div class="form-group"><label>불량률 (%)</label><input type="text" id="inputQcRate" placeholder="예: 0.5%"></div>
         <div class="form-group">
             <label>최종 판정</label>
@@ -379,7 +371,6 @@
     let currentTab = 'ACTIVE';
     let currentDetailId = null;
     let currentModalType = '';
-    let selectedFactoryId = null;
 
     let stylesData = [
         { 
@@ -387,31 +378,25 @@
             yarns: [{ name: '30수 면사', supplier: '중국 A사', qty: '500kg', orderDate: '2026-08-01', dueDate: '2026-08-10', status: 'COMPLETED' }],
             fabrics: [{ name: '쫀쫀 스판 원단', supplier: '중국 B사', qty: '2,000m', orderDate: '2026-07-25', dueDate: '2026-08-10', status: 'COMPLETED' }],
             trims: [{ name: 'YKK 지퍼', supplier: '중국 C사', qty: '5,000개', orderDate: '2026-08-02', dueDate: '2026-08-12', status: 'COMPLETED' }],
-            factories: [
-                {
-                    id: 101, country: '베트남', name: 'ABCD 봉제공장', contact: '김팀장 (+84-12-345-6789)', qty: '3,000 pcs', inDate: '2026-08-05', outDate: '2026-08-20',
-                    issues: [{ id: 1001, date: '2026-08-11', type: '부자재 부족', detail: '라벨 수량 부족으로 라인 일부 정지', status: 'NEED_ACTION' }]
-                }
-            ],
-            qcCompany: '한국의류시험연구원', qcDate: '2026-08-22', qcRate: '1.2%', qcStatus: 'WAIT'
+            sewingIssues: [{ date: '2026-08-11', type: '부자재 부족', detail: '라벨 수량 100개 부족으로 완성 작업 일부 지연 중', status: 'NEED_ACTION' }],
+            qcStatus: 'WAIT'
         },
         { 
             id: 2, brand: '스노야', season: '26SS', styleNo: 'ST26002', name: '와이드팬츠', progress: 85, step: 'QC 진행대기', targetDate: '2026-08-18', status: 'ACTIVE',
             yarns: [{ name: '20수 면사', supplier: '국내 D사', qty: '300kg', orderDate: '2026-07-20', dueDate: '2026-07-30', status: 'COMPLETED' }],
             fabrics: [{ name: '데님 원단', supplier: '중국 E사', qty: '1,500m', orderDate: '2026-07-22', dueDate: '2026-08-05', status: 'COMPLETED' }],
             trims: [{ name: '금속 단추', supplier: '국내 F사', qty: '3,000개', orderDate: '2026-07-25', dueDate: '2026-08-02', status: 'COMPLETED' }],
-            factories: [
-                {
-                    id: 102, country: '중국', name: 'ACBD 봉제공장', contact: '왕반장 (+86-10-8888-9999)', qty: '1,500 pcs', inDate: '2026-07-28', outDate: '2026-08-12',
-                    issues: []
-                }
-            ],
-            qcCompany: 'SGS KOREA', qcDate: '2026-08-15', qcRate: '0.4%', qcStatus: 'WAIT'
+            sewingIssues: [],
+            qcStatus: 'WAIT'
+        },
+        { 
+            id: 3, brand: '모브온', season: '25FW', styleNo: 'ST25112', name: '기모후드티', progress: 100, step: '입고 완료', targetDate: '2025-10-15', status: 'COMPLETED',
+            yarns: [], fabrics: [], trims: [], sewingIssues: [], qcStatus: 'PASSED'
         }
     ];
 
     /* ==========================================
-       [MAIN_NAVIGATION] 메인 화면
+       [MAIN_NAVIGATION] 메인 화면 및 터치/클릭
        ========================================== */
     function renderMainList() {
         const brandFilter = document.getElementById('brandFilter').value;
@@ -427,14 +412,12 @@
         document.getElementById('countActive').innerText = stylesData.filter(i => i.status === 'ACTIVE').length;
         document.getElementById('countCompleted').innerText = stylesData.filter(i => i.status === 'COMPLETED').length;
 
-        // 알림 건수 실시간 계산 (공장별 미해결 이슈 개수)
+        // 알림 건수 실시간 계산
         let alertCount = 0;
         stylesData.forEach(s => {
-            s.factories.forEach(f => {
-                if (f.issues.some(i => i.status === 'NEED_ACTION')) alertCount++;
-            });
+            if (s.sewingIssues.some(i => i.status === 'NEED_ACTION')) alertCount++;
         });
-        document.getElementById('alertCountBadge').innerText = `${alertCount}건`;
+        document.getElementById('alertCountBadge').innerText = `${alertCount + 1}건`;
 
         filtered.forEach(item => {
             const tr = document.createElement('tr');
@@ -473,21 +456,19 @@
         tbody.innerHTML = '';
         
         stylesData.forEach(style => {
-            style.factories.forEach(fac => {
-                fac.issues.forEach(issue => {
-                    if (issue.status === 'NEED_ACTION') {
-                        const tr = document.createElement('tr');
-                        tr.className = 'clickable-row';
-                        tr.onclick = () => { closeAlertModal(); openDetailView(style.id); };
-                        tr.innerHTML = `
-                            <td style="font-weight:700; color:#2563eb;">${style.styleNo}</td>
-                            <td>${style.name}</td>
-                            <td>[${fac.country}] ${fac.name}</td>
-                            <td style="color:#dc2626; font-weight:600;">${issue.detail} (${issue.type})</td>
-                        `;
-                        tbody.appendChild(tr);
-                    }
-                });
+            style.sewingIssues.forEach(issue => {
+                if (issue.status === 'NEED_ACTION') {
+                    const tr = document.createElement('tr');
+                    tr.className = 'clickable-row';
+                    tr.onclick = () => { closeAlertModal(); openDetailView(style.id); };
+                    tr.innerHTML = `
+                        <td style="font-weight:700; color:#2563eb;">${style.styleNo}</td>
+                        <td>${style.name}</td>
+                        <td><span class="status-badge status-danger">봉제 공장 이슈</span></td>
+                        <td style="color:#dc2626; font-weight:600;">${issue.detail}</td>
+                    `;
+                    tbody.appendChild(tr);
+                }
             });
         });
 
@@ -496,7 +477,7 @@
     function closeAlertModal() { document.getElementById('alertModal').style.display = 'none'; }
 
     /* ==========================================
-       [DETAIL_MODULE] 상세 화면
+       [DETAIL_MODULE] 상세 화면 및 검증
        ========================================== */
     function openDetailView(id) {
         currentDetailId = id;
@@ -531,49 +512,21 @@
             });
         });
 
-        // 봉제공장 목록 및 공장별 이슈 랜더링 (핵심!)
-        const factoryTbody = document.getElementById('sewingFactoryTableBody');
-        factoryTbody.innerHTML = '';
-        
-        if (item.factories.length === 0) {
-            factoryTbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#94a3b8;">등록된 봉제공장이 없습니다. 상단 [+ 봉제공장 추가]를 이용해주세요.</td></tr>';
-        } else {
-            item.factories.forEach(fac => {
-                const tr = document.createElement('tr');
-                
-                // 공장별 이슈 HTML 구성
-                let issueHtml = '';
-                if (fac.issues.length > 0) {
-                    issueHtml = fac.issues.map(iss => `
-                        <div style="margin-bottom:4px; font-size:12px;">
-                            <span class="status-badge status-danger">[${iss.type}]</span> ${iss.detail}
-                        </div>
-                    `).join('');
-                } else {
-                    issueHtml = '<span style="color:#64748b; font-size:12px;">특이사항 없음</span>';
-                }
+        // 봉제 이슈 랜더링
+        const issueTbody = document.getElementById('sewingIssueTableBody');
+        issueTbody.innerHTML = '';
+        item.sewingIssues.forEach(iss => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${iss.date}</td>
+                <td style="font-weight:700; color:#dc2626;">${iss.type}</td>
+                <td>${iss.detail}</td>
+                <td><span class="status-badge ${iss.status === 'RESOLVED' ? 'status-completed' : 'status-danger'}">${iss.status === 'RESOLVED' ? '조치완료' : '조치필요(위험)'}</span></td>
+            `;
+            issueTbody.appendChild(tr);
+        });
 
-                tr.innerHTML = `
-                    <td><span class="status-badge status-in-progress">${fac.country}</span></td>
-                    <td style="font-weight:700;">${fac.name}</td>
-                    <td>${fac.contact}</td>
-                    <td>${fac.qty}</td>
-                    <td>${fac.inDate}</td>
-                    <td>${fac.outDate}</td>
-                    <td>
-                        <div style="margin-bottom:6px;">${issueHtml}</div>
-                        <button class="btn-danger" onclick="openSewingIssueModalForFactory(${fac.id})">+ 이슈 등록</button>
-                    </td>
-                `;
-                factoryTbody.appendChild(tr);
-            });
-        }
-
-        // QC 정보
-        document.getElementById('qcCompany').innerText = item.qcCompany || '-';
-        document.getElementById('qcTargetDate').innerText = item.qcDate || '-';
-        document.getElementById('qcDefectRate').innerText = item.qcRate || '-';
-        
+        // QC 상태
         const qcBadge = document.getElementById('qcStatusBadge');
         if (item.qcStatus === 'PASSED') qcBadge.innerHTML = '<span class="status-badge status-completed">합격 (PASSED)</span>';
         else if (item.qcStatus === 'FAILED') qcBadge.innerHTML = '<span class="status-badge status-danger">불합격 (FAILED)</span>';
@@ -586,7 +539,7 @@
         renderMainList();
     }
 
-    /* 완료 전환 엄격 검증 로직 */
+    /* 🔥 완벽한 완료 통제 검증 로직 */
     function tryCompleteStyle() {
         const item = stylesData.find(s => s.id === currentDetailId);
         if (!item) return;
@@ -597,17 +550,11 @@
         const uncompletedMaterials = [...item.yarns, ...item.fabrics, ...item.trims].some(m => m.status !== 'COMPLETED');
         if (uncompletedMaterials) errors.push("• 입고되지 않은 원사/원단/부자재 항목이 존재합니다.");
 
-        // 2. 봉제공장 미등록 체크
-        if (item.factories.length === 0) errors.push("• 지정된 봉제공장이 없습니다.");
+        // 2. 미해결 봉제 이슈 체크
+        const unresolvedIssues = item.sewingIssues.some(i => i.status === 'NEED_ACTION');
+        if (unresolvedIssues) errors.push("• 해결되지 않은 봉제공장 이슈가 남아있습니다.");
 
-        // 3. 미해결 공장 이슈 체크
-        let unresolvedIssues = false;
-        item.factories.forEach(f => {
-            if (f.issues.some(i => i.status === 'NEED_ACTION')) unresolvedIssues = true;
-        });
-        if (unresolvedIssues) errors.push("• 공장에 해결되지 않은 미해결 이슈가 남아있습니다.");
-
-        // 4. QC 합격 여부
+        // 3. QC 합격 여부
         if (item.qcStatus !== 'PASSED') errors.push("• QC 최종 판정이 '합격(PASSED)' 상태가 아닙니다.");
 
         if (errors.length > 0) {
@@ -622,7 +569,7 @@
     }
 
     /* ==========================================
-       [MODAL_MODULES] 입력 로직
+       [MODAL_MODULES] 입력 모달 로직
        ========================================== */
     function openStyleModal() { document.getElementById('styleModal').style.display = 'flex'; }
     function closeStyleModal() { document.getElementById('styleModal').style.display = 'none'; }
@@ -638,7 +585,7 @@
 
         stylesData.push({
             id: Date.now(), brand, season, styleNo, name, progress: 10, step: '기본 등록 완료', targetDate: targetDate || '미정', status: 'ACTIVE',
-            yarns: [], fabrics: [], trims: [], factories: [], qcStatus: 'WAIT'
+            yarns: [], fabrics: [], trims: [], sewingIssues: [], qcStatus: 'WAIT'
         });
 
         closeStyleModal();
@@ -673,38 +620,7 @@
         renderSubTables(item);
     }
 
-    /* 봉제공장 추가 모달 */
-    function openSewingFactoryModal() { document.getElementById('sewingFactoryModal').style.display = 'flex'; }
-    function closeSewingFactoryModal() { document.getElementById('sewingFactoryModal').style.display = 'none'; }
-
-    function saveSewingFactory() {
-        const country = document.getElementById('factoryCountry').value;
-        const name = document.getElementById('factoryName').value;
-        const contact = document.getElementById('factoryContact').value;
-        const qty = document.getElementById('factoryQty').value;
-        const inDate = document.getElementById('factoryInDate').value;
-        const outDate = document.getElementById('factoryOutDate').value;
-
-        if (!name) { alert('공장명을 입력해주세요.'); return; }
-
-        const item = stylesData.find(s => s.id === currentDetailId);
-        item.factories.push({
-            id: Date.now(), country, name, contact: contact || '-', qty: qty || '-', inDate: inDate || '-', outDate: outDate || '-', issues: []
-        });
-
-        closeSewingFactoryModal();
-        renderSubTables(item);
-    }
-
-    /* 공장별 이슈 모달 연동 */
-    function openSewingIssueModalForFactory(factoryId) {
-        selectedFactoryId = factoryId;
-        const item = stylesData.find(s => s.id === currentDetailId);
-        const fac = item.factories.find(f => f.id === factoryId);
-        
-        document.getElementById('sewingIssueModalTitle').innerText = `[${fac.name}] 이슈 등록`;
-        document.getElementById('sewingIssueModal').style.display = 'flex';
-    }
+    function openSewingIssueModal() { document.getElementById('sewingIssueModal').style.display = 'flex'; }
     function closeSewingIssueModal() { document.getElementById('sewingIssueModal').style.display = 'none'; }
 
     function saveSewingIssue() {
@@ -714,10 +630,7 @@
         if (!detail) { alert('이슈 상세 내용을 입력해주세요.'); return; }
 
         const item = stylesData.find(s => s.id === currentDetailId);
-        const fac = item.factories.find(f => f.id === selectedFactoryId);
-
-        fac.issues.push({
-            id: Date.now(),
+        item.sewingIssues.push({
             date: new Date().toISOString().split('T')[0],
             type, detail, status: 'NEED_ACTION'
         });
@@ -726,20 +639,17 @@
         renderSubTables(item);
     }
 
-    /* QC 등록 모달 */
     function openQcModal() { document.getElementById('qcModal').style.display = 'flex'; }
     function closeQcModal() { document.getElementById('qcModal').style.display = 'none'; }
 
     function saveQcResult() {
         const company = document.getElementById('inputQcCompany').value;
-        const date = document.getElementById('inputQcDate').value;
         const rate = document.getElementById('inputQcRate').value;
         const status = document.getElementById('inputQcStatus').value;
 
         const item = stylesData.find(s => s.id === currentDetailId);
-        item.qcCompany = company;
-        item.qcDate = date;
-        item.qcRate = rate;
+        document.getElementById('qcCompany').innerText = company;
+        document.getElementById('qcDefectRate').innerText = rate || '0%';
         item.qcStatus = status;
 
         closeQcModal();
