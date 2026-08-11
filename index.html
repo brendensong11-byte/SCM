@@ -6,67 +6,76 @@
     <title>JPROJECT SCM System</title>
     <style>
         /* ==========================================
-           [GLOBAL_STYLES] 기본 및 레이아웃 스타일
+           [GLOBAL_STYLES] 시크 & 스마트 샤프 디자인
            ========================================== */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background-color: #f4f6f9; color: #333; line-height: 1.5; padding: 20px; }
-        .container { max-width: 1400px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 24px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        body { background-color: #f1f3f5; color: #1e293b; line-height: 1.4; padding: 20px; font-size: 13px; }
         
-        /* Header & Navigation */
-        header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 2px solid #edf2f7; margin-bottom: 20px; }
-        .logo { font-size: 24px; font-weight: 800; color: #1a202c; letter-spacing: -0.5px; }
-        .logo span { color: #3182ce; }
-        .brand-select { padding: 8px 16px; border-radius: 6px; border: 1px solid #cbd5e0; font-size: 14px; font-weight: 600; outline: none; }
+        .container { max-width: 1440px; margin: 0 auto; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 2px; padding: 20px; }
         
-        /* Tabs */
-        .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
-        .tab-btn { padding: 12px 24px; border: none; background: none; font-size: 15px; font-weight: 600; color: #718096; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
-        .tab-btn.active { color: #3182ce; border-bottom-color: #3182ce; }
-        .tab-btn .badge { background: #edf2f7; color: #4a5568; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 6px; }
-        .tab-btn.active .badge { background: #ebf8ff; color: #3182ce; }
+        /* Header */
+        header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 2px solid #0f172a; margin-bottom: 16px; }
+        .logo { font-size: 20px; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; text-transform: uppercase; }
+        .logo span { color: #2563eb; font-weight: 400; }
+        .brand-select { padding: 6px 12px; border-radius: 2px; border: 1px solid #94a3b8; font-size: 13px; font-weight: 600; outline: none; background: #fff; color: #0f172a; }
         
-        /* Summary & Alert Box */
-        .alert-bar { background: #fffaf0; border: 1px solid #feebc8; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .alert-title { color: #c05621; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 6px; }
-        .btn-action { background: #3182ce; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; }
-        .btn-action:hover { background: #2b6cb0; }
-        
-        /* Tables */
-        .table-container { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
-        th { background: #f7fafc; color: #4a5568; font-weight: 600; padding: 12px 16px; border-bottom: 2px solid #edf2f7; white-space: nowrap; }
-        td { padding: 14px 16px; border-bottom: 1px solid #edf2f7; color: #2d3748; }
-        tr:hover { background-color: #f8fafc; }
-        .clickable-style { color: #3182ce; font-weight: 700; cursor: pointer; text-decoration: underline; }
-        
-        /* Badges & Status */
-        .status-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
-        .status-in-progress { background: #ebf8ff; color: #2b6cb0; }
-        .status-completed { background: #f0fff4; color: #2f855a; }
-        .progress-bar-bg { width: 100px; height: 8px; background: #edf2f7; border-radius: 4px; overflow: hidden; display: inline-block; vertical-align: middle; }
-        .progress-bar-fill { height: 100%; background: #3182ce; border-radius: 4px; }
+        /* Alert Bar */
+        .alert-bar { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 2px; padding: 10px 14px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.15s; }
+        .alert-bar:hover { background: #fee2e2; }
+        .alert-title { color: #991b1b; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+        .alert-badge { background: #dc2626; color: white; padding: 2px 6px; font-size: 11px; font-weight: 700; border-radius: 2px; }
 
-        /* Detail Page Grid Layout */
+        /* Nav Tabs */
+        .nav-tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid #cbd5e1; }
+        .tab-btn { padding: 10px 20px; border: 1px solid transparent; border-bottom: none; background: none; font-size: 13px; font-weight: 600; color: #64748b; cursor: pointer; border-radius: 2px 2px 0 0; transition: all 0.15s; }
+        .tab-btn.active { color: #0f172a; background: #fff; border-color: #cbd5e1 #cbd5e1 #fff #cbd5e1; font-weight: 700; }
+        .tab-btn .badge { background: #f1f3f5; color: #475569; padding: 1px 6px; font-size: 11px; margin-left: 6px; border-radius: 2px; border: 1px solid #cbd5e1; }
+        .tab-btn.active .badge { background: #0f172a; color: #fff; border-color: #0f172a; }
+        
+        /* Buttons */
+        .btn-action { background: #0f172a; color: white; border: none; padding: 7px 14px; border-radius: 2px; font-weight: 600; cursor: pointer; font-size: 12px; letter-spacing: -0.2px; }
+        .btn-action:hover { background: #1e293b; }
+        .btn-secondary { background: #e2e8f0; color: #334155; border: 1px solid #cbd5e1; padding: 7px 14px; border-radius: 2px; font-weight: 600; cursor: pointer; font-size: 12px; }
+        .btn-secondary:hover { background: #cbd5e1; }
+
+        /* Tables & Clickable Rows */
+        .table-container { overflow-x: auto; border: 1px solid #cbd5e1; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+        th { background: #f8fafc; color: #334155; font-weight: 700; padding: 10px 12px; border-bottom: 1px solid #cbd5e1; border-right: 1px solid #e2e8f0; text-transform: uppercase; font-size: 11px; }
+        td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; border-right: 1px solid #f1f5f9; color: #1e293b; }
+        
+        /* 행 전체 터치/클릭 스타일 */
+        .clickable-row { cursor: pointer; transition: background-color 0.12s; }
+        .clickable-row:hover { background-color: #f1f5f9; }
+        
+        /* Badges & Progress */
+        .status-badge { display: inline-block; padding: 2px 6px; border-radius: 2px; font-size: 11px; font-weight: 600; }
+        .status-in-progress { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+        .status-completed { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+        
+        .progress-bar-bg { width: 80px; height: 6px; background: #e2e8f0; border-radius: 1px; overflow: hidden; display: inline-block; vertical-align: middle; }
+        .progress-bar-fill { height: 100%; background: #2563eb; }
+
+        /* Detail View Cards */
         .detail-view { display: none; }
-        .detail-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid #e2e8f0; margin-bottom: 24px; }
-        .btn-back { background: #edf2f7; color: #4a5568; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .detail-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 2px solid #0f172a; margin-bottom: 16px; }
         
-        .section-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
-        .section-title { font-size: 16px; font-weight: 700; color: #2d3748; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .info-item label { display: block; font-size: 12px; color: #718096; margin-bottom: 4px; }
-        .info-item span { font-weight: 600; color: #1a202c; font-size: 14px; }
+        .section-card { background: #fff; border: 1px solid #cbd5e1; border-radius: 2px; padding: 16px; margin-bottom: 16px; }
+        .section-title { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: -0.3px; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .info-item label { display: block; font-size: 11px; color: #64748b; margin-bottom: 2px; font-weight: 600; }
+        .info-item span { font-weight: 700; color: #0f172a; font-size: 13px; }
 
-        /* Modal Popup */
-        .modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; padding: 24px; border-radius: 12px; width: 100%; max-width: 500px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 16px; display: flex; justify-content: space-between; }
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #4a5568; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; outline: none; }
+        /* Modals */
+        .modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(15, 23, 42, 0.6); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; padding: 20px; border-radius: 2px; width: 100%; max-width: 540px; border: 1px solid #0f172a; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .modal-header { font-size: 15px; font-weight: 700; margin-bottom: 14px; display: flex; justify-content: space-between; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: #334155; }
+        .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #94a3b8; border-radius: 2px; font-size: 13px; outline: none; }
+        .form-group input:focus, .form-group select:focus { border-color: #0f172a; }
         .form-group input[type="date"] { cursor: pointer; }
-        .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
-        .btn-cancel { background: #edf2f7; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; border-top: 1px solid #e2e8f0; padding-top: 12px; }
     </style>
 </head>
 <body>
@@ -86,12 +95,12 @@
 
     <!-- 메인 목록 화면 (MAIN_LIST_VIEW) -->
     <div id="mainListView">
-        <!-- 알림 바 -->
-        <div class="alert-bar">
+        <!-- 알림 바 (클릭 시 확인 필요 항목 모달 오픈) -->
+        <div class="alert-bar" onclick="openAlertModal()">
             <div class="alert-title">
-                ⚠ 확인 필요 알림 (4건)
+                <span class="alert-badge">4건</span> 확인 필요 지연 및 대기 항목
             </div>
-            <span style="font-size:13px; color:#718096;">원단 입고 지연 및 샘플 승인 대기 항목을 체크하세요.</span>
+            <span style="font-size:12px; color:#7f1d1d; text-decoration: underline;">클릭하여 이슈 세부사항 확인 →</span>
         </div>
 
         <!-- 메인 탭: 진행 중 vs 완료 -->
@@ -103,11 +112,10 @@
                 완료 (보관함) <span class="badge" id="countCompleted">0</span>
             </button>
             <div style="margin-left: auto;">
-                <button class="btn-action" onclick="openStyleModal()">+ 신규 Style 등록</button>
+                <button class="btn-action" onclick="openStyleModal()">+ 신규 STYLE 등록</button>
             </div>
         </div>
 
-        <!-- 메인 테이블 구역 -->
         <!-- [DASHBOARD_MODULE] START -->
         <div class="table-container">
             <table>
@@ -124,7 +132,7 @@
                     </tr>
                 </thead>
                 <tbody id="styleTableBody">
-                    <!-- JS 랜더링 구역 -->
+                    <!-- JS 랜더링 구역 (행 클릭 시 이동) -->
                 </tbody>
             </table>
         </div>
@@ -135,18 +143,18 @@
     <div id="styleDetailView" class="detail-view">
         <div class="detail-header">
             <div>
-                <button class="btn-back" onclick="closeDetailView()">← 메인 목록으로</button>
-                <h2 style="display:inline-block; margin-left: 16px;" id="detailTitle">ST26001 - 쫀쫀슬림팬츠</h2>
+                <button class="btn-secondary" onclick="closeDetailView()">← 메인 목록으로</button>
+                <h2 style="display:inline-block; margin-left: 14px; font-size: 18px; color: #0f172a;" id="detailTitle">ST26001 - 쫀쫀슬림팬츠</h2>
             </div>
             <div>
-                <button class="btn-action" style="background:#4a5568;" onclick="toggleStyleStatus()">상태 전환 (진행/완료)</button>
+                <button class="btn-secondary" onclick="toggleStyleStatus()">상태 전환 (진행 ↔ 완료)</button>
             </div>
         </div>
 
         <!-- 1. 기본 정보 -->
         <!-- [STYLE_MODULE] START -->
         <div class="section-card">
-            <div class="section-title">기본 정보</div>
+            <div class="section-title">기본 정보 (STYLE INFO)</div>
             <div class="grid-3">
                 <div class="info-item"><label>브랜드 / 시즌</label><span id="infoBrandSeason">스노야 / 26SS</span></div>
                 <div class="info-item"><label>Style No.</label><span id="infoStyleNo">ST26001</span></div>
@@ -159,58 +167,64 @@
         <!-- [YARN_MODULE] START -->
         <div class="section-card">
             <div class="section-title">
-                원사 관리
-                <button class="btn-action" style="font-size:12px; padding:4px 10px;" onclick="openItemModal('YARN')">+ 원사 추가</button>
+                원사 관리 (YARN)
+                <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openItemModal('YARN')">+ 원사 추가</button>
             </div>
-            <table>
-                <thead>
-                    <tr><th>원사명</th><th>업체</th><th>발주수량</th><th>발주일</th><th>입고예정일</th><th>상태</th></tr>
-                </thead>
-                <tbody id="yarnTableBody">
-                    <tr><td>30수 면사</td><td>중국 A사</td><td>500kg</td><td>2026-08-01</td><td>2026-08-20</td><td><span class="status-badge status-in-progress">생산중</span></td></tr>
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr><th>원사명</th><th>업체</th><th>발주수량</th><th>발주일</th><th>입고예정일</th><th>상태</th></tr>
+                    </thead>
+                    <tbody id="yarnTableBody">
+                        <tr><td>30수 면사</td><td>중국 A사</td><td>500kg</td><td>2026-08-01</td><td>2026-08-20</td><td><span class="status-badge status-in-progress">생산중</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <!-- [YARN_MODULE] END -->
 
         <!-- [FABRIC_MODULE] START -->
         <div class="section-card">
             <div class="section-title">
-                원단 관리
-                <button class="btn-action" style="font-size:12px; padding:4px 10px;" onclick="openItemModal('FABRIC')">+ 원단 추가</button>
+                원단 관리 (FABRIC)
+                <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openItemModal('FABRIC')">+ 원단 추가</button>
             </div>
-            <table>
-                <thead>
-                    <tr><th>원단명</th><th>업체</th><th>발주수량</th><th>발주일</th><th>입고예정일</th><th>상태</th></tr>
-                </thead>
-                <tbody id="fabricTableBody">
-                    <tr><td>쫀쫀 스판 원단</td><td>중국 B사</td><td>2,000m</td><td>2026-07-25</td><td>2026-08-10</td><td><span class="status-badge status-completed">입고완료</span></td></tr>
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr><th>원단명</th><th>업체</th><th>발주수량</th><th>발주일</th><th>입고예정일</th><th>상태</th></tr>
+                    </thead>
+                    <tbody id="fabricTableBody">
+                        <tr><td>쫀쫀 스판 원단</td><td>중국 B사</td><td>2,000m</td><td>2026-07-25</td><td>2026-08-10</td><td><span class="status-badge status-completed">입고완료</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <!-- [FABRIC_MODULE] END -->
 
         <!-- [TRIM_MODULE] START -->
         <div class="section-card">
             <div class="section-title">
-                부자재 관리
-                <button class="btn-action" style="font-size:12px; padding:4px 10px;" onclick="openItemModal('TRIM')">+ 부자재 추가</button>
+                부자재 관리 (TRIMS & ACCESSORIES)
+                <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openItemModal('TRIM')">+ 부자재 추가</button>
             </div>
-            <table>
-                <thead>
-                    <tr><th>품목</th><th>업체명</th><th>발주수량</th><th>발주일</th><th>입고예정일</th><th>상태</th></tr>
-                </thead>
-                <tbody id="trimTableBody">
-                    <tr><td>YKK 지퍼</td><td>중국 C사</td><td>5,000개</td><td>2026-08-02</td><td>2026-08-18</td><td><span class="status-badge status-in-progress">생산중</span></td></tr>
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr><th>품목</th><th>업체명</th><th>발주수량</th><th>발주일</th><th>입고예정일</th><th>상태</th></tr>
+                    </thead>
+                    <tbody id="trimTableBody">
+                        <tr><td>YKK 지퍼</td><td>중국 C사</td><td>5,000개</td><td>2026-08-02</td><td>2026-08-18</td><td><span class="status-badge status-in-progress">생산중</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <!-- [TRIM_MODULE] END -->
 
         <!-- 3. 공정 / QC / 물류 구역 -->
         <!-- [PRODUCTION_MODULE] START -->
         <div class="section-card">
-            <div class="section-title">생산 및 QC / 물류 현황</div>
+            <div class="section-title">생산 & QC & 물류 현황</div>
             <div class="grid-3">
                 <div class="info-item"><label>샘플 진행</label><span>2차 샘플 승인 완료</span></div>
                 <div class="info-item"><label>봉제 공장</label><span>메인 봉제 진행 중</span></div>
@@ -221,7 +235,30 @@
     </div>
 </div>
 
-<!-- 모달 팝업: Style 등록 -->
+<!-- 모달 1: 알림 확인 필요 목록 (ALERT MODAL) -->
+<div class="modal-overlay" id="alertModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span>⚠ 확인 필요 및 지연 항목 (4건)</span>
+            <span style="cursor:pointer;" onclick="closeAlertModal()">✕</span>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr><th>Style No.</th><th>상품명</th><th>이슈 사항</th></tr>
+                </thead>
+                <tbody id="alertTableBody">
+                    <!-- JS 랜더링 구역 -->
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeAlertModal()">닫기</button>
+        </div>
+    </div>
+</div>
+
+<!-- 모달 2: Style 등록 -->
 <div class="modal-overlay" id="styleModal">
     <div class="modal-content">
         <div class="modal-header">신규 Style 등록</div>
@@ -249,13 +286,13 @@
             <input type="date" id="newTargetDate">
         </div>
         <div class="modal-footer">
-            <button class="btn-cancel" onclick="closeStyleModal()">취소</button>
+            <button class="btn-secondary" onclick="closeStyleModal()">취소</button>
             <button class="btn-action" onclick="saveNewStyle()">저장</button>
         </div>
     </div>
 </div>
 
-<!-- 모달 팝업: 자재(원사/원단/부자재) 등록 -->
+<!-- 모달 3: 자재(원사/원단/부자재) 등록 -->
 <div class="modal-overlay" id="itemModal">
     <div class="modal-content">
         <div class="modal-header" id="itemModalTitle">자재 등록</div>
@@ -280,7 +317,7 @@
             <input type="date" id="itemDueDate">
         </div>
         <div class="modal-footer">
-            <button class="btn-cancel" onclick="closeItemModal()">취소</button>
+            <button class="btn-secondary" onclick="closeItemModal()">취소</button>
             <button class="btn-action" onclick="saveItem()">저장</button>
         </div>
     </div>
@@ -301,8 +338,15 @@
         { id: 4, brand: '스노야', season: '25FW', styleNo: 'ST25112', name: '기모후드티', progress: 100, step: '입고 완료', targetDate: '2025-10-15', status: 'COMPLETED' }
     ];
 
+    let alertsData = [
+        { styleId: 1, styleNo: 'ST26001', name: '쫀쫀슬림팬츠', issue: '원단 입고 예정일 초과 (지연)' },
+        { styleId: 2, styleNo: 'ST26002', name: '와이드팬츠', issue: '부자재 생산 지연 경고' },
+        { styleId: 3, styleNo: 'ST26003', name: '데님팬츠', issue: '1차 샘플 승인 대기중' },
+        { styleId: 1, styleNo: 'ST26001', name: '쫀쫀슬림팬츠', issue: 'QC 결과 미등록' }
+    ];
+
     /* ==========================================
-       [MAIN_NAVIGATION] 메인 화면 및 탭 관리
+       [MAIN_NAVIGATION] 메인 화면 및 행 클릭
        ========================================== */
     function renderMainList() {
         const brandFilter = document.getElementById('brandFilter').value;
@@ -315,20 +359,23 @@
             return matchStatus && matchBrand;
         });
 
-        // 카운트 갱신
         document.getElementById('countActive').innerText = stylesData.filter(i => i.status === 'ACTIVE').length;
         document.getElementById('countCompleted').innerText = stylesData.filter(i => i.status === 'COMPLETED').length;
 
         filtered.forEach(item => {
             const tr = document.createElement('tr');
+            tr.className = 'clickable-row';
+            // 행 전체 어디를 클릭해도 상세 페이지로 이동
+            tr.onclick = () => openDetailView(item.id);
+            
             tr.innerHTML = `
                 <td>${item.brand}</td>
                 <td>${item.season}</td>
-                <td><span class="clickable-style" onclick="openDetailView(${item.id})">${item.styleNo}</span></td>
-                <td>${item.name}</td>
+                <td style="font-weight:700; color:#2563eb;">${item.styleNo}</td>
+                <td style="font-weight:600;">${item.name}</td>
                 <td>
                     <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${item.progress}%;"></div></div>
-                    <span style="font-size:12px; margin-left:6px;">${item.progress}%</span>
+                    <span style="font-size:11px; margin-left:4px; font-weight:600;">${item.progress}%</span>
                 </td>
                 <td>${item.step}</td>
                 <td>${item.targetDate}</td>
@@ -343,6 +390,35 @@
         document.getElementById('tabActive').classList.toggle('active', tab === 'ACTIVE');
         document.getElementById('tabCompleted').classList.toggle('active', tab === 'COMPLETED');
         renderMainList();
+    }
+
+    /* ==========================================
+       [ALERT_MODULE] 이슈 알림 모달 제어
+       ========================================== */
+    function openAlertModal() {
+        const tbody = document.getElementById('alertTableBody');
+        tbody.innerHTML = '';
+        
+        alertsData.forEach(alert => {
+            const tr = document.createElement('tr');
+            tr.className = 'clickable-row';
+            tr.onclick = () => {
+                closeAlertModal();
+                openDetailView(alert.styleId);
+            };
+            tr.innerHTML = `
+                <td style="font-weight:700; color:#2563eb;">${alert.styleNo}</td>
+                <td>${alert.name}</td>
+                <td style="color:#dc2626; font-weight:600;">${alert.issue}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        document.getElementById('alertModal').style.display = 'flex';
+    }
+
+    function closeAlertModal() {
+        document.getElementById('alertModal').style.display = 'none';
     }
 
     /* ==========================================
@@ -372,13 +448,13 @@
         const item = stylesData.find(s => s.id === currentDetailId);
         if (item) {
             item.status = item.status === 'ACTIVE' ? 'COMPLETED' : 'ACTIVE';
-            alert(`상태가 [${item.status === 'ACTIVE' ? '진행 중' : '완료'}] (으)로 변경되었습니다.`);
+            alert(`상태가 [${item.status === 'ACTIVE' ? '진행 중' : '완료'}] (으)로 전환되었습니다.`);
             closeDetailView();
         }
     }
 
     /* ==========================================
-       [MODAL_MODULE] 모달 팝업 제어
+       [MODAL_MODULE] 입력 모달 제어
        ========================================== */
     function openStyleModal() { document.getElementById('styleModal').style.display = 'flex'; }
     function closeStyleModal() { document.getElementById('styleModal').style.display = 'none'; }
@@ -445,7 +521,7 @@
         closeItemModal();
     }
 
-    // 초기화
+    // 초기화 랜더링
     renderMainList();
 </script>
 
