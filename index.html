@@ -26,15 +26,17 @@
         .tab-btn .badge { background: #f1f3f5; color: #475569; padding: 1px 6px; font-size: 11px; margin-left: 6px; border-radius: 2px; border: 1px solid #cbd5e1; }
         .tab-btn.active .badge { background: #0f172a; color: #fff; border-color: #0f172a; }
         
-        .btn-action { background: #0f172a; color: white; border: none; padding: 7px 14px; border-radius: 2px; font-weight: 600; cursor: pointer; font-size: 12px; letter-spacing: -0.2px; }
+        .btn-action { background: #0f172a; color: white; border: none; padding: 6px 12px; border-radius: 2px; font-weight: 600; cursor: pointer; font-size: 12px; letter-spacing: -0.2px; }
         .btn-action:hover { background: #1e293b; }
-        .btn-secondary { background: #e2e8f0; color: #334155; border: 1px solid #cbd5e1; padding: 7px 14px; border-radius: 2px; font-weight: 600; cursor: pointer; font-size: 12px; }
+        .btn-secondary { background: #e2e8f0; color: #334155; border: 1px solid #cbd5e1; padding: 5px 10px; border-radius: 2px; font-weight: 600; cursor: pointer; font-size: 11px; }
         .btn-secondary:hover { background: #cbd5e1; }
+        .btn-danger { background: #dc2626; color: white; border: none; padding: 3px 6px; border-radius: 2px; font-weight: 600; cursor: pointer; font-size: 11px; }
+        .btn-danger:hover { background: #b91c1c; }
         
         .table-container { overflow-x: auto; border: 1px solid #cbd5e1; margin-bottom: 10px; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
         th { background: #f8fafc; color: #334155; font-weight: 700; padding: 10px 12px; border-bottom: 1px solid #cbd5e1; border-right: 1px solid #e2e8f0; text-transform: uppercase; font-size: 11px; letter-spacing: 0.3px; }
-        td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; border-right: 1px solid #f1f5f9; color: #1e293b; }
+        td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; border-right: 1px solid #f1f5f9; color: #1e293b; vertical-align: top; }
         
         .clickable-row { cursor: pointer; transition: background-color 0.12s; }
         .clickable-row:hover { background-color: #f1f5f9; }
@@ -61,6 +63,8 @@
         .form-group label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 4px; color: #334155; text-transform: uppercase; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #94a3b8; border-radius: 2px; font-size: 13px; outline: none; }
         .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; border-top: 1px solid #e2e8f0; padding-top: 12px; }
+
+        .shipment-item { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; padding: 4px 8px; margin-bottom: 4px; border-radius: 2px; }
     </style>
 </head>
 <body>
@@ -81,7 +85,7 @@
     <div id="mainListView">
         <div class="alert-bar" onclick="openAlertModal()">
             <div class="alert-title">
-                <span class="alert-badge" id="alertCountBadge">1건</span> 지연 및 이슈 항목 확인 필요
+                <span class="alert-badge" id="alertCountBadge">0건</span> 지연 및 이슈 항목 확인 필요
             </div>
             <span style="font-size:12px; color:#7f1d1d; text-decoration: underline;">클릭하여 이슈 세부사항 확인 →</span>
         </div>
@@ -139,7 +143,7 @@
             </div>
         </div>
 
-        <!-- 2. 자재 관리 (원단/부자재 - 분할 입고 지원) -->
+        <!-- 2. 자재 관리 -->
         <div class="section-card">
             <div class="section-title">
                 원단 관리 (FABRIC)
@@ -148,7 +152,7 @@
             <div class="table-container">
                 <table>
                     <thead>
-                        <tr><th>원단명</th><th>업체</th><th>발주 수량</th><th>누적 입고량</th><th>입고 상태</th><th>부분 입고 처리</th></tr>
+                        <tr><th>원단명</th><th>업체</th><th>발주 수량</th><th>누적 입고량</th><th>입고 상태</th><th>부분 입고 / 관리</th></tr>
                     </thead>
                     <tbody id="fabricTableBody"></tbody>
                 </table>
@@ -163,7 +167,7 @@
             <div class="table-container">
                 <table>
                     <thead>
-                        <tr><th>품목</th><th>업체명</th><th>발주 수량</th><th>누적 입고량</th><th>입고 상태</th><th>부분 입고 처리</th></tr>
+                        <tr><th>품목</th><th>업체명</th><th>발주 수량</th><th>누적 입고량</th><th>입고 상태</th><th>부분 입고 / 관리</th></tr>
                     </thead>
                     <tbody id="trimTableBody"></tbody>
                 </table>
@@ -179,7 +183,7 @@
             <div class="table-container">
                 <table>
                     <thead>
-                        <tr><th>국가/공장</th><th>총 생산 목표</th><th>누적 출고량</th><th>출고 상태</th><th>분할 출고 현황</th><th>출고/이슈 관리</th></tr>
+                        <tr><th style="width:18%;">국가/공장</th><th style="width:12%;">총 생산 목표</th><th style="width:12%;">누적 출고량</th><th style="width:12%;">출고 상태</th><th style="width:30%;">분할 출고 및 이슈 내역 (수정/삭제 가능)</th><th style="width:16%;">출고/이슈 관리</th></tr>
                     </thead>
                     <tbody id="sewingFactoryTableBody"></tbody>
                 </table>
@@ -204,7 +208,6 @@
 
 <!-- [모달 모음] -->
 
-<!-- 1. 신규 Style 등록 모달 -->
 <div class="modal-overlay" id="styleModal">
     <div class="modal-content">
         <div class="modal-header">신규 Style 등록</div>
@@ -220,33 +223,30 @@
     </div>
 </div>
 
-<!-- 2. 자재 부분(분할) 입고 등록 모달 -->
 <div class="modal-overlay" id="partialInModal">
     <div class="modal-content">
-        <div class="modal-header">자재 부분 입고 등록</div>
-        <div class="form-group"><label>금회 입고 수량</label><input type="number" id="partialInQty" placeholder="예: 2000"></div>
+        <div class="modal-header">자재 부분 입고 등록 및 수정</div>
+        <div class="form-group"><label>누적 입고 수량 직접 입력 (수정)</label><input type="number" id="partialInQty" placeholder="예: 2000"></div>
         <div class="modal-footer">
             <button class="btn-secondary" onclick="closeModal('partialInModal')">취소</button>
-            <button class="btn-action" onclick="savePartialIn()">입고 반영</button>
+            <button class="btn-action" onclick="savePartialIn()">저장</button>
         </div>
     </div>
 </div>
 
-<!-- 3. 자재(원단/부자재) 신규 추가 모달 -->
 <div class="modal-overlay" id="itemModal">
     <div class="modal-content">
-        <div class="modal-header" id="itemModalHeader">자재 추가</div>
+        <div class="modal-header" id="itemModalHeader">자재 정보</div>
         <div class="form-group"><label>품목/자재명</label><input type="text" id="newItemName" placeholder="예: 코튼 100% 원단"></div>
         <div class="form-group"><label>업체명</label><input type="text" id="newItemSupplier" placeholder="예: 중국 B사"></div>
         <div class="form-group"><label>발주 수량</label><input type="number" id="newItemTotalQty" placeholder="10000"></div>
         <div class="modal-footer">
             <button class="btn-secondary" onclick="closeModal('itemModal')">취소</button>
-            <button class="btn-action" onclick="saveNewItem()">추가</button>
+            <button class="btn-action" onclick="saveNewItem()">저장</button>
         </div>
     </div>
 </div>
 
-<!-- 4. 봉제 공장 추가 모달 -->
 <div class="modal-overlay" id="sewingModal">
     <div class="modal-content">
         <div class="modal-header">봉제 공장 추가</div>
@@ -260,21 +260,19 @@
     </div>
 </div>
 
-<!-- 5. 완제품 분할 출고 등록 모달 -->
 <div class="modal-overlay" id="shipmentModal">
     <div class="modal-content">
-        <div class="modal-header">완제품 분할 출고 등록</div>
+        <div class="modal-header" id="shipmentModalHeader">완제품 분할 출고 등록</div>
         <div class="form-group"><label>출고 일자</label><input type="date" id="shipmentDate"></div>
-        <div class="form-group"><label>금회 출고 수량</label><input type="number" id="shipmentQty" placeholder="예: 2000"></div>
-        <div class="form-group"><label>비고/차수</label><input type="text" id="shipmentNote" placeholder="예: 1차 선출고 (선적 완료)"></div>
+        <div class="form-group"><label>출고 수량</label><input type="number" id="shipmentQty" placeholder="예: 2000"></div>
+        <div class="form-group"><label>비고/차수</label><input type="text" id="shipmentNote" placeholder="예: 1차 선출고"></div>
         <div class="modal-footer">
             <button class="btn-secondary" onclick="closeModal('shipmentModal')">취소</button>
-            <button class="btn-action" onclick="saveShipment()">출고 등록</button>
+            <button class="btn-action" onclick="saveShipment()">저장</button>
         </div>
     </div>
 </div>
 
-<!-- 6. 공장 이슈 입력 모달 -->
 <div class="modal-overlay" id="issueModal">
     <div class="modal-content">
         <div class="modal-header">봉제/생산 이슈 등록</div>
@@ -286,7 +284,6 @@
     </div>
 </div>
 
-<!-- 7. QC 설정 모달 -->
 <div class="modal-overlay" id="qcModal">
     <div class="modal-content">
         <div class="modal-header">QC 검사 정보 설정</div>
@@ -307,7 +304,6 @@
     </div>
 </div>
 
-<!-- 8. 이슈 모아보기 모달 -->
 <div class="modal-overlay" id="alertModal">
     <div class="modal-content">
         <div class="modal-header">전체 생산 이슈 및 지연 현황</div>
@@ -324,8 +320,9 @@
     let selectedMaterialId = null;
     let selectedMaterialType = '';
     let selectedFactoryId = null;
+    let editingShipmentIndex = null;
+    let editingItemId = null;
 
-    // 데이터 초기값
     let stylesData = [
         { 
             id: 1, brand: '스노야', season: '26SS', styleNo: 'ST26001', name: '쫀쫀슬림팬츠', targetDate: '2026-08-25', status: 'ACTIVE',
@@ -345,7 +342,6 @@
         }
     ];
 
-    // 메인 리스트 렌더링
     function renderMainList() {
         const brandFilter = document.getElementById('brandFilter').value;
         const tbody = document.getElementById('styleTableBody');
@@ -359,7 +355,6 @@
             if (item.status === 'ACTIVE') activeCount++;
             if (item.status === 'COMPLETED') completedCount++;
 
-            // 이슈 카운트
             item.factories.forEach(f => { if(f.issues && f.issues.length > 0) totalAlerts += f.issues.length; });
 
             if (item.status !== currentTab) return;
@@ -369,7 +364,6 @@
             tr.className = 'clickable-row';
             tr.onclick = () => openDetailView(item.id);
 
-            // 현재 단계 및 상태 파악
             let stepText = '원자재 입고 중';
             let statusBadge = `<span class="status-badge status-in-progress">진행 중</span>`;
             if (item.status === 'COMPLETED') {
@@ -404,7 +398,6 @@
         renderMainList();
     }
 
-    // 상세 화면 열기
     function openDetailView(id) {
         currentDetailId = id;
         const item = stylesData.find(s => s.id === id);
@@ -428,7 +421,6 @@
         renderMainList();
     }
 
-    // 자재 및 봉제 테이블 렌더링
     function renderSubTables(item) {
         // 1. 원단 / 부자재
         ['fabric', 'trim'].forEach(type => {
@@ -450,13 +442,17 @@
                     <td>${i.totalQty.toLocaleString()}</td>
                     <td style="font-weight:700;">${i.currentQty.toLocaleString()}</td>
                     <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
-                    <td><button class="btn-secondary" style="font-size:11px;" onclick="openPartialInModal('${type}', ${i.id})">+ 입고 추가</button></td>
+                    <td>
+                        <button class="btn-secondary" onclick="openPartialInModal('${type}', ${i.id})">수량 수정</button>
+                        <button class="btn-secondary" onclick="openItemEditModal('${type}', ${i.id})">수정</button>
+                        <button class="btn-danger" onclick="deleteItem('${type}', ${i.id})">삭제</button>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
         });
 
-        // 2. 봉제 및 분할 출고
+        // 2. 봉제 및 분할 출고 (수정/삭제 조작 포함)
         const factoryTbody = document.getElementById('sewingFactoryTableBody');
         factoryTbody.innerHTML = '';
 
@@ -469,12 +465,23 @@
             if (percent >= 100) { badgeClass = 'status-completed'; statusText = '전량 출고 완료'; }
             else if (percent > 0) { badgeClass = 'status-partial'; statusText = `부분 출고 중 (${percent}%)`; }
 
-            const shipmentHistory = fac.shipments.map(s => `
-                <div style="font-size:11px; color:#334155;">• ${s.date} : <b>${s.qty.toLocaleString()}개</b> (${s.note})</div>
+            // 분할 출고 내역 (수정/삭제 버튼 포함)
+            const shipmentHistory = fac.shipments.map((s, idx) => `
+                <div class="shipment-item">
+                    <span>• ${s.date} : <b>${s.qty.toLocaleString()}개</b> (${s.note})</span>
+                    <span>
+                        <button class="btn-secondary" style="font-size:10px; padding:1px 4px;" onclick="openEditShipmentModal(${fac.id}, ${idx})">수정</button>
+                        <button class="btn-danger" style="font-size:10px; padding:1px 4px;" onclick="deleteShipment(${fac.id}, ${idx})">삭제</button>
+                    </span>
+                </div>
             `).join('');
 
-            const issueHistory = (fac.issues || []).map(is => `
-                <div style="font-size:11px; color:#dc2626; margin-top:2px;">⚠️ ${is}</div>
+            // 이슈 내역 (삭제 버튼 포함)
+            const issueHistory = (fac.issues || []).map((is, idx) => `
+                <div style="font-size:11px; color:#dc2626; margin-top:4px; display:flex; justify-content:space-between; align-items:center; background:#fef2f2; padding:3px 6px;">
+                    <span>⚠️ ${is}</span>
+                    <button class="btn-danger" style="font-size:10px; padding:1px 4px;" onclick="deleteIssue(${fac.id}, ${idx})">x</button>
+                </div>
             `).join('');
 
             const tr = document.createElement('tr');
@@ -484,12 +491,12 @@
                 <td style="font-weight:700; color:#2563eb;">${totalShipped.toLocaleString()} pcs</td>
                 <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
                 <td>
-                    ${shipmentHistory || '<span style="color:#94a3b8; font-size:11px;">출고 내역 없음</span>'}
+                    ${shipmentHistory || '<div style="color:#94a3b8; font-size:11px;">출고 내역 없음</div>'}
                     ${issueHistory}
                 </td>
                 <td>
                     <button class="btn-action" style="font-size:11px; padding:3px 6px;" onclick="openShipmentModal(${fac.id})">+ 분할 출고</button>
-                    <button class="btn-secondary" style="font-size:11px; padding:3px 6px; margin-left:4px;" onclick="openIssueModal(${fac.id})">+ 이슈 등록</button>
+                    <button class="btn-secondary" style="font-size:11px; padding:3px 6px; margin-top:2px;" onclick="openIssueModal(${fac.id})">+ 이슈 등록</button>
                 </td>
             `;
             factoryTbody.appendChild(tr);
@@ -506,11 +513,9 @@
         document.getElementById('qcStatusBadge').innerHTML = qcBadge;
     }
 
-    // 모달 열기/닫기 공통
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
 
-    // 모달 관련 액션 함수들
     function openStyleModal() { openModal('styleModal'); }
     function saveNewStyle() {
         const brand = document.getElementById('newBrand').value;
@@ -530,33 +535,72 @@
         renderMainList();
     }
 
+    /* 자재 누적 수량 수정 */
     function openPartialInModal(type, id) {
         selectedMaterialType = type;
         selectedMaterialId = id;
+        const item = stylesData.find(s => s.id === currentDetailId);
+        const mat = item[`${type}s`].find(m => m.id === id);
+        document.getElementById('partialInQty').value = mat.currentQty;
         openModal('partialInModal');
     }
     function savePartialIn() {
         const qty = parseInt(document.getElementById('partialInQty').value) || 0;
         const item = stylesData.find(s => s.id === currentDetailId);
         const mat = item[`${selectedMaterialType}s`].find(m => m.id === selectedMaterialId);
-        mat.currentQty = Math.min(mat.totalQty, mat.currentQty + qty);
+        mat.currentQty = qty;
         closeModal('partialInModal');
         renderSubTables(item);
     }
 
+    /* 자재 항목 추가 및 수정 */
     function openItemModal(type) {
+        editingItemId = null;
         selectedMaterialType = type;
         document.getElementById('itemModalHeader').innerText = type === 'fabric' ? '원단 추가' : '부자재 추가';
+        document.getElementById('newItemName').value = '';
+        document.getElementById('newItemSupplier').value = '';
+        document.getElementById('newItemTotalQty').value = '';
         openModal('itemModal');
     }
+
+    function openItemEditModal(type, id) {
+        editingItemId = id;
+        selectedMaterialType = type;
+        const item = stylesData.find(s => s.id === currentDetailId);
+        const mat = item[`${type}s`].find(m => m.id === id);
+
+        document.getElementById('itemModalHeader').innerText = type === 'fabric' ? '원단 수정' : '부자재 수정';
+        document.getElementById('newItemName').value = mat.name;
+        document.getElementById('newItemSupplier').value = mat.supplier;
+        document.getElementById('newItemTotalQty').value = mat.totalQty;
+        openModal('itemModal');
+    }
+
     function saveNewItem() {
         const name = document.getElementById('newItemName').value;
         const supplier = document.getElementById('newItemSupplier').value;
         const totalQty = parseInt(document.getElementById('newItemTotalQty').value) || 0;
 
         const item = stylesData.find(s => s.id === currentDetailId);
-        item[`${selectedMaterialType}s`].push({ id: Date.now(), name, supplier, totalQty, currentQty: 0 });
+        const list = item[`${selectedMaterialType}s`];
+
+        if (editingItemId) {
+            const mat = list.find(m => m.id === editingItemId);
+            mat.name = name;
+            mat.supplier = supplier;
+            mat.totalQty = totalQty;
+        } else {
+            list.push({ id: Date.now(), name, supplier, totalQty, currentQty: 0 });
+        }
         closeModal('itemModal');
+        renderSubTables(item);
+    }
+
+    function deleteItem(type, id) {
+        if(!confirm('이 자재 항목을 삭제하시겠습니까?')) return;
+        const item = stylesData.find(s => s.id === currentDetailId);
+        item[`${type}s`] = item[`${type}s`].filter(m => m.id !== id);
         renderSubTables(item);
     }
 
@@ -572,10 +616,31 @@
         renderSubTables(item);
     }
 
+    /* 분할 출고 등록 및 수정 */
     function openShipmentModal(facId) {
+        editingShipmentIndex = null;
         selectedFactoryId = facId;
+        document.getElementById('shipmentModalHeader').innerText = '완제품 분할 출고 등록';
+        document.getElementById('shipmentDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('shipmentQty').value = '';
+        document.getElementById('shipmentNote').value = '';
         openModal('shipmentModal');
     }
+
+    function openEditShipmentModal(facId, idx) {
+        editingShipmentIndex = idx;
+        selectedFactoryId = facId;
+        const item = stylesData.find(s => s.id === currentDetailId);
+        const fac = item.factories.find(f => f.id === facId);
+        const ship = fac.shipments[idx];
+
+        document.getElementById('shipmentModalHeader').innerText = '완제품 분할 출고 수정';
+        document.getElementById('shipmentDate').value = ship.date;
+        document.getElementById('shipmentQty').value = ship.qty;
+        document.getElementById('shipmentNote').value = ship.note;
+        openModal('shipmentModal');
+    }
+
     function saveShipment() {
         const date = document.getElementById('shipmentDate').value || new Date().toISOString().split('T')[0];
         const qty = parseInt(document.getElementById('shipmentQty').value) || 0;
@@ -583,13 +648,27 @@
 
         const item = stylesData.find(s => s.id === currentDetailId);
         const fac = item.factories.find(f => f.id === selectedFactoryId);
-        fac.shipments.push({ date, qty, note });
+
+        if (editingShipmentIndex !== null) {
+            fac.shipments[editingShipmentIndex] = { date, qty, note };
+        } else {
+            fac.shipments.push({ date, qty, note });
+        }
         closeModal('shipmentModal');
+        renderSubTables(item);
+    }
+
+    function deleteShipment(facId, idx) {
+        if(!confirm('해당 출고 내역을 삭제하시겠습니까?')) return;
+        const item = stylesData.find(s => s.id === currentDetailId);
+        const fac = item.factories.find(f => f.id === facId);
+        fac.shipments.splice(idx, 1);
         renderSubTables(item);
     }
 
     function openIssueModal(facId) {
         selectedFactoryId = facId;
+        document.getElementById('issueText').value = '';
         openModal('issueModal');
     }
     function saveIssue() {
@@ -600,6 +679,13 @@
         if(!fac.issues) fac.issues = [];
         fac.issues.push(issue);
         closeModal('issueModal');
+        renderSubTables(item);
+    }
+
+    function deleteIssue(facId, idx) {
+        const item = stylesData.find(s => s.id === currentDetailId);
+        const fac = item.factories.find(f => f.id === facId);
+        fac.issues.splice(idx, 1);
         renderSubTables(item);
     }
 
@@ -636,17 +722,14 @@
         openModal('alertModal');
     }
 
-    // 최종 완료 전환 검증
     function tryCompleteStyle() {
         const item = stylesData.find(s => s.id === currentDetailId);
         let errors = [];
 
-        // 자재 검증
         [...item.fabrics, ...item.trims].forEach(m => {
             if (m.currentQty < m.totalQty) errors.push(`• 자재 [${m.name}] 입고 미달 (${m.currentQty.toLocaleString()}/${m.totalQty.toLocaleString()})`);
         });
 
-        // 출고 검증
         item.factories.forEach(f => {
             const totalShipped = f.shipments.reduce((sum, s) => sum + s.qty, 0);
             if (totalShipped < f.totalTarget) errors.push(`• 공장 [${f.name}] 출고 미달 (${totalShipped.toLocaleString()}/${f.totalTarget.toLocaleString()})`);
@@ -661,7 +744,6 @@
         }
     }
 
-    // 초기 실행
     renderMainList();
 </script>
 </body>
