@@ -3,2345 +3,309 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> J PROJECT | Multi-Brand SCM Engine</title>
-
+<title>JPROJECT | SCM 통합 관제</title>
 <style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, "Noto Sans KR", sans-serif;
-    background: #f5f7fa;
-    color: #172033;
-}
-
-button,
-input,
-select,
-textarea {
-    font-family: inherit;
-}
-
-button {
-    cursor: pointer;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-.header {
-    background: #ffffff;
-    border-bottom: 1px solid #dfe5ec;
-    padding: 18px 28px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-}
-
-.logo-area {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.logo {
-    font-size: 21px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    color: #172b4d;
-}
-
-.logo-sub {
-    font-size: 11px;
-    color: #7b8798;
-    border-left: 1px solid #d8dee7;
-    padding-left: 14px;
-}
-
-.header-actions {
-    display: flex;
-    gap: 8px;
-}
-
-/* =========================
-   BUTTON
-========================= */
-
-.btn {
-    border: 1px solid #cbd5e1;
-    background: #ffffff;
-    color: #334155;
-    padding: 9px 14px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.btn:hover {
-    border-color: #486581;
-    background: #f8fafc;
-}
-
-.btn-primary {
-    border-color: #243b5a;
-    background: #243b5a;
-    color: #ffffff;
-}
-
-.btn-primary:hover {
-    background: #1d304a;
-}
-
-/* =========================
-   MAIN
-========================= */
-
-.container {
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 24px 28px 50px;
-}
-
-/* =========================
-   FILTER
-========================= */
-
-.filter-area {
-    background: #ffffff;
-    border: 1px solid #dfe5ec;
-    border-radius: 10px;
-    padding: 16px 18px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 18px;
-}
-
-.filter-label {
-    font-size: 12px;
-    color: #64748b;
-    font-weight: 700;
-}
-
-select {
-    border: 1px solid #cbd5e1;
-    background: #ffffff;
-    color: #1e293b;
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 13px;
-    min-width: 130px;
-    outline: none;
-}
-
-select:focus,
-input:focus,
-textarea:focus {
-    border-color: #4c6a89;
-    box-shadow: 0 0 0 2px rgba(76,106,137,0.08);
-}
-
-/* =========================
-   SUMMARY
-========================= */
-
-.summary-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-.summary-card {
-    background: #ffffff;
-    border: 1px solid #dfe5ec;
-    border-radius: 10px;
-    padding: 18px;
-}
-
-.summary-title {
-    font-size: 12px;
-    color: #718096;
-    margin-bottom: 8px;
-}
-
-.summary-value {
-    font-size: 26px;
-    font-weight: 800;
-    color: #172b4d;
-}
-
-.summary-desc {
-    font-size: 11px;
-    color: #94a3b8;
-    margin-top: 5px;
-}
-
-/* =========================
-   SECTION
-========================= */
-
-.section {
-    background: #ffffff;
-    border: 1px solid #dfe5ec;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    overflow: hidden;
-}
-
-.section-header {
-    padding: 16px 18px;
-    border-bottom: 1px solid #e5eaf0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.section-title {
-    font-size: 15px;
-    font-weight: 800;
-    color: #172b4d;
-}
-
-.section-desc {
-    font-size: 11px;
-    color: #94a3b8;
-    margin-top: 4px;
-}
-
-/* =========================
-   STYLE TABLE
-========================= */
-
-.table-wrap {
-    width: 100%;
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 1050px;
-}
-
-th {
-    background: #f8fafc;
-    color: #64748b;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 12px 14px;
-    border-bottom: 1px solid #e5eaf0;
-    text-align: left;
-    white-space: nowrap;
-}
-
-td {
-    padding: 14px;
-    border-bottom: 1px solid #edf1f5;
-    font-size: 12px;
-    color: #334155;
-    vertical-align: middle;
-}
-
-.style-row {
-    cursor: pointer;
-    transition: background 0.15s;
-}
-
-.style-row:hover {
-    background: #f8fafc;
-}
-
-.style-number {
-    color: #263f61;
-    font-weight: 800;
-}
-
-.style-name {
-    font-weight: 700;
-    color: #172033;
-}
-
-.brand-text {
-    color: #64748b;
-    font-size: 11px;
-}
-
-/* =========================
-   PROGRESS
-========================= */
-
-.progress-box {
-    min-width: 150px;
-}
-
-.progress-top {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-}
-
-.progress-percent {
-    font-size: 12px;
-    font-weight: 800;
-    color: #243b5a;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 6px;
-    background: #e8edf2;
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background: #405a78;
-    border-radius: 20px;
-}
-
-/* =========================
-   STATUS
-========================= */
-
-.status-text {
-    font-size: 12px;
-    font-weight: 700;
-    color: #405a78;
-}
-
-.deadline {
-    font-weight: 700;
-    color: #334155;
-}
-
-.d-day {
-    font-size: 11px;
-    color: #64748b;
-    margin-top: 3px;
-}
-
-.d-day.overdue {
-    color: #7f1d1d;
-    font-weight: 800;
-}
-
-/* =========================
-   DETAIL PANEL
-========================= */
-
-.detail-panel {
-    display: none;
-    background: #f8fafc;
-    border-top: 1px solid #dfe5ec;
-    border-bottom: 1px solid #dfe5ec;
-    padding: 24px;
-}
-
-.detail-panel.active {
-    display: block;
-}
-
-.detail-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 22px;
-}
-
-.detail-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: #172b4d;
-}
-
-.detail-subtitle {
-    margin-top: 5px;
-    font-size: 12px;
-    color: #64748b;
-}
-
-.detail-deadline {
-    text-align: right;
-}
-
-.detail-deadline-label {
-    font-size: 11px;
-    color: #94a3b8;
-}
-
-.detail-deadline-date {
-    font-size: 15px;
-    font-weight: 800;
-    color: #334155;
-    margin-top: 4px;
-}
-
-.detail-dday {
-    font-size: 12px;
-    color: #405a78;
-    font-weight: 800;
-    margin-top: 3px;
-}
-
-/* =========================
-   DETAIL PROGRESS
-========================= */
-
-.detail-progress {
-    background: #ffffff;
-    border: 1px solid #dfe5ec;
-    border-radius: 8px;
-    padding: 18px;
-    margin-bottom: 18px;
-}
-
-.detail-progress-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 9px;
-}
-
-.detail-progress-title {
-    font-size: 13px;
-    font-weight: 800;
-}
-
-.detail-progress-number {
-    font-size: 18px;
-    font-weight: 800;
-    color: #243b5a;
-}
-
-.large-progress {
-    height: 10px;
-}
-
-/* =========================
-   PIPELINE
-========================= */
-
-.pipeline {
-    display: grid;
-    grid-template-columns: repeat(11, minmax(95px, 1fr));
-    gap: 7px;
-    margin-bottom: 18px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-}
-
-.pipeline-step {
-    background: #ffffff;
-    border: 1px solid #dfe5ec;
-    border-radius: 8px;
-    padding: 11px 8px;
-    min-height: 78px;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.15s;
-}
-
-.pipeline-step:hover {
-    border-color: #536d8a;
-    transform: translateY(-1px);
-}
-
-.pipeline-step.active {
-    border-color: #405a78;
-    background: #f1f5f9;
-}
-
-.pipeline-name {
-    font-size: 11px;
-    font-weight: 800;
-    color: #475569;
-}
-
-.pipeline-status {
-    font-size: 11px;
-    margin-top: 9px;
-    color: #243b5a;
-    font-weight: 700;
-}
-
-.pipeline-date {
-    font-size: 10px;
-    color: #94a3b8;
-    margin-top: 4px;
-}
-
-/* =========================
-   DETAIL CONTENT
-========================= */
-
-.detail-content {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 15px;
-}
-
-.detail-card {
-    background: #ffffff;
-    border: 1px solid #dfe5ec;
-    border-radius: 8px;
-    padding: 18px;
-}
-
-.detail-card-title {
-    font-size: 13px;
-    font-weight: 800;
-    color: #243b5a;
-    padding-bottom: 11px;
-    border-bottom: 1px solid #edf1f5;
-    margin-bottom: 12px;
-}
-
-.info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.info-item {
-    border-bottom: 1px solid #f0f2f5;
-    padding-bottom: 8px;
-}
-
-.info-label {
-    font-size: 10px;
-    color: #94a3b8;
-    margin-bottom: 4px;
-}
-
-.info-value {
-    font-size: 12px;
-    font-weight: 700;
-    color: #334155;
-}
-
-/* =========================
-   MATERIAL LIST
-========================= */
-
-.material-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.material-item {
-    display: grid;
-    grid-template-columns: 1.2fr 0.7fr 0.7fr 0.8fr;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid #edf1f5;
-    align-items: center;
-}
-
-.material-item:last-child {
-    border-bottom: none;
-}
-
-.material-name {
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.material-meta {
-    font-size: 11px;
-    color: #64748b;
-}
-
-.material-status {
-    font-size: 11px;
-    font-weight: 700;
-    color: #405a78;
-}
-
-/* =========================
-   DOCUMENTS
-========================= */
-
-.document-list {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.document-item {
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 9px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.document-name {
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.document-type {
-    font-size: 10px;
-    color: #94a3b8;
-}
-
-/* =========================
-   MODAL
-========================= */
-
-.modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.38);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.modal-overlay.active {
-    display: flex;
-}
-
-.modal {
-    width: 620px;
-    max-width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    background: #ffffff;
-    border-radius: 10px;
-    border: 1px solid #dfe5ec;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-}
-
-.modal-header {
-    padding: 18px 20px;
-    border-bottom: 1px solid #e5eaf0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.modal-title {
-    font-size: 16px;
-    font-weight: 800;
-    color: #172b4d;
-}
-
-.close-btn {
-    border: none;
-    background: none;
-    font-size: 22px;
-    color: #94a3b8;
-}
-
-.modal-body {
-    padding: 20px;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.form-group {
-    margin-bottom: 13px;
-}
-
-.form-group.full {
-    grid-column: 1 / -1;
-}
-
-.form-label {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    color: #475569;
-    margin-bottom: 5px;
-}
-
-input,
-textarea {
-    width: 100%;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    padding: 9px 10px;
-    font-size: 12px;
-    outline: none;
-}
-
-textarea {
-    resize: vertical;
-    min-height: 80px;
-}
-
-.modal-footer {
-    padding: 15px 20px;
-    border-top: 1px solid #e5eaf0;
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-}
-
-/* =========================
-   EMPTY
-========================= */
-
-.empty {
-    text-align: center;
-    padding: 45px 20px;
-    color: #94a3b8;
-    font-size: 13px;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 900px) {
-
-    .header {
-        padding: 15px;
-    }
-
-    .container {
-        padding: 15px;
-    }
-
-    .summary-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .detail-content {
-        grid-template-columns: 1fr;
-    }
-
-    .detail-header {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .detail-deadline {
-        text-align: left;
-    }
-}
-
-@media (max-width: 600px) {
-
-    .logo-sub {
-        display: none;
-    }
-
-    .filter-area {
-        flex-wrap: wrap;
-    }
-
-    .summary-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .summary-value {
-        font-size: 21px;
-    }
-
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .form-group.full {
-        grid-column: auto;
-    }
-}
+:root{
+  --bg:#f5f7fa;--card:#fff;--line:#dce3eb;--line2:#e9eef4;
+  --navy:#18324b;--blue:#315f86;--blue2:#eaf2f8;--text:#17212b;--muted:#6b7785;
+  --danger:#a34b4b;--ok:#466f5c;--warn:#8a6b35;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",sans-serif}
+body{background:var(--bg);color:var(--text);line-height:1.5;padding:18px}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+header{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:14px}
+.brand-title{font-size:21px;font-weight:800;letter-spacing:-.4px;color:var(--navy)}
+.brand-title span{font-size:12px;color:var(--muted);font-weight:500;margin-left:8px}
+.btn{border:1px solid var(--navy);background:#fff;color:var(--navy);padding:8px 13px;border-radius:7px;font-weight:700}
+.btn:hover{background:var(--blue2)}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.danger{border-color:#c58d8d;color:var(--danger)}
+.btn.small{padding:5px 9px;font-size:12px}
+.nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.nav button{border:1px solid var(--line);background:#fff;color:var(--muted);padding:8px 13px;border-radius:7px;font-weight:700}
+.nav button.active{border-color:var(--navy);color:var(--navy);background:var(--blue2)}
+.toolbar{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.toolbar label{font-size:12px;color:var(--muted);font-weight:700}
+input,select,textarea{border:1px solid #cfd8e2;border-radius:6px;background:#fff;color:var(--text);padding:8px 9px;font-size:13px}
+textarea{min-height:75px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 2px rgba(49,95,134,.08)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+.card .label{font-size:11px;color:var(--muted);font-weight:700}.card .num{font-size:22px;font-weight:800;color:var(--navy);margin-top:2px}
+.table-wrap{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:980px;font-size:13px}
+th{background:#f8fafc;color:var(--muted);font-size:11px;text-align:left;padding:10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px;border-bottom:1px solid var(--line2);vertical-align:middle}
+.main-row{cursor:pointer}.main-row:hover{background:#fbfdff}.main-row.open{background:#f3f7fb}
+.progress{display:flex;align-items:center;gap:7px;min-width:130px}.bar{height:8px;background:#e7edf3;border-radius:10px;overflow:hidden;flex:1}.fill{height:100%;background:var(--blue);border-radius:10px}.pct{font-size:11px;font-weight:800;color:var(--navy);width:35px;text-align:right}
+.badge{display:inline-block;border:1px solid var(--line);border-radius:5px;padding:3px 7px;font-size:11px;font-weight:700;background:#fff;color:var(--muted)}
+.badge.blue{border-color:#9eb8cd;color:var(--blue);background:var(--blue2)}
+.badge.ok{border-color:#b7cdbf;color:var(--ok);background:#f2f7f3}
+.badge.warn{border-color:#d8c7a5;color:var(--warn);background:#faf7ef}
+.dday{font-weight:800;font-size:11px;color:var(--navy)}
+.dday.over{color:var(--danger)}
+.detail-row{display:none;background:#f8fafc}.detail-row.open{display:table-row}
+.detail{padding:17px;border-top:1px solid var(--line);border-left:3px solid var(--navy)}
+.detail-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.detail-title{font-size:16px;font-weight:800;color:var(--navy)}
+.pipeline{display:grid;grid-template-columns:repeat(10,minmax(105px,1fr));gap:6px;overflow:auto;margin-bottom:14px;padding-bottom:4px}
+.step{border:1px solid var(--line);background:#fff;border-radius:7px;padding:9px 7px;text-align:center;min-width:105px}
+.step.click{cursor:pointer}.step.click:hover{border-color:var(--blue)}
+.step.current{border-color:var(--navy);background:var(--blue2)}
+.step.done{border-color:#b7cdbf;background:#f2f7f3}
+.step .sname{font-size:10px;color:var(--muted);font-weight:700}.step .sstatus{font-size:12px;font-weight:800;margin-top:3px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:8px;padding:13px}
+.panel h4{font-size:13px;color:var(--navy);margin-bottom:10px}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.form-field{display:flex;flex-direction:column;gap:4px}.form-field label{font-size:10px;color:var(--muted);font-weight:700}
+.list-table{width:100%;min-width:0;font-size:12px}.list-table th,.list-table td{padding:7px}
+.add-box{margin-top:10px;padding:10px;background:#fafcff;border:1px dashed #cbd7e2;border-radius:7px}
+.section-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.file-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.file-chip{border:1px solid var(--line);border-radius:5px;padding:4px 7px;font-size:11px;background:#fff}
+.muted{color:var(--muted);font-size:12px}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(16,29,42,.42);z-index:1000;align-items:center;justify-content:center;padding:15px}
+.modal-bg.open{display:flex}.modal{background:#fff;border-radius:12px;border:1px solid var(--line);width:min(760px,100%);max-height:92vh;overflow:auto;padding:18px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:13px}
+.modal-head h3{color:var(--navy)}.modal-foot{display:flex;justify-content:flex-end;gap:7px;margin-top:15px}
+.form2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form2 .full{grid-column:1/-1}
+.empty{padding:35px;text-align:center;color:var(--muted)}
+@media(max-width:900px){body{padding:10px}.cards{grid-template-columns:repeat(2,1fr)}.detail-grid{grid-template-columns:1fr}.form-grid,.form2{grid-template-columns:1fr}.form2 .full{grid-column:auto}.pipeline{grid-template-columns:repeat(10,105px)}header{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
-
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
-
-<header class="header">
-
-    <div class="logo-area">
-        <div class="logo">J PROJECT</div>
-        <div class="logo-sub">Multi-Brand SCM Engine</div>
-    </div>
-
-    <div class="header-actions">
-        <button class="btn" onclick="openStyleModal()">+ Style 등록</button>
-    </div>
-
+<header>
+  <div>
+    <div class="brand-title">JPROJECT <span>Multi-Brand SCM Management</span></div>
+    <div class="muted">브랜드 → 시즌 → Style No. → 생산 Pipeline</div>
+  </div>
+  <button class="btn primary" onclick="openStyleModal()">+ 신규 Style 등록</button>
 </header>
 
-
-<main class="container">
-
-    <!-- =========================
-         BRAND / SEASON FILTER
-    ========================= -->
-
-    <div class="filter-area">
-
-        <span class="filter-label">BRAND</span>
-
-        <select id="brandFilter" onchange="renderDashboard()">
-            <option value="ALL">전체 브랜드</option>
-            <option value="SNOWYA">스노야</option>
-            <option value="MOVON">모브온</option>
-        </select>
-
-        <span class="filter-label">SEASON</span>
-
-        <select id="seasonFilter" onchange="renderDashboard()">
-            <option value="ALL">전체 시즌</option>
-            <option value="26SS">26SS</option>
-            <option value="26FW">26FW</option>
-            <option value="27SS">27SS</option>
-            <option value="27FW">27FW</option>
-        </select>
-
-    </div>
-
-
-    <!-- =========================
-         SUMMARY
-    ========================= -->
-
-    <div class="summary-grid">
-
-        <div class="summary-card">
-            <div class="summary-title">전체 STYLE</div>
-            <div class="summary-value" id="summaryTotal">0</div>
-            <div class="summary-desc">현재 선택 조건 기준</div>
-        </div>
-
-        <div class="summary-card">
-            <div class="summary-title">생산 진행중</div>
-            <div class="summary-value" id="summaryProgress">0</div>
-            <div class="summary-desc">현재 진행 중인 스타일</div>
-        </div>
-
-        <div class="summary-card">
-            <div class="summary-title">납기 임박</div>
-            <div class="summary-value" id="summaryDeadline">0</div>
-            <div class="summary-desc">D-7 이내</div>
-        </div>
-
-        <div class="summary-card">
-            <div class="summary-title">평균 진행률</div>
-            <div class="summary-value" id="summaryAverage">0%</div>
-            <div class="summary-desc">전체 스타일 평균</div>
-        </div>
-
-    </div>
-
-
-    <!-- =========================
-         STYLE BOARD
-    ========================= -->
-
-    <section class="section">
-
-        <div class="section-header">
-
-            <div>
-                <div class="section-title">Production Board</div>
-                <div class="section-desc">
-                    Style을 클릭하면 전체 생산 과정과 상세 정보를 확인할 수 있습니다.
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="table-wrap">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-                        <th>BRAND</th>
-                        <th>SEASON</th>
-                        <th>STYLE NO.</th>
-                        <th>상품명</th>
-                        <th>전체 진행률</th>
-                        <th>현재 단계</th>
-                        <th>최종 납기</th>
-                        <th>D-DAY</th>
-                    </tr>
-
-                </thead>
-
-                <tbody id="styleTableBody"></tbody>
-
-            </table>
-
-        </div>
-
-    </section>
-
-</main>
-
-
-<!-- =========================
-     STYLE MODAL
-========================= -->
-
-<div class="modal-overlay" id="styleModal">
-
-    <div class="modal">
-
-        <div class="modal-header">
-
-            <div class="modal-title">신규 Style 등록</div>
-
-            <button class="close-btn" onclick="closeStyleModal()">×</button>
-
-        </div>
-
-
-        <div class="modal-body">
-
-            <div class="form-grid">
-
-                <div class="form-group">
-
-                    <label class="form-label">브랜드</label>
-
-                    <select id="newBrand">
-                        <option value="SNOWYA">스노야</option>
-                        <option value="MOVON">모브온</option>
-                    </select>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label class="form-label">시즌</label>
-
-                    <select id="newSeason">
-                        <option value="26SS">26SS</option>
-                        <option value="26FW">26FW</option>
-                        <option value="27SS">27SS</option>
-                        <option value="27FW">27FW</option>
-                    </select>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label class="form-label">Style No.</label>
-
-                    <input id="newStyleNo" placeholder="예: ST26005">
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label class="form-label">상품명</label>
-
-                    <input id="newStyleName" placeholder="예: 쫀쫀슬림팬츠">
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label class="form-label">최종 납기일</label>
-
-                    <input type="date" id="newDeadline">
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label class="form-label">생산수량</label>
-
-                    <input type="number" id="newQuantity" placeholder="예: 10000">
-
-                </div>
-
-
-                <div class="form-group full">
-
-                    <label class="form-label">메모</label>
-
-                    <textarea id="newMemo" placeholder="생산 관련 메모"></textarea>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="modal-footer">
-
-            <button class="btn" onclick="closeStyleModal()">취소</button>
-
-            <button class="btn btn-primary" onclick="addStyle()">Style 등록</button>
-
-        </div>
-
-    </div>
-
+<div class="nav">
+  <button class="active" onclick="switchTab('dashboard',this)">Style 생산관제</button>
+  <button onclick="switchTab('master',this)">원사 · 원단 · 부자재</button>
+  <button onclick="switchTab('vendors',this)">업체 / 공장 기록</button>
 </div>
 
+<section id="dashboard" class="tab">
+  <div class="toolbar">
+    <label>브랜드</label><select id="brandFilter" onchange="render()"><option value="ALL">전체 브랜드</option><option>스노야</option><option>모브온</option></select>
+    <label>시즌</label><select id="seasonFilter" onchange="render()"><option value="ALL">전체 시즌</option><option>26SS</option><option>26FW</option><option>27SS</option><option>27FW</option></select>
+    <input id="search" placeholder="Style No. / 상품명 검색" oninput="render()" style="min-width:220px">
+  </div>
+  <div class="cards">
+    <div class="card"><div class="label">진행 Style</div><div class="num" id="countStyle">0</div></div>
+    <div class="card"><div class="label">전체 평균 진행률</div><div class="num" id="avgProgress">0%</div></div>
+    <div class="card"><div class="label">일정 임박 / 경과</div><div class="num" id="countDue">0</div></div>
+    <div class="card"><div class="label">등록된 자재 항목</div><div class="num" id="countMaterials">0</div></div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th></th><th>Style No.</th><th>상품명</th><th>브랜드</th><th>시즌</th><th>현재 단계</th><th>다음 일정</th><th>D-Day</th><th>전체 진행률</th></tr></thead>
+      <tbody id="styleBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="master" class="tab" style="display:none">
+  <div class="toolbar"><span style="font-weight:800;color:var(--navy)">자재 통합 기록</span><span class="muted">각 Style에 등록된 원사 / 원단 / 부자재를 한곳에서 확인합니다.</span></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Style</th><th>상품</th><th>원사</th><th>원단</th><th>부자재</th><th>최근 입고예정</th><th>진행률</th></tr></thead>
+    <tbody id="masterBody"></tbody>
+  </table></div>
+</section>
+
+<section id="vendors" class="tab" style="display:none">
+  <div class="toolbar"><span style="font-weight:800;color:var(--navy)">업체 / 공장 기록</span><span class="muted">현재 Style에 연결된 업체를 확인합니다. 향후 후보업체 Master로 확장합니다.</span></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Style</th><th>상품</th><th>원사 업체</th><th>원단 업체</th><th>부자재 업체</th><th>봉제공장</th><th>QC</th></tr></thead>
+    <tbody id="vendorBody"></tbody>
+  </table></div>
+</section>
+
+<div class="modal-bg" id="styleModal">
+ <div class="modal">
+  <div class="modal-head"><h3>신규 Style 등록</h3><button class="btn small" onclick="closeModal('styleModal')">닫기</button></div>
+  <div class="form2">
+   <div><label>브랜드</label><select id="mBrand"><option>스노야</option><option>모브온</option></select></div>
+   <div><label>시즌</label><select id="mSeason"><option>26SS</option><option>26FW</option><option>27SS</option><option>27FW</option></select></div>
+   <div><label>Style No.</label><input id="mStyle" placeholder="ST26001"></div>
+   <div><label>상품명</label><input id="mName" placeholder="쫀쫀슬림팬츠"></div>
+   <div><label>목표 생산수량</label><input id="mQty" placeholder="예: 10000"></div>
+   <div><label>완제품 목표 입고일</label><input id="mFinal" type="date"></div>
+   <div class="full"><label>봉제공장</label><input id="mSewing" placeholder="봉제공장명"></div>
+   <div class="full"><label>작업지시서 / 디자인 파일</label><input id="mFiles" type="file" multiple></div>
+   <div class="full"><label>메모</label><textarea id="mMemo" placeholder="생산 관련 기본 메모"></textarea></div>
+  </div>
+  <div class="modal-foot"><button class="btn" onclick="closeModal('styleModal')">취소</button><button class="btn primary" onclick="saveStyle()">등록</button></div>
+ </div>
+</div>
 
 <script>
-
-/* =========================================================
-   SAMPLE DATA
-========================================================= */
-
-let styles = [
-
-    {
-        id: 1,
-        brand: "SNOWYA",
-        season: "26SS",
-        styleNo: "ST26001",
-        name: "쫀쫀슬림팬츠",
-        quantity: 30000,
-        deadline: "2026-08-28",
-        memo: "기본 생산 스타일",
-
-        pipeline: [
-            { key:"sample", name:"샘플", status:"완료", date:"2026-07-25", progress:100 },
-            { key:"yarn", name:"원사", status:"완료", date:"2026-07-29", progress:100 },
-            { key:"fabric", name:"원단", status:"완료", date:"2026-08-02", progress:100 },
-            { key:"accessory", name:"부자재", status:"진행중", date:"2026-08-10", progress:75 },
-            { key:"knitting", name:"편직", status:"진행중", date:"2026-08-13", progress:65 },
-            { key:"processing", name:"가공", status:"대기", date:"2026-08-18", progress:0 },
-            { key:"sewing", name:"봉제", status:"대기", date:"2026-08-21", progress:0 },
-            { key:"qc", name:"QC", status:"대기", date:"2026-08-24", progress:0 },
-            { key:"forwarding", name:"포워딩", status:"대기", date:"2026-08-25", progress:0 },
-            { key:"customs", name:"통관", status:"대기", date:"2026-08-27", progress:0 },
-            { key:"warehouse", name:"입고", status:"대기", date:"2026-08-28", progress:0 }
-        ],
-
-        yarns: [
-            {
-                name:"원사 30/1 CVC",
-                supplier:"중국 ○○ Yarn",
-                quantity:"650 KG",
-                status:"입고완료",
-                date:"08/02"
-            }
-        ],
-
-        fabrics: [
-            {
-                name:"CVC 쫀쫀 원단",
-                supplier:"중국 ○○ Textile",
-                quantity:"1,200 KG",
-                status:"입고완료",
-                date:"08/02"
-            }
-        ],
-
-        accessories: [
-            {
-                name:"메인라벨",
-                supplier:"중국 ○○ Label",
-                quantity:"30,000 EA",
-                status:"입고완료",
-                date:"08/06"
-            },
-            {
-                name:"케어라벨",
-                supplier:"중국 ○○ Label",
-                quantity:"30,000 EA",
-                status:"생산중",
-                date:"08/12"
-            },
-            {
-                name:"행택",
-                supplier:"중국 ○○ Label",
-                quantity:"30,000 EA",
-                status:"발주완료",
-                date:"08/14"
-            },
-            {
-                name:"폴리백",
-                supplier:"중국 ○○ Packaging",
-                quantity:"30,000 EA",
-                status:"발주전",
-                date:"-"
-            }
-        ],
-
-        documents: [
-            { name:"ST26001_작업지시서.pdf", type:"작업지시서" },
-            { name:"ST26001_샘플_01.jpg", type:"샘플 이미지" },
-            { name:"중국봉제공장_계약서.pdf", type:"공장 계약서" }
-        ]
-    },
-
-
-    {
-        id: 2,
-        brand: "SNOWYA",
-        season: "26SS",
-        styleNo: "ST26002",
-        name: "데일리와이드팬츠",
-        quantity: 20000,
-        deadline: "2026-08-22",
-        memo: "",
-
-        pipeline: [
-            { key:"sample", name:"샘플", status:"완료", date:"2026-07-26", progress:100 },
-            { key:"yarn", name:"원사", status:"완료", date:"2026-07-30", progress:100 },
-            { key:"fabric", name:"원단", status:"진행중", date:"2026-08-13", progress:60 },
-            { key:"accessory", name:"부자재", status:"진행중", date:"2026-08-12", progress:60 },
-            { key:"knitting", name:"편직", status:"대기", date:"2026-08-15", progress:0 },
-            { key:"processing", name:"가공", status:"대기", date:"2026-08-17", progress:0 },
-            { key:"sewing", name:"봉제", status:"대기", date:"2026-08-19", progress:0 },
-            { key:"qc", name:"QC", status:"대기", date:"2026-08-20", progress:0 },
-            { key:"forwarding", name:"포워딩", status:"대기", date:"2026-08-21", progress:0 },
-            { key:"customs", name:"통관", status:"대기", date:"2026-08-22", progress:0 },
-            { key:"warehouse", name:"입고", status:"대기", date:"2026-08-22", progress:0 }
-        ],
-
-        yarns: [],
-        fabrics: [
-            {
-                name:"NYLON 40D",
-                supplier:"중국 ○○ Textile",
-                quantity:"900 KG",
-                status:"생산중",
-                date:"08/13"
-            }
-        ],
-
-        accessories: [
-            {
-                name:"메인라벨",
-                supplier:"중국 ○○ Label",
-                quantity:"20,000 EA",
-                status:"입고완료",
-                date:"08/05"
-            },
-            {
-                name:"케어라벨",
-                supplier:"중국 ○○ Label",
-                quantity:"20,000 EA",
-                status:"생산중",
-                date:"08/12"
-            }
-        ],
-
-        documents: [
-            { name:"ST26002_작업지시서.pdf", type:"작업지시서" }
-        ]
-    },
-
-
-    {
-        id: 3,
-        brand: "MOVON",
-        season: "26SS",
-        styleNo: "MV26001",
-        name: "모브온 베이직팬츠",
-        quantity: 10000,
-        deadline: "2026-09-05",
-        memo: "",
-
-        pipeline: [
-            { key:"sample", name:"샘플", status:"완료", date:"2026-08-02", progress:100 },
-            { key:"yarn", name:"원사", status:"진행중", date:"2026-08-12", progress:70 },
-            { key:"fabric", name:"원단", status:"대기", date:"2026-08-18", progress:0 },
-            { key:"accessory", name:"부자재", status:"대기", date:"2026-08-20", progress:0 },
-            { key:"knitting", name:"편직", status:"대기", date:"2026-08-24", progress:0 },
-            { key:"processing", name:"가공", status:"대기", date:"2026-08-27", progress:0 },
-            { key:"sewing", name:"봉제", status:"대기", date:"2026-08-30", progress:0 },
-            { key:"qc", name:"QC", status:"대기", date:"2026-09-02", progress:0 },
-            { key:"forwarding", name:"포워딩", status:"대기", date:"2026-09-03", progress:0 },
-            { key:"customs", name:"통관", status:"대기", date:"2026-09-04", progress:0 },
-            { key:"warehouse", name:"입고", status:"대기", date:"2026-09-05", progress:0 }
-        ],
-
-        yarns: [
-            {
-                name:"40/1 COTTON",
-                supplier:"중국 ○○ Yarn",
-                quantity:"300 KG",
-                status:"생산중",
-                date:"08/12"
-            }
-        ],
-
-        fabrics: [],
-        accessories: [],
-
-        documents: [
-            { name:"MV26001_작업지시서.pdf", type:"작업지시서" }
-        ]
-    }
-
+const KEY='jproject_scm_v1';
+const STEPS=[
+ {id:'sample',name:'샘플'},
+ {id:'yarn',name:'원사'},
+ {id:'fabric',name:'원단'},
+ {id:'trim',name:'부자재'},
+ {id:'knit',name:'편직'},
+ {id:'process',name:'가공'},
+ {id:'sewing',name:'봉제'},
+ {id:'qc',name:'QC'},
+ {id:'forward',name:'포워딩'},
+ {id:'customs',name:'통관'},
+ {id:'warehouse',name:'창고입고'}
 ];
 
+const demo=[
+ {id:'ST26001',name:'쫀쫀슬림팬츠',brand:'스노야',season:'26SS',qty:'10000',final:'2026-10-15',sewing:'중국 봉제공장 A',memo:'초도 샘플 진행',files:[],active:'sample',
+  materials:{
+   yarn:[{name:'폴리/레이온 원사',supplier:'중국 원사 A',color:'블랙',qty:'500kg',order:'2026-08-12',pay:'',prod:'',due:'2026-08-25',received:'',memo:''}],
+   fabric:[{name:'스판 혼방 원단',supplier:'중국 원단 A',color:'블랙',qty:'1500m',order:'2026-08-12',pay:'',prod:'',due:'2026-08-30',received:'',memo:''}],
+   trim:[{name:'메인라벨',supplier:'라벨업체 A',spec:'직조라벨',color:'블랙/화이트',qty:'20000EA',order:'2026-08-12',pay:'',prod:'',due:'2026-08-20',received:'',memo:''},{name:'YKK 지퍼',supplier:'부자재업체 A',spec:'지퍼 5호',color:'블랙',qty:'10000EA',order:'2026-08-13',pay:'',prod:'',due:'2026-08-23',received:'',memo:''}]
+  },
+  steps:{sample:{status:'진행중',vendor:'샘플 봉제공장',due:'2026-08-18',memo:'1차 샘플 확인 예정'},yarn:{status:'발주완료',vendor:'중국 원사 A',due:'2026-08-25',memo:''},fabric:{status:'발주완료',vendor:'중국 원단 A',due:'2026-08-30',memo:''},trim:{status:'진행중',vendor:'복수 업체',due:'2026-08-23',memo:''},knit:{status:'대기',vendor:'',due:'',memo:''},process:{status:'대기',vendor:'',due:'',memo:''},sewing:{status:'대기',vendor:'중국 봉제공장 A',due:'2026-09-25',memo:''},qc:{status:'대기',vendor:'QC 업체',due:'2026-10-01',memo:''},forward:{status:'대기',vendor:'포워딩사',due:'2026-10-05',memo:''},customs:{status:'대기',vendor:'관세사/통관',due:'2026-10-12',memo:''},warehouse:{status:'대기',vendor:'지정창고',due:'2026-10-15',memo:''}}
+ },
+ {id:'ST26002',name:'와이드슬랙스',brand:'스노야',season:'26FW',qty:'8000',final:'2026-11-05',sewing:'중국 봉제공장 B',memo:'',files:[],active:'fabric',
+  materials:{yarn:[],fabric:[],trim:[]},steps:{}
+ }
+];
 
-/* =========================================================
-   CURRENT STATE
-========================================================= */
-
-let selectedStyleId = null;
-
-
-/* =========================================================
-   DATE FUNCTIONS
-========================================================= */
-
-function getDDay(dateString) {
-
-    if (!dateString) return "-";
-
-    const today = new Date();
-    today.setHours(0,0,0,0);
-
-    const target = new Date(dateString);
-    target.setHours(0,0,0,0);
-
-    const diff = target - today;
-    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-
-    if (days > 0) return "D-" + days;
-    if (days === 0) return "D-DAY";
-    return "D+" + Math.abs(days);
+function seed(){
+ let raw=localStorage.getItem(KEY);
+ if(!raw){localStorage.setItem(KEY,JSON.stringify(demo));return JSON.parse(JSON.stringify(demo))}
+ return JSON.parse(raw);
 }
-
-
-function formatDate(dateString) {
-
-    if (!dateString) return "-";
-
-    const date = new Date(dateString);
-
-    if (isNaN(date.getTime())) return dateString;
-
-    return date.getFullYear() + "." +
-        String(date.getMonth()+1).padStart(2,"0") + "." +
-        String(date.getDate()).padStart(2,"0");
+function db(){return seed()}
+function save(data){localStorage.setItem(KEY,JSON.stringify(data))}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function dday(date){
+ if(!date)return {text:'-',n:999};
+ let a=new Date();a.setHours(0,0,0,0);let b=new Date(date);b.setHours(0,0,0,0);
+ let n=Math.ceil((b-a)/86400000);
+ return {text:n===0?'D-Day':n<0?'D+'+Math.abs(n):'D-'+n,n};
 }
-
-
-/* =========================================================
-   PROGRESS
-========================================================= */
-
-function getStyleProgress(style) {
-
-    if (!style.pipeline || style.pipeline.length === 0) return 0;
-
-    const total = style.pipeline.reduce((sum, step) => {
-        return sum + Number(step.progress || 0);
-    }, 0);
-
-    return Math.round(total / style.pipeline.length);
+function allMaterials(s){return [...(s.materials?.yarn||[]),...(s.materials?.fabric||[]),...(s.materials?.trim||[])]}
+function progress(s){
+ let statuses=STEPS.map(x=>s.steps?.[x.id]?.status||'대기');
+ let done=statuses.filter(x=>x==='완료').length;
+ return Math.round(done/STEPS.length*100);
 }
-
-
-function getCurrentStep(style) {
-
-    if (!style.pipeline) return "-";
-
-    const active = style.pipeline.find(step => {
-        return Number(step.progress) > 0 && Number(step.progress) < 100;
-    });
-
-    if (active) return active.name;
-
-    const waiting = style.pipeline.find(step => {
-        return Number(step.progress) === 0;
-    });
-
-    if (waiting) return waiting.name + " 대기";
-
-    return "완료";
+function currentStep(s){
+ let p=STEPS.find(x=>(s.steps?.[x.id]?.status||'대기')!=='완료');
+ return p||STEPS[STEPS.length-1];
 }
-
-
-/* =========================================================
-   DASHBOARD
-========================================================= */
-
-function renderDashboard() {
-
-    const brand = document.getElementById("brandFilter").value;
-    const season = document.getElementById("seasonFilter").value;
-
-    let filtered = styles.filter(style => {
-
-        const brandMatch =
-            brand === "ALL" || style.brand === brand;
-
-        const seasonMatch =
-            season === "ALL" || style.season === season;
-
-        return brandMatch && seasonMatch;
-    });
-
-
-    const tbody = document.getElementById("styleTableBody");
-
-    tbody.innerHTML = "";
-
-
-    if (filtered.length === 0) {
-
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="8">
-                    <div class="empty">
-                        등록된 Style이 없습니다.
-                    </div>
-                </td>
-            </tr>
-        `;
-
-    } else {
-
-        filtered.forEach(style => {
-
-            const progress = getStyleProgress(style);
-            const currentStep = getCurrentStep(style);
-            const dday = getDDay(style.deadline);
-
-            const tr = document.createElement("tr");
-
-            tr.className = "style-row";
-
-            tr.innerHTML = `
-
-                <td>
-                    <div class="brand-text">
-                        ${style.brand === "SNOWYA" ? "스노야" : "모브온"}
-                    </div>
-                </td>
-
-                <td>
-                    ${style.season}
-                </td>
-
-                <td>
-                    <span class="style-number">
-                        ${style.styleNo}
-                    </span>
-                </td>
-
-                <td>
-                    <span class="style-name">
-                        ${style.name}
-                    </span>
-                </td>
-
-                <td>
-
-                    <div class="progress-box">
-
-                        <div class="progress-top">
-
-                            <span class="progress-percent">
-                                ${progress}%
-                            </span>
-
-                        </div>
-
-                        <div class="progress-bar">
-
-                            <div
-                                class="progress-fill"
-                                style="width:${progress}%">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </td>
-
-                <td>
-                    <span class="status-text">
-                        ${currentStep}
-                    </span>
-                </td>
-
-                <td>
-                    <span class="deadline">
-                        ${formatDate(style.deadline)}
-                    </span>
-                </td>
-
-                <td>
-                    <div class="d-day ${
-                        dday.startsWith("D+")
-                        ? "overdue"
-                        : ""
-                    }">
-                        ${dday}
-                    </div>
-                </td>
-
-            `;
-
-
-            tr.addEventListener("click", () => {
-
-                openStyleDetail(style.id);
-
-            });
-
-
-            tbody.appendChild(tr);
-
-
-            if (selectedStyleId === style.id) {
-
-                const detailRow = document.createElement("tr");
-
-                detailRow.innerHTML = `
-                    <td colspan="8" style="padding:0;">
-                        ${buildDetailPanel(style)}
-                    </td>
-                `;
-
-                tbody.appendChild(detailRow);
-
-            }
-
-        });
-
-    }
-
-
-    updateSummary(filtered);
-
+function nextDate(s){
+ let dates=[];
+ allMaterials(s).forEach(x=>{if(x.due&&!x.received)dates.push(x.due)});
+ STEPS.forEach(x=>{let z=s.steps?.[x.id];if(z?.due&&z.status!=='완료')dates.push(z.due)});
+ if(s.final)dates.push(s.final);
+ dates=dates.filter(Boolean).sort();
+ return dates[0]||'-';
 }
-
-
-/* =========================================================
-   SUMMARY
-========================================================= */
-
-function updateSummary(list) {
-
-    document.getElementById("summaryTotal").textContent =
-        list.length;
-
-
-    document.getElementById("summaryProgress").textContent =
-        list.filter(style => {
-
-            const progress = getStyleProgress(style);
-
-            return progress > 0 && progress < 100;
-
-        }).length;
-
-
-    document.getElementById("summaryDeadline").textContent =
-        list.filter(style => {
-
-            const dday = getDDay(style.deadline);
-
-            if (!dday.startsWith("D-")) return false;
-
-            const days = Number(dday.replace("D-", ""));
-
-            return days <= 7;
-
-        }).length;
-
-
-    if (list.length === 0) {
-
-        document.getElementById("summaryAverage").textContent =
-            "0%";
-
-    } else {
-
-        const avg =
-            list.reduce((sum, style) => {
-
-                return sum + getStyleProgress(style);
-
-            }, 0) / list.length;
-
-        document.getElementById("summaryAverage").textContent =
-            Math.round(avg) + "%";
-
-    }
-
+function filtered(){
+ let data=db(), b=document.getElementById('brandFilter').value, se=document.getElementById('seasonFilter').value, q=document.getElementById('search').value.toLowerCase().trim();
+ return data.filter(s=>(b==='ALL'||s.brand===b)&&(se==='ALL'||s.season===se)&&(!q||s.id.toLowerCase().includes(q)||s.name.toLowerCase().includes(q)));
 }
-
-
-/* =========================================================
-   DETAIL PANEL
-========================================================= */
-
-function buildDetailPanel(style) {
-
-    const progress = getStyleProgress(style);
-
-    return `
-
-        <div class="detail-panel active">
-
-            <div class="detail-header">
-
-                <div>
-
-                    <div class="detail-title">
-                        ${style.styleNo} · ${style.name}
-                    </div>
-
-                    <div class="detail-subtitle">
-                        ${
-                            style.brand === "SNOWYA"
-                            ? "스노야"
-                            : "모브온"
-                        }
-                        · ${style.season}
-                        · 생산수량 ${Number(style.quantity || 0).toLocaleString()} EA
-                    </div>
-
-                </div>
-
-
-                <div class="detail-deadline">
-
-                    <div class="detail-deadline-label">
-                        최종 납기
-                    </div>
-
-                    <div class="detail-deadline-date">
-                        ${formatDate(style.deadline)}
-                    </div>
-
-                    <div class="detail-dday">
-                        ${getDDay(style.deadline)}
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-progress">
-
-                <div class="detail-progress-header">
-
-                    <div class="detail-progress-title">
-                        전체 생산 진행률
-                    </div>
-
-                    <div class="detail-progress-number">
-                        ${progress}%
-                    </div>
-
-                </div>
-
-
-                <div class="progress-bar large-progress">
-
-                    <div
-                        class="progress-fill"
-                        style="width:${progress}%">
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="pipeline">
-
-                ${style.pipeline.map((step,index) => `
-
-                    <div
-                        class="pipeline-step ${
-                            step.progress > 0 &&
-                            step.progress < 100
-                            ? "active"
-                            : ""
-                        }"
-                        onclick="showStepDetail(
-                            ${style.id},
-                            ${index}
-                        ); event.stopPropagation();"
-                    >
-
-                        <div class="pipeline-name">
-                            ${step.name}
-                        </div>
-
-                        <div class="pipeline-status">
-                            ${step.status}
-                        </div>
-
-                        <div class="pipeline-date">
-                            ${formatDate(step.date)}
-                        </div>
-
-                    </div>
-
-                `).join("")}
-
-            </div>
-
-
-            <div
-                id="stepDetail-${style.id}"
-                class="detail-content"
-            >
-
-                ${buildDefaultDetail(style)}
-
-            </div>
-
-        </div>
-
-    `;
-
+function render(){
+ let data=filtered(), body=document.getElementById('styleBody');body.innerHTML='';
+ let due=0,totalMat=0,sum=0;
+ data.forEach(s=>{
+  totalMat+=allMaterials(s).length;let p=progress(s);sum+=p;let nd=nextDate(s), d=dday(nd);if(d.n<=3)due++;
+  let open=window.opened===s.id, cur=currentStep(s);
+  body.insertAdjacentHTML('beforeend',`
+   <tr class="main-row ${open?'open':''}" onclick="toggleStyle('${esc(s.id)}')">
+    <td>${open?'▲':'▼'}</td><td><b>${esc(s.id)}</b></td><td><b>${esc(s.name)}</b></td>
+    <td><span class="badge blue">${esc(s.brand)}</span></td><td>${esc(s.season)}</td>
+    <td>${esc(cur.name)}</td><td>${esc(nd)}</td><td><span class="dday ${d.n<=3?'over':''}">${esc(d.text)}</span></td>
+    <td><div class="progress"><div class="bar"><div class="fill" style="width:${p}%"></div></div><span class="pct">${p}%</span></div></td>
+   </tr>
+   <tr class="detail-row ${open?'open':''}"><td colspan="9">${open?detailHtml(s):''}</td></tr>`);
+ });
+ document.getElementById('countStyle').textContent=data.length;
+ document.getElementById('avgProgress').textContent=(data.length?Math.round(sum/data.length):0)+'%';
+ document.getElementById('countDue').textContent=due;
+ document.getElementById('countMaterials').textContent=totalMat;
+ renderMaster(data);renderVendors(data);
 }
-
-
-/* =========================================================
-   DEFAULT DETAIL
-========================================================= */
-
-function buildDefaultDetail(style) {
-
-    return `
-
-        <div class="detail-card">
-
-            <div class="detail-card-title">
-                생산 기본 정보
-            </div>
-
-            <div class="info-grid">
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        브랜드
-                    </div>
-
-                    <div class="info-value">
-                        ${
-                            style.brand === "SNOWYA"
-                            ? "스노야"
-                            : "모브온"
-                        }
-                    </div>
-
-                </div>
-
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        시즌
-                    </div>
-
-                    <div class="info-value">
-                        ${style.season}
-                    </div>
-
-                </div>
-
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        Style No.
-                    </div>
-
-                    <div class="info-value">
-                        ${style.styleNo}
-                    </div>
-
-                </div>
-
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        생산수량
-                    </div>
-
-                    <div class="info-value">
-                        ${Number(style.quantity || 0).toLocaleString()} EA
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="detail-card">
-
-            <div class="detail-card-title">
-                등록 문서
-            </div>
-
-            <div class="document-list">
-
-                ${
-                    style.documents && style.documents.length
-                    ? style.documents.map(doc => `
-
-                        <div class="document-item">
-
-                            <div>
-
-                                <div class="document-name">
-                                    ${doc.name}
-                                </div>
-
-                                <div class="document-type">
-                                    ${doc.type}
-                                </div>
-
-                            </div>
-
-                            <button
-                                class="btn"
-                                onclick="event.stopPropagation();"
-                            >
-                                확인
-                            </button>
-
-                        </div>
-
-                    `).join("")
-                    :
-                    `
-                        <div class="empty">
-                            등록된 문서가 없습니다.
-                        </div>
-                    `
-                }
-
-            </div>
-
-        </div>
-
-    `;
-
+function toggleStyle(id){window.opened=window.opened===id?null:id;render()}
+function detailHtml(s){
+ let p=progress(s), cur=currentStep(s);
+ return `<div class="detail">
+  <div class="detail-head"><div><div class="detail-title">${esc(s.brand)} / ${esc(s.season)} / ${esc(s.id)} · ${esc(s.name)}</div><div class="muted">목표수량 ${esc(s.qty||'-')} · 완제품 목표입고 ${esc(s.final||'-')} · 봉제 ${esc(s.sewing||'-')}</div></div>
+   <button class="btn small danger" onclick="event.stopPropagation();deleteStyle('${esc(s.id)}')">Style 삭제</button></div>
+  <div class="progress" style="max-width:350px;margin-bottom:12px"><div class="bar"><div class="fill" style="width:${p}%"></div></div><b>${p}%</b></div>
+  <div class="pipeline">${STEPS.map(x=>{let z=s.steps?.[x.id]||{status:'대기'};return `<div class="step click ${z.status==='완료'?'done':''} ${x.id===cur.id?'current':''}" onclick="event.stopPropagation();selectStep('${esc(s.id)}','${x.id}')"><div class="sname">${esc(x.name)}</div><div class="sstatus">${esc(z.status)}</div>${z.due?`<div class="muted">${esc(dday(z.due).text)}</div>`:''}</div>`}).join('')}</div>
+  <div class="detail-grid">
+   <div class="panel"><h4>선택 공정 상세 · ${esc(cur.name)}</h4>${stepPanel(s,cur.id)}</div>
+   <div class="panel"><div class="section-actions"><h4 style="margin:0">프로젝트 파일 / 기본정보</h4><span class="muted">파일명은 기록용으로 저장됩니다.</span></div>
+    <div class="form-grid">
+      <div class="form-field"><label>봉제공장</label><input value="${esc(s.sewing||'')}" onchange="updateStyle('${esc(s.id)}','sewing',this.value)"></div>
+      <div class="form-field"><label>목표수량</label><input value="${esc(s.qty||'')}" onchange="updateStyle('${esc(s.id)}','qty',this.value)"></div>
+      <div class="form-field"><label>완제품 목표입고</label><input type="date" value="${esc(s.final||'')}" onchange="updateStyle('${esc(s.id)}','final',this.value)"></div>
+    </div>
+    <div class="add-box"><label style="font-size:11px;font-weight:700">작업지시서 / 디자인 / 샘플 이미지 파일 추가</label><input type="file" multiple onchange="addFiles('${esc(s.id)}',this.files)"><div class="file-list">${(s.files||[]).map((f,i)=>`<span class="file-chip">${esc(f)}</span>`).join('')}</div></div>
+    <div style="margin-top:10px"><label style="font-size:11px;font-weight:700">프로젝트 메모</label><textarea onchange="updateStyle('${esc(s.id)}','memo',this.value)">${esc(s.memo||'')}</textarea></div>
+   </div>
+  </div>
+  <div class="detail-grid" style="margin-top:12px">${materialPanel(s,'yarn','원사')} ${materialPanel(s,'fabric','원단')}</div>
+  <div class="panel" style="margin-top:12px">${materialPanel(s,'trim','부자재')}</div>
+ </div>`;
 }
-
-
-/* =========================================================
-   STEP DETAIL
-========================================================= */
-
-function showStepDetail(styleId, stepIndex) {
-
-    const style =
-        styles.find(item => item.id === styleId);
-
-    if (!style) return;
-
-    const step =
-        style.pipeline[stepIndex];
-
-    const container =
-        document.getElementById("stepDetail-" + styleId);
-
-    if (!container) return;
-
-
-    let content = "";
-
-
-    /* =========================
-       YARN
-    ========================= */
-
-    if (step.key === "yarn") {
-
-        content = `
-
-            <div class="detail-card">
-
-                <div class="detail-card-title">
-                    원사 상세
-                </div>
-
-                <div class="material-list">
-
-                    ${
-                        style.yarns.length
-                        ?
-                        style.yarns.map(item => `
-
-                            <div class="material-item">
-
-                                <div>
-
-                                    <div class="material-name">
-                                        ${item.name}
-                                    </div>
-
-                                    <div class="material-meta">
-                                        ${item.supplier}
-                                    </div>
-
-                                </div>
-
-                                <div class="material-meta">
-                                    ${item.quantity}
-                                </div>
-
-                                <div class="material-status">
-                                    ${item.status}
-                                </div>
-
-                                <div class="material-meta">
-                                    ${item.date}
-                                </div>
-
-                            </div>
-
-                        `).join("")
-                        :
-                        `<div class="empty">등록된 원사가 없습니다.</div>`
-                    }
-
-                </div>
-
-            </div>
-
-
-            ${buildProcessInfo(step)}
-
-        `;
-
-    }
-
-
-    /* =========================
-       FABRIC
-    ========================= */
-
-    else if (step.key === "fabric") {
-
-        content = `
-
-            <div class="detail-card">
-
-                <div class="detail-card-title">
-                    원단 상세
-                </div>
-
-                <div class="material-list">
-
-                    ${
-                        style.fabrics.length
-                        ?
-                        style.fabrics.map(item => `
-
-                            <div class="material-item">
-
-                                <div>
-
-                                    <div class="material-name">
-                                        ${item.name}
-                                    </div>
-
-                                    <div class="material-meta">
-                                        ${item.supplier}
-                                    </div>
-
-                                </div>
-
-                                <div class="material-meta">
-                                    ${item.quantity}
-                                </div>
-
-                                <div class="material-status">
-                                    ${item.status}
-                                </div>
-
-                                <div class="material-meta">
-                                    ${item.date}
-                                </div>
-
-                            </div>
-
-                        `).join("")
-                        :
-                        `<div class="empty">등록된 원단이 없습니다.</div>`
-                    }
-
-                </div>
-
-            </div>
-
-
-            ${buildProcessInfo(step)}
-
-        `;
-
-    }
-
-
-    /* =========================
-       ACCESSORY
-    ========================= */
-
-    else if (step.key === "accessory") {
-
-        content = `
-
-            <div class="detail-card">
-
-                <div class="detail-card-title">
-                    부자재 상세
-                </div>
-
-                <div class="material-list">
-
-                    ${
-                        style.accessories.length
-                        ?
-                        style.accessories.map(item => `
-
-                            <div class="material-item">
-
-                                <div>
-
-                                    <div class="material-name">
-                                        ${item.name}
-                                    </div>
-
-                                    <div class="material-meta">
-                                        ${item.supplier}
-                                    </div>
-
-                                </div>
-
-                                <div class="material-meta">
-                                    ${item.quantity}
-                                </div>
-
-                                <div class="material-status">
-                                    ${item.status}
-                                </div>
-
-                                <div class="material-meta">
-                                    ${item.date}
-                                </div>
-
-                            </div>
-
-                        `).join("")
-                        :
-                        `<div class="empty">등록된 부자재가 없습니다.</div>`
-                    }
-
-                </div>
-
-            </div>
-
-
-            ${buildProcessInfo(step)}
-
-        `;
-
-    }
-
-
-    /* =========================
-       OTHER PROCESS
-    ========================= */
-
-    else {
-
-        content = `
-
-            <div class="detail-card">
-
-                <div class="detail-card-title">
-                    ${step.name} 진행 상세
-                </div>
-
-                <div class="info-grid">
-
-                    <div class="info-item">
-
-                        <div class="info-label">
-                            현재 상태
-                        </div>
-
-                        <div class="info-value">
-                            ${step.status}
-                        </div>
-
-                    </div>
-
-
-                    <div class="info-item">
-
-                        <div class="info-label">
-                            예정일
-                        </div>
-
-                        <div class="info-value">
-                            ${formatDate(step.date)}
-                        </div>
-
-                    </div>
-
-
-                    <div class="info-item">
-
-                        <div class="info-label">
-                            현재 진행률
-                        </div>
-
-                        <div class="info-value">
-                            ${step.progress}%
-                        </div>
-
-                    </div>
-
-
-                    <div class="info-item">
-
-                        <div class="info-label">
-                            남은 기간
-                        </div>
-
-                        <div class="info-value">
-                            ${getDDay(step.date)}
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            ${buildProcessInfo(step)}
-
-        `;
-
-    }
-
-
-    container.innerHTML = content;
-
+function stepPanel(s,id){
+ let z=s.steps?.[id]||{status:'대기',vendor:'',due:'',memo:''};
+ return `<div class="form-grid">
+ <div class="form-field"><label>상태</label><select onchange="updateStep('${esc(s.id)}','${id}','status',this.value)"><option ${z.status==='대기'?'selected':''}>대기</option><option ${z.status==='진행중'?'selected':''}>진행중</option><option ${z.status==='발주완료'?'selected':''}>발주완료</option><option ${z.status==='완료'?'selected':''}>완료</option></select></div>
+ <div class="form-field"><label>업체 / 담당</label><input value="${esc(z.vendor||'')}" onchange="updateStep('${esc(s.id)}','${id}','vendor',this.value)"></div>
+ <div class="form-field"><label>완료 목표일</label><input type="date" value="${esc(z.due||'')}" onchange="updateStep('${esc(s.id)}','${id}','due',this.value)"></div>
+ </div><div style="margin-top:10px"><div class="form-field"><label>공정 메모</label><textarea onchange="updateStep('${esc(s.id)}','${id}','memo',this.value)">${esc(z.memo||'')}</textarea></div></div>`;
 }
-
-
-/* =========================================================
-   PROCESS INFO
-========================================================= */
-
-function buildProcessInfo(step) {
-
-    return `
-
-        <div class="detail-card">
-
-            <div class="detail-card-title">
-                일정 및 진행 정보
-            </div>
-
-            <div class="info-grid">
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        상태
-                    </div>
-
-                    <div class="info-value">
-                        ${step.status}
-                    </div>
-
-                </div>
-
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        진행률
-                    </div>
-
-                    <div class="info-value">
-                        ${step.progress}%
-                    </div>
-
-                </div>
-
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        예정일
-                    </div>
-
-                    <div class="info-value">
-                        ${formatDate(step.date)}
-                    </div>
-
-                </div>
-
-
-                <div class="info-item">
-
-                    <div class="info-label">
-                        D-DAY
-                    </div>
-
-                    <div class="info-value">
-                        ${getDDay(step.date)}
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    `;
-
+function materialPanel(s,type,title){
+ let arr=s.materials?.[type]||[];
+ return `<div class="panel"><div class="section-actions"><h4>${title} 기록 <span class="badge blue">${arr.length}건</span></h4><button class="btn small" onclick="event.stopPropagation();addMaterial('${esc(s.id)}','${type}')">+ ${title} 추가</button></div>
+ <div class="table-wrap" style="border-radius:6px"><table class="list-table"><thead><tr><th>명칭</th><th>업체</th><th>사양/색상</th><th>수량</th><th>발주일</th><th>입고예정</th><th>D-Day</th><th>입고</th><th></th></tr></thead><tbody>
+ ${arr.length?arr.map((x,i)=>`<tr><td>${esc(x.name)}</td><td>${esc(x.supplier)}</td><td>${esc(x.spec||x.color||'-')}</td><td>${esc(x.qty)}</td><td>${esc(x.order||'-')}</td><td>${esc(x.due||'-')}</td><td>${x.received?'입고완료':esc(dday(x.due).text)}</td><td><input type="date" value="${esc(x.received||'')}" onchange="updateMaterial('${esc(s.id)}','${type}',${i},'received',this.value)"></td><td><button class="btn small danger" onclick="event.stopPropagation();deleteMaterial('${esc(s.id)}','${type}',${i})">삭제</button></td></tr>`).join(''):`<tr><td colspan="9" class="empty">등록된 ${title}이 없습니다.</td></tr>`}
+ </tbody></table></div></div>`;
 }
-
-
-/* =========================================================
-   OPEN STYLE
-========================================================= */
-
-function openStyleDetail(styleId) {
-
-    if (selectedStyleId === styleId) {
-
-        selectedStyleId = null;
-
-    } else {
-
-        selectedStyleId = styleId;
-
-    }
-
-    renderDashboard();
-
+function addMaterial(id,type){
+ let s=db().find(x=>x.id===id);let title={yarn:'원사',fabric:'원단',trim:'부자재'}[type];
+ let name=prompt(`${title} 명칭을 입력하세요.`);if(!name)return;
+ let supplier=prompt('업체명을 입력하세요.')||'';
+ let qty=prompt('수량 / 단위를 입력하세요.')||'';
+ let due=prompt('입고예정일을 YYYY-MM-DD 형식으로 입력하세요.')||'';
+ let spec=prompt('사양 / 색상을 입력하세요.')||'';
+ let data=db(),t=data.find(x=>x.id===id);if(!t.materials)t.materials={yarn:[],fabric:[],trim:[]};
+ t.materials[type].push({name,supplier,qty,due,spec,order:new Date().toISOString().slice(0,10),pay:'',prod:'',received:'',memo:''});
+ save(data);render();
 }
-
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-function openStyleModal() {
-
-    document
-        .getElementById("styleModal")
-        .classList.add("active");
-
+function updateMaterial(id,type,i,key,val){let data=db(),s=data.find(x=>x.id===id);if(s){s.materials[type][i][key]=val;save(data);render()}}
+function deleteMaterial(id,type,i){if(!confirm('이 항목을 삭제할까요?'))return;let data=db(),s=data.find(x=>x.id===id);s.materials[type].splice(i,1);save(data);render()}
+function selectStep(id,step){let data=db(),s=data.find(x=>x.id===id);if(s){s.active=step;save(data);render();}}
+function updateStep(id,step,key,val){let data=db(),s=data.find(x=>x.id===id);if(s){if(!s.steps)s.steps={};if(!s.steps[step])s.steps[step]={status:'대기'};s.steps[step][key]=val;save(data);render()}}
+function updateStyle(id,key,val){let data=db(),s=data.find(x=>x.id===id);if(s){s[key]=val;save(data);render()}}
+function addFiles(id,files){let data=db(),s=data.find(x=>x.id===id);if(s){if(!s.files)s.files=[];[...files].forEach(f=>s.files.push(f.name));save(data);render()}}
+function saveStyle(){
+ let id=document.getElementById('mStyle').value.trim(),name=document.getElementById('mName').value.trim();if(!id||!name){alert('Style No.와 상품명을 입력하세요.');return}
+ let data=db();if(data.some(x=>x.id===id)){alert('이미 존재하는 Style No.입니다.');return}
+ data.push({id,name,brand:document.getElementById('mBrand').value,season:document.getElementById('mSeason').value,qty:document.getElementById('mQty').value,final:document.getElementById('mFinal').value,sewing:document.getElementById('mSewing').value,memo:document.getElementById('mMemo').value,files:[...document.getElementById('mFiles').files].map(f=>f.name),materials:{yarn:[],fabric:[],trim:[]},steps:{},active:'sample'});
+ save(data);closeModal('styleModal');document.querySelectorAll('#styleModal input,#styleModal textarea').forEach(x=>x.value='');window.opened=id;render();
 }
-
-
-function closeStyleModal() {
-
-    document
-        .getElementById("styleModal")
-        .classList.remove("active");
-
+function deleteStyle(id){if(!confirm('정말 이 Style 전체 기록을 삭제할까요?'))return;let data=db().filter(x=>x.id!==id);save(data);window.opened=null;render()}
+function openStyleModal(){document.getElementById('styleModal').classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function switchTab(id,btn){document.querySelectorAll('.tab').forEach(x=>x.style.display='none');document.getElementById(id).style.display='block';document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');if(id!=='dashboard')window.opened=null}
+function renderMaster(data){
+ document.getElementById('masterBody').innerHTML=data.map(s=>`<tr><td><b>${esc(s.id)}</b></td><td>${esc(s.name)}</td><td>${s.materials?.yarn?.length||0}건</td><td>${s.materials?.fabric?.length||0}건</td><td>${s.materials?.trim?.length||0}건</td><td>${esc(nextDate(s))}</td><td>${progress(s)}%</td></tr>`).join('')||'<tr><td colspan="7" class="empty">데이터가 없습니다.</td></tr>';
 }
-
-
-/* =========================================================
-   ADD STYLE
-========================================================= */
-
-function addStyle() {
-
-    const brand =
-        document.getElementById("newBrand").value;
-
-    const season =
-        document.getElementById("newSeason").value;
-
-    const styleNo =
-        document.getElementById("newStyleNo").value.trim();
-
-    const name =
-        document.getElementById("newStyleName").value.trim();
-
-    const deadline =
-        document.getElementById("newDeadline").value;
-
-    const quantity =
-        Number(
-            document.getElementById("newQuantity").value || 0
-        );
-
-    const memo =
-        document.getElementById("newMemo").value.trim();
-
-
-    if (!styleNo || !name || !deadline) {
-
-        alert("Style No., 상품명, 최종 납기일은 입력해주세요.");
-
-        return;
-
-    }
-
-
-    const newStyle = {
-
-        id: Date.now(),
-
-        brand,
-        season,
-        styleNo,
-        name,
-        quantity,
-        deadline,
-        memo,
-
-        pipeline: [
-
-            { key:"sample", name:"샘플", status:"대기", date:"", progress:0 },
-            { key:"yarn", name:"원사", status:"대기", date:"", progress:0 },
-            { key:"fabric", name:"원단", status:"대기", date:"", progress:0 },
-            { key:"accessory", name:"부자재", status:"대기", date:"", progress:0 },
-            { key:"knitting", name:"편직", status:"대기", date:"", progress:0 },
-            { key:"processing", name:"가공", status:"대기", date:"", progress:0 },
-            { key:"sewing", name:"봉제", status:"대기", date:"", progress:0 },
-            { key:"qc", name:"QC", status:"대기", date:"", progress:0 },
-            { key:"forwarding", name:"포워딩", status:"대기", date:"", progress:0 },
-            { key:"customs", name:"통관", status:"대기", date:"", progress:0 },
-            { key:"warehouse", name:"입고", status:"대기", date:"", progress:0 }
-
-        ],
-
-        yarns: [],
-        fabrics: [],
-        accessories: [],
-        documents: []
-
-    };
-
-
-    styles.push(newStyle);
-
-
-    saveData();
-
-
-    closeStyleModal();
-
-
-    document.getElementById("newStyleNo").value = "";
-    document.getElementById("newStyleName").value = "";
-    document.getElementById("newDeadline").value = "";
-    document.getElementById("newQuantity").value = "";
-    document.getElementById("newMemo").value = "";
-
-
-    selectedStyleId = newStyle.id;
-
-
-    renderDashboard();
-
+function unique(arr){return [...new Set(arr.filter(Boolean))].join(', ')||'-'}
+function renderVendors(data){
+ document.getElementById('vendorBody').innerHTML=data.map(s=>`<tr><td><b>${esc(s.id)}</b></td><td>${esc(s.name)}</td><td>${esc(unique((s.materials?.yarn||[]).map(x=>x.supplier)))}</td><td>${esc(unique((s.materials?.fabric||[]).map(x=>x.supplier)))}</td><td>${esc(unique((s.materials?.trim||[]).map(x=>x.supplier)))}</td><td>${esc(s.sewing||'-')}</td><td>${esc(s.steps?.qc?.vendor||'-')}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">데이터가 없습니다.</td></tr>';
 }
-
-
-/* =========================================================
-   LOCAL STORAGE
-========================================================= */
-
-function saveData() {
-
-    localStorage.setItem(
-        "verso_scm_styles",
-        JSON.stringify(styles)
-    );
-
-}
-
-
-function loadData() {
-
-    const saved =
-        localStorage.getItem("verso_scm_styles");
-
-    if (!saved) return;
-
-    try {
-
-        const parsed = JSON.parse(saved);
-
-        if (Array.isArray(parsed)) {
-
-            styles = parsed;
-
-        }
-
-    } catch(error) {
-
-        console.log("저장된 데이터를 불러오지 못했습니다.");
-
-    }
-
-}
-
-
-/* =========================================================
-   INIT
-========================================================= */
-
-loadData();
-
-renderDashboard();
-
-
-/* =========================================================
-   MODAL OUTSIDE CLICK
-========================================================= */
-
-document
-    .getElementById("styleModal")
-    .addEventListener("click", function(event) {
-
-        if (event.target === this) {
-
-            closeStyleModal();
-
-        }
-
-    });
-
+window.addEventListener('click',e=>{if(e.target.classList.contains('modal-bg'))e.target.classList.remove('open')});
+window.addEventListener('load',render);
 </script>
-
 </body>
 </html>
