@@ -3,1493 +3,1004 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>VERSO | Multi-Brand SCM Engine</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
-  "Noto Sans KR",Arial,sans-serif;
+* {
+    box-sizing: border-box;
 }
 
-:root{
-  --navy:#172554;
-  --blue:#315a9b;
-  --blue-light:#eef4ff;
-  --blue-border:#cbd9f0;
-  --text:#1f2937;
-  --muted:#6b7280;
-  --light:#f6f7f9;
-  --border:#e3e7ed;
-  --white:#ffffff;
-  --danger:#b42318;
-  --danger-bg:#fff3f2;
-  --success:#256047;
-  --success-bg:#f0f8f4;
-  --warning:#8a6414;
-  --warning-bg:#fff9e8;
-}
-
-body{
-  background:#f5f6f8;
-  color:var(--text);
-  padding:20px;
-  line-height:1.45;
+body {
+    margin: 0;
+    font-family: Arial, "Noto Sans KR", sans-serif;
+    background: #f5f7fa;
+    color: #172033;
 }
 
 button,
-select,
 input,
-textarea{
-  font-family:inherit;
+select,
+textarea {
+    font-family: inherit;
 }
 
-button{
-  cursor:pointer;
+button {
+    cursor: pointer;
 }
 
-/* ==============================
+/* =========================
    HEADER
-============================== */
+========================= */
 
-header{
-  background:var(--white);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:17px 20px;
-  margin-bottom:14px;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-
-  box-shadow:0 1px 3px rgba(15,23,42,.04);
+.header {
+    background: #ffffff;
+    border-bottom: 1px solid #dfe5ec;
+    padding: 18px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 50;
 }
 
-.header-left{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  min-width:0;
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
 
-.logo{
-  font-size:19px;
-  font-weight:800;
-  color:var(--navy);
-  letter-spacing:-.4px;
-  white-space:nowrap;
+.logo {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #172b4d;
 }
 
-.logo-sub{
-  color:#94a3b8;
-  font-size:11px;
-  font-weight:600;
-  margin-left:5px;
+.logo-sub {
+    font-size: 11px;
+    color: #7b8798;
+    border-left: 1px solid #d8dee7;
+    padding-left: 14px;
 }
 
-.filters{
-  display:flex;
-  gap:7px;
-  align-items:center;
-  flex-wrap:wrap;
+.header-actions {
+    display: flex;
+    gap: 8px;
 }
 
-.select-control{
-  min-width:130px;
-  padding:8px 11px;
-  background:#fff;
-  border:1px solid #d1d5db;
-  border-radius:6px;
-  color:#374151;
-  font-size:12px;
-  font-weight:600;
-  outline:none;
+/* =========================
+   BUTTON
+========================= */
+
+.btn {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #334155;
+    padding: 9px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
 }
 
-.select-control:focus{
-  border-color:var(--blue);
-  box-shadow:0 0 0 3px rgba(49,90,155,.08);
+.btn:hover {
+    border-color: #486581;
+    background: #f8fafc;
 }
 
-.btn-primary{
-  border:1px solid var(--navy);
-  background:var(--navy);
-  color:#fff;
-  border-radius:6px;
-  padding:9px 14px;
-  font-size:12px;
-  font-weight:700;
+.btn-primary {
+    border-color: #243b5a;
+    background: #243b5a;
+    color: #ffffff;
 }
 
-.btn-primary:hover{
-  background:#23366f;
+.btn-primary:hover {
+    background: #1d304a;
 }
 
-.btn-outline{
-  background:#fff;
-  color:#334155;
-  border:1px solid #cbd5e1;
-  border-radius:6px;
-  padding:8px 12px;
-  font-size:12px;
-  font-weight:650;
+/* =========================
+   MAIN
+========================= */
+
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 24px 28px 50px;
 }
 
-.btn-outline:hover{
-  border-color:#8ea0ba;
-  background:#f8fafc;
+/* =========================
+   FILTER
+========================= */
+
+.filter-area {
+    background: #ffffff;
+    border: 1px solid #dfe5ec;
+    border-radius: 10px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
 }
 
-/* ==============================
-   TOP SUMMARY
-============================== */
-
-.summary-grid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:10px;
-  margin-bottom:14px;
+.filter-label {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 700;
 }
 
-.summary-card{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:9px;
-  padding:13px 15px;
+select {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #1e293b;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+    min-width: 130px;
+    outline: none;
 }
 
-.summary-label{
-  color:#7b8491;
-  font-size:11px;
-  font-weight:650;
-  margin-bottom:5px;
+select:focus,
+input:focus,
+textarea:focus {
+    border-color: #4c6a89;
+    box-shadow: 0 0 0 2px rgba(76,106,137,0.08);
 }
 
-.summary-value{
-  color:#172033;
-  font-size:22px;
-  font-weight:800;
+/* =========================
+   SUMMARY
+========================= */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
-.summary-note{
-  color:#94a3b8;
-  font-size:10px;
-  margin-top:2px;
+.summary-card {
+    background: #ffffff;
+    border: 1px solid #dfe5ec;
+    border-radius: 10px;
+    padding: 18px;
 }
 
-/* ==============================
-   TABS
-============================== */
-
-.nav-tabs{
-  display:flex;
-  gap:3px;
-  border-bottom:1px solid #d9dee6;
-  margin-bottom:14px;
-  overflow-x:auto;
+.summary-title {
+    font-size: 12px;
+    color: #718096;
+    margin-bottom: 8px;
 }
 
-.tab-btn{
-  border:1px solid transparent;
-  border-bottom:none;
-  background:transparent;
-  color:#6b7280;
-
-  padding:10px 15px;
-  border-radius:7px 7px 0 0;
-
-  font-size:12px;
-  font-weight:650;
-  white-space:nowrap;
+.summary-value {
+    font-size: 26px;
+    font-weight: 800;
+    color: #172b4d;
 }
 
-.tab-btn:hover{
-  background:#f8fafc;
-  color:#334155;
+.summary-desc {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 5px;
 }
 
-.tab-btn.active{
-  background:#fff;
-  border-color:#d9dee6;
-  color:var(--navy);
-  position:relative;
+/* =========================
+   SECTION
+========================= */
+
+.section {
+    background: #ffffff;
+    border: 1px solid #dfe5ec;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
 }
 
-.tab-btn.active:after{
-  content:"";
-  position:absolute;
-  bottom:-1px;
-  left:12px;
-  right:12px;
-  height:2px;
-  background:var(--navy);
+.section-header {
+    padding: 16px 18px;
+    border-bottom: 1px solid #e5eaf0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* ==============================
-   CONTENT
-============================== */
-
-.tab-content{
-  display:none;
+.section-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #172b4d;
 }
 
-.tab-content.active{
-  display:block;
+.section-desc {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 4px;
 }
 
-.section-card{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:17px;
-  margin-bottom:14px;
-  box-shadow:0 1px 3px rgba(15,23,42,.035);
-}
-
-.section-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-
-  padding-bottom:11px;
-  margin-bottom:12px;
-  border-bottom:1px solid #edf0f3;
-}
-
-.section-title{
-  font-size:14px;
-  font-weight:750;
-  color:#172033;
-}
-
-.section-sub{
-  font-size:11px;
-  color:#94a3b8;
-}
-
-/* ==============================
+/* =========================
    STYLE TABLE
-============================== */
+========================= */
 
-.table-wrap{
-  overflow-x:auto;
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
 }
 
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:12px;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1050px;
 }
 
-th{
-  text-align:left;
-  padding:9px 8px;
-  background:#f8f9fb;
-  color:#697386;
-  border-bottom:1px solid #e2e6eb;
-  font-size:10.5px;
-  font-weight:750;
-  white-space:nowrap;
+th {
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 12px 14px;
+    border-bottom: 1px solid #e5eaf0;
+    text-align: left;
+    white-space: nowrap;
 }
 
-td{
-  padding:10px 8px;
-  border-bottom:1px solid #eef0f3;
-  color:#374151;
-  vertical-align:middle;
+td {
+    padding: 14px;
+    border-bottom: 1px solid #edf1f5;
+    font-size: 12px;
+    color: #334155;
+    vertical-align: middle;
 }
 
-.style-row{
-  cursor:pointer;
-  transition:.12s;
+.style-row {
+    cursor: pointer;
+    transition: background 0.15s;
 }
 
-.style-row:hover{
-  background:#f9fbfe;
+.style-row:hover {
+    background: #f8fafc;
 }
 
-.style-row.selected{
-  background:#f1f5fb;
+.style-number {
+    color: #263f61;
+    font-weight: 800;
 }
 
-.style-no{
-  font-weight:800;
-  color:var(--navy);
-  white-space:nowrap;
+.style-name {
+    font-weight: 700;
+    color: #172033;
 }
 
-.product-name{
-  font-weight:650;
-  color:#293344;
+.brand-text {
+    color: #64748b;
+    font-size: 11px;
 }
 
-.qty{
-  font-weight:650;
-  white-space:nowrap;
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-box {
+    min-width: 150px;
 }
 
-/* ==============================
-   BADGES
-============================== */
-
-.badge{
-  display:inline-flex;
-  align-items:center;
-  padding:3px 7px;
-  border-radius:5px;
-  font-size:10px;
-  font-weight:700;
-  white-space:nowrap;
+.progress-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
 }
 
-.badge-brand{
-  background:#f6f8fb;
-  border:1px solid #dbe1e8;
-  color:#465164;
+.progress-percent {
+    font-size: 12px;
+    font-weight: 800;
+    color: #243b5a;
 }
 
-.badge-season{
-  background:#f2f6fc;
-  border:1px solid #d5dfed;
-  color:#405b83;
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e8edf2;
+    border-radius: 20px;
+    overflow: hidden;
 }
 
-.badge-normal{
-  background:#f8fafc;
-  border:1px solid #d9e0e8;
-  color:#526174;
+.progress-fill {
+    height: 100%;
+    background: #405a78;
+    border-radius: 20px;
 }
 
-.badge-progress{
-  background:var(--blue-light);
-  border:1px solid var(--blue-border);
-  color:var(--blue);
+/* =========================
+   STATUS
+========================= */
+
+.status-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: #405a78;
 }
 
-.badge-done{
-  background:var(--success-bg);
-  border:1px solid #cde7da;
-  color:var(--success);
+.deadline {
+    font-weight: 700;
+    color: #334155;
 }
 
-.badge-warning{
-  background:var(--warning-bg);
-  border:1px solid #eadcae;
-  color:var(--warning);
+.d-day {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 3px;
 }
 
-.badge-danger{
-  background:var(--danger-bg);
-  border:1px solid #f0c8c4;
-  color:var(--danger);
+.d-day.overdue {
+    color: #7f1d1d;
+    font-weight: 800;
 }
 
-/* ==============================
-   PIPELINE BUTTONS
-============================== */
-
-.pipeline{
-  display:flex;
-  gap:5px;
-  min-width:530px;
-}
-
-.pipe-btn{
-  flex:1;
-  min-width:88px;
-
-  border:1px solid #dfe4ea;
-  background:#fff;
-
-  border-radius:6px;
-  padding:7px 8px;
-
-  text-align:center;
-  color:#536071;
-
-  transition:.13s;
-}
-
-.pipe-btn:hover{
-  border-color:#9aaac0;
-  background:#f9fbfd;
-}
-
-.pipe-btn.active{
-  border-color:#9fb7dc;
-  background:#f4f7fc;
-}
-
-.pipe-btn.current{
-  border-color:#5979aa;
-  background:#eef4ff;
-  color:var(--navy);
-}
-
-.pipe-title{
-  font-size:9.5px;
-  font-weight:650;
-  margin-bottom:2px;
-}
-
-.pipe-status{
-  font-size:10.5px;
-  font-weight:750;
-}
-
-/* ==============================
+/* =========================
    DETAIL PANEL
-============================== */
+========================= */
 
-.detail-row{
-  display:none;
+.detail-panel {
+    display: none;
+    background: #f8fafc;
+    border-top: 1px solid #dfe5ec;
+    border-bottom: 1px solid #dfe5ec;
+    padding: 24px;
 }
 
-.detail-row.open{
-  display:table-row;
+.detail-panel.active {
+    display: block;
 }
 
-.detail-cell{
-  padding:0 !important;
-  background:#f8fafc;
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 22px;
 }
 
-.detail-panel{
-  padding:16px;
-  border-top:1px solid #dfe5ec;
-  border-bottom:1px solid #dfe5ec;
+.detail-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #172b4d;
 }
 
-.detail-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:15px;
-  margin-bottom:13px;
+.detail-subtitle {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #64748b;
 }
 
-.detail-title{
-  font-size:16px;
-  font-weight:800;
-  color:#172033;
+.detail-deadline {
+    text-align: right;
 }
 
-.detail-meta{
-  color:#7b8491;
-  font-size:11px;
-  margin-top:2px;
+.detail-deadline-label {
+    font-size: 11px;
+    color: #94a3b8;
 }
 
-.close-detail{
-  border:1px solid #d4dae2;
-  background:#fff;
-  color:#64748b;
-  width:28px;
-  height:28px;
-  border-radius:5px;
+.detail-deadline-date {
+    font-size: 15px;
+    font-weight: 800;
+    color: #334155;
+    margin-top: 4px;
 }
 
-.close-detail:hover{
-  background:#f1f5f9;
+.detail-dday {
+    font-size: 12px;
+    color: #405a78;
+    font-weight: 800;
+    margin-top: 3px;
 }
 
-/* ==============================
-   PROCESS TABS
-============================== */
+/* =========================
+   DETAIL PROGRESS
+========================= */
 
-.process-tabs{
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
-  margin-bottom:13px;
+.detail-progress {
+    background: #ffffff;
+    border: 1px solid #dfe5ec;
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 18px;
 }
 
-.process-btn{
-  border:1px solid #d6dde6;
-  background:#fff;
-  color:#536071;
-
-  padding:7px 10px;
-  border-radius:5px;
-
-  font-size:10.5px;
-  font-weight:700;
+.detail-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 9px;
 }
 
-.process-btn:hover{
-  border-color:#9aaac0;
+.detail-progress-title {
+    font-size: 13px;
+    font-weight: 800;
 }
 
-.process-btn.active{
-  background:var(--blue-light);
-  border-color:#a9bfdf;
-  color:var(--navy);
+.detail-progress-number {
+    font-size: 18px;
+    font-weight: 800;
+    color: #243b5a;
 }
 
-/* ==============================
-   PROCESS DETAIL
-============================== */
-
-.process-detail{
-  background:#fff;
-  border:1px solid #e0e5eb;
-  border-radius:8px;
-  padding:14px;
+.large-progress {
+    height: 10px;
 }
 
-.process-title{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:11px;
+/* =========================
+   PIPELINE
+========================= */
+
+.pipeline {
+    display: grid;
+    grid-template-columns: repeat(11, minmax(95px, 1fr));
+    gap: 7px;
+    margin-bottom: 18px;
+    overflow-x: auto;
+    padding-bottom: 4px;
 }
 
-.process-title strong{
-  color:#1e293b;
-  font-size:13px;
+.pipeline-step {
+    background: #ffffff;
+    border: 1px solid #dfe5ec;
+    border-radius: 8px;
+    padding: 11px 8px;
+    min-height: 78px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.15s;
 }
 
-.process-title span{
-  font-size:11px;
-  color:#7b8491;
+.pipeline-step:hover {
+    border-color: #536d8a;
+    transform: translateY(-1px);
 }
 
-.info-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;
-  margin-bottom:12px;
+.pipeline-step.active {
+    border-color: #405a78;
+    background: #f1f5f9;
 }
 
-.info-box{
-  border:1px solid #e5e9ee;
-  border-radius:6px;
-  padding:9px;
-  background:#fbfcfd;
+.pipeline-name {
+    font-size: 11px;
+    font-weight: 800;
+    color: #475569;
 }
 
-.info-label{
-  color:#8a94a3;
-  font-size:9.5px;
-  margin-bottom:3px;
+.pipeline-status {
+    font-size: 11px;
+    margin-top: 9px;
+    color: #243b5a;
+    font-weight: 700;
 }
 
-.info-value{
-  color:#293344;
-  font-size:11px;
-  font-weight:700;
+.pipeline-date {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-top: 4px;
 }
 
-/* ==============================
-   PROGRESS BAR
-============================== */
+/* =========================
+   DETAIL CONTENT
+========================= */
 
-.progress-wrap{
-  margin:12px 0;
+.detail-content {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 15px;
 }
 
-.progress-head{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:5px;
+.detail-card {
+    background: #ffffff;
+    border: 1px solid #dfe5ec;
+    border-radius: 8px;
+    padding: 18px;
 }
 
-.progress-label{
-  font-size:10px;
-  color:#64748b;
-  font-weight:650;
+.detail-card-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #243b5a;
+    padding-bottom: 11px;
+    border-bottom: 1px solid #edf1f5;
+    margin-bottom: 12px;
 }
 
-.progress-percent{
-  font-size:10px;
-  color:var(--navy);
-  font-weight:800;
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
 }
 
-.progress-bar{
-  height:6px;
-  background:#e9edf2;
-  border-radius:99px;
-  overflow:hidden;
+.info-item {
+    border-bottom: 1px solid #f0f2f5;
+    padding-bottom: 8px;
 }
 
-.progress-fill{
-  height:100%;
-  background:#5876a4;
-  border-radius:99px;
+.info-label {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-bottom: 4px;
 }
 
-/* ==============================
-   TIMELINE
-============================== */
-
-.timeline{
-  display:flex;
-  align-items:flex-start;
-  gap:0;
-  margin:14px 0 4px;
-  overflow-x:auto;
+.info-value {
+    font-size: 12px;
+    font-weight: 700;
+    color: #334155;
 }
 
-.timeline-item{
-  flex:1;
-  min-width:90px;
-  position:relative;
-  text-align:center;
+/* =========================
+   MATERIAL LIST
+========================= */
+
+.material-list {
+    display: flex;
+    flex-direction: column;
 }
 
-.timeline-item:not(:last-child):after{
-  content:"";
-  position:absolute;
-  top:8px;
-  left:50%;
-  width:100%;
-  height:1px;
-  background:#d9dee5;
-  z-index:0;
+.material-item {
+    display: grid;
+    grid-template-columns: 1.2fr 0.7fr 0.7fr 0.8fr;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #edf1f5;
+    align-items: center;
 }
 
-.timeline-dot{
-  width:16px;
-  height:16px;
-  border-radius:50%;
-  border:2px solid #cbd5e1;
-  background:#fff;
-  margin:0 auto 5px;
-  position:relative;
-  z-index:1;
+.material-item:last-child {
+    border-bottom: none;
 }
 
-.timeline-item.done .timeline-dot{
-  background:#64748b;
-  border-color:#64748b;
+.material-name {
+    font-size: 12px;
+    font-weight: 700;
 }
 
-.timeline-item.current .timeline-dot{
-  background:#dce8f8;
-  border-color:#5876a4;
+.material-meta {
+    font-size: 11px;
+    color: #64748b;
 }
 
-.timeline-label{
-  font-size:9.5px;
-  color:#667085;
-  font-weight:650;
+.material-status {
+    font-size: 11px;
+    font-weight: 700;
+    color: #405a78;
 }
 
-.timeline-date{
-  font-size:9px;
-  color:#94a3b8;
-  margin-top:2px;
+/* =========================
+   DOCUMENTS
+========================= */
+
+.document-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
 }
 
-/* ==============================
-   MATERIAL TABLE
-============================== */
-
-.material-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:8px;
+.document-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 9px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.material-table th{
-  font-size:9.5px;
-  padding:8px;
+.document-name {
+    font-size: 11px;
+    font-weight: 700;
 }
 
-.material-table td{
-  font-size:10.5px;
-  padding:8px;
+.document-type {
+    font-size: 10px;
+    color: #94a3b8;
 }
 
-.material-name{
-  font-weight:750;
-  color:#263244;
-}
-
-.dday{
-  font-weight:800;
-  white-space:nowrap;
-}
-
-.dday.ok{
-  color:#49647e;
-}
-
-.dday.today{
-  color:#8a6414;
-}
-
-.dday.late{
-  color:#b42318;
-}
-
-/* ==============================
-   DOCUMENT AREA
-============================== */
-
-.document-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;
-}
-
-.document-box{
-  border:1px dashed #cbd5e1;
-  background:#fafbfc;
-  border-radius:6px;
-  padding:11px;
-}
-
-.document-name{
-  font-size:10px;
-  font-weight:700;
-  color:#475569;
-}
-
-.document-status{
-  margin-top:4px;
-  font-size:9.5px;
-  color:#94a3b8;
-}
-
-/* ==============================
+/* =========================
    MODAL
-============================== */
+========================= */
 
-.modal-overlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(15,23,42,.35);
-  z-index:1000;
-
-  align-items:center;
-  justify-content:center;
-
-  padding:20px;
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.38);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
-.modal-overlay.active{
-  display:flex;
+.modal-overlay.active {
+    display: flex;
 }
 
-.modal{
-  width:100%;
-  max-width:650px;
-  max-height:90vh;
-  overflow-y:auto;
-
-  background:#fff;
-  border:1px solid #dce1e7;
-  border-radius:10px;
-
-  box-shadow:0 20px 50px rgba(15,23,42,.16);
+.modal {
+    width: 620px;
+    max-width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #dfe5ec;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
 }
 
-.modal-header{
-  padding:15px 17px;
-  border-bottom:1px solid #e5e7eb;
-
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+.modal-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid #e5eaf0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.modal-title{
-  font-size:14px;
-  font-weight:800;
-  color:#172033;
+.modal-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #172b4d;
 }
 
-.modal-close{
-  width:28px;
-  height:28px;
-  border:1px solid #d8dee6;
-  background:#fff;
-  border-radius:5px;
-  color:#64748b;
+.close-btn {
+    border: none;
+    background: none;
+    font-size: 22px;
+    color: #94a3b8;
 }
 
-.modal-body{
-  padding:17px;
+.modal-body {
+    padding: 20px;
 }
 
-.form-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:11px;
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
 }
 
-.form-group{
-  margin-bottom:2px;
+.form-group {
+    margin-bottom: 13px;
 }
 
-.form-group.full{
-  grid-column:1/-1;
+.form-group.full {
+    grid-column: 1 / -1;
 }
 
-.form-label{
-  display:block;
-  font-size:10.5px;
-  font-weight:700;
-  color:#475569;
-  margin-bottom:5px;
+.form-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 5px;
 }
 
-.form-input,
-.form-select,
-.form-textarea{
-  width:100%;
-  border:1px solid #d3d9e1;
-  border-radius:6px;
-  padding:8px 10px;
-  font-size:11.5px;
-  color:#334155;
-  outline:none;
-  background:#fff;
+input,
+textarea {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 9px 10px;
+    font-size: 12px;
+    outline: none;
 }
 
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus{
-  border-color:#6d88b0;
-  box-shadow:0 0 0 3px rgba(49,90,155,.08);
+textarea {
+    resize: vertical;
+    min-height: 80px;
 }
 
-.form-textarea{
-  min-height:75px;
-  resize:vertical;
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #e5eaf0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
 }
 
-.modal-footer{
-  padding:12px 17px;
-  border-top:1px solid #e5e7eb;
-
-  display:flex;
-  justify-content:flex-end;
-  gap:7px;
-}
-
-/* ==============================
-   MASTER
-============================== */
-
-.master-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
-.master-card{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:13px;
-}
-
-.master-card h3{
-  font-size:12px;
-  color:#172033;
-  margin-bottom:4px;
-}
-
-.master-card p{
-  color:#7b8491;
-  font-size:10px;
-}
-
-/* ==============================
-   TODO / SCHEDULE
-============================== */
-
-.todo-list{
-  display:flex;
-  flex-direction:column;
-  gap:7px;
-}
-
-.todo-item{
-  display:grid;
-  grid-template-columns:85px 1fr 80px;
-  gap:10px;
-  align-items:center;
-
-  padding:10px;
-
-  background:#fff;
-  border:1px solid #e2e6eb;
-  border-radius:6px;
-}
-
-.todo-style{
-  font-size:10.5px;
-  font-weight:800;
-  color:var(--navy);
-}
-
-.todo-text{
-  font-size:11px;
-  color:#475569;
-}
-
-.todo-dday{
-  text-align:right;
-  font-size:10px;
-  font-weight:800;
-}
-
-/* ==============================
+/* =========================
    EMPTY
-============================== */
+========================= */
 
-.empty{
-  padding:35px 20px;
-  text-align:center;
-  color:#9aa3af;
-  font-size:12px;
+.empty {
+    text-align: center;
+    padding: 45px 20px;
+    color: #94a3b8;
+    font-size: 13px;
 }
 
-/* ==============================
+/* =========================
    RESPONSIVE
-============================== */
+========================= */
 
-@media(max-width:1000px){
+@media (max-width: 900px) {
 
-  body{
-    padding:10px;
-  }
+    .header {
+        padding: 15px;
+    }
 
-  header{
-    flex-direction:column;
-    align-items:stretch;
-  }
+    .container {
+        padding: 15px;
+    }
 
-  .header-left{
-    flex-direction:column;
-    align-items:stretch;
-  }
+    .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-  .logo{
-    text-align:left;
-  }
+    .detail-content {
+        grid-template-columns: 1fr;
+    }
 
-  .filters{
-    width:100%;
-  }
+    .detail-header {
+        flex-direction: column;
+        gap: 12px;
+    }
 
-  .select-control{
-    flex:1;
-  }
-
-  .summary-grid{
-    grid-template-columns:repeat(3,1fr);
-  }
-
-  .info-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .document-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .master-grid{
-    grid-template-columns:1fr 1fr;
-  }
+    .detail-deadline {
+        text-align: left;
+    }
 }
 
-@media(max-width:650px){
+@media (max-width: 600px) {
 
-  body{
-    padding:7px;
-  }
+    .logo-sub {
+        display: none;
+    }
 
-  .summary-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
+    .filter-area {
+        flex-wrap: wrap;
+    }
 
-  .form-grid{
-    grid-template-columns:1fr;
-  }
+    .summary-grid {
+        grid-template-columns: 1fr 1fr;
+    }
 
-  .form-group.full{
-    grid-column:auto;
-  }
+    .summary-value {
+        font-size: 21px;
+    }
 
-  .master-grid{
-    grid-template-columns:1fr;
-  }
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
 
-  .document-grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .detail-head{
-    flex-direction:column;
-  }
+    .form-group.full {
+        grid-column: auto;
+    }
 }
 </style>
 </head>
 
-
 <body>
 
-<!-- =========================================================
+<!-- =========================
      HEADER
-========================================================= -->
+========================= -->
 
-<header>
+<header class="header">
 
-  <div class="header-left">
-
-    <div class="logo">
-      VERSO
-      <span class="logo-sub">Multi-Brand SCM Engine</span>
+    <div class="logo-area">
+        <div class="logo">VERSO</div>
+        <div class="logo-sub">Multi-Brand SCM Engine</div>
     </div>
 
-    <div class="filters">
-
-      <select id="seasonFilter"
-              class="select-control"
-              onchange="renderAll()">
-
-        <option value="ALL">전체 시즌</option>
-        <option value="2026 SS">2026 SS</option>
-        <option value="2026 FW">2026 FW</option>
-        <option value="2027 SS">2027 SS</option>
-        <option value="2027 FW">2027 FW</option>
-
-      </select>
-
-      <select id="brandFilter"
-              class="select-control"
-              onchange="renderAll()">
-
-        <option value="ALL">전체 브랜드</option>
-        <option value="BRD001">스노야</option>
-        <option value="BRD002">모브온</option>
-
-      </select>
-
+    <div class="header-actions">
+        <button class="btn" onclick="openStyleModal()">+ Style 등록</button>
     </div>
-
-  </div>
-
-  <button class="btn-primary"
-          onclick="openStyleModal()">
-    + 신규 Style
-  </button>
 
 </header>
 
 
-<!-- =========================================================
-     SUMMARY
-========================================================= -->
+<main class="container">
 
-<div class="summary-grid">
+    <!-- =========================
+         BRAND / SEASON FILTER
+    ========================= -->
 
-  <div class="summary-card">
-    <div class="summary-label">전체 Style</div>
-    <div class="summary-value" id="sumTotal">0</div>
-    <div class="summary-note">현재 필터 기준</div>
-  </div>
+    <div class="filter-area">
 
-  <div class="summary-card">
-    <div class="summary-label">진행 중</div>
-    <div class="summary-value" id="sumProgress">0</div>
-    <div class="summary-note">생산 진행 프로젝트</div>
-  </div>
+        <span class="filter-label">BRAND</span>
 
-  <div class="summary-card">
-    <div class="summary-label">오늘 확인</div>
-    <div class="summary-value" id="sumToday">0</div>
-    <div class="summary-note">오늘 처리해야 할 항목</div>
-  </div>
+        <select id="brandFilter" onchange="renderDashboard()">
+            <option value="ALL">전체 브랜드</option>
+            <option value="SNOWYA">스노야</option>
+            <option value="MOVON">모브온</option>
+        </select>
 
-  <div class="summary-card">
-    <div class="summary-label">지연</div>
-    <div class="summary-value" id="sumLate">0</div>
-    <div class="summary-note">납기 확인 필요</div>
-  </div>
+        <span class="filter-label">SEASON</span>
 
-  <div class="summary-card">
-    <div class="summary-label">완료</div>
-    <div class="summary-value" id="sumDone">0</div>
-    <div class="summary-note">생산 완료 Style</div>
-  </div>
+        <select id="seasonFilter" onchange="renderDashboard()">
+            <option value="ALL">전체 시즌</option>
+            <option value="26SS">26SS</option>
+            <option value="26FW">26FW</option>
+            <option value="27SS">27SS</option>
+            <option value="27FW">27FW</option>
+        </select>
 
-</div>
+    </div>
 
 
-<!-- =========================================================
-     NAV TABS
-========================================================= -->
+    <!-- =========================
+         SUMMARY
+    ========================= -->
 
-<div class="nav-tabs">
+    <div class="summary-grid">
 
-  <button class="tab-btn active"
-          onclick="switchTab('projects',this)">
-    Style & 생산 프로젝트
-  </button>
-
-  <button class="tab-btn"
-          onclick="switchTab('materials',this)">
-    원자재 Master
-  </button>
-
-  <button class="tab-btn"
-          onclick="switchTab('factories',this)">
-    공장 / 업체 Master
-  </button>
-
-  <button class="tab-btn"
-          onclick="switchTab('schedule',this)">
-    전체 일정 현황
-  </button>
-
-</div>
-
-
-<!-- =========================================================
-     TAB : PROJECTS
-========================================================= -->
-
-<div id="tab-projects"
-     class="tab-content active">
-
-  <div class="section-card">
-
-    <div class="section-header">
-
-      <div>
-        <div class="section-title">
-          Style No. 생산 프로젝트
+        <div class="summary-card">
+            <div class="summary-title">전체 STYLE</div>
+            <div class="summary-value" id="summaryTotal">0</div>
+            <div class="summary-desc">현재 선택 조건 기준</div>
         </div>
 
-        <div class="section-sub">
-          Style을 클릭하면 해당 상품의 전체 생산 진행상황을 확인할 수 있습니다.
+        <div class="summary-card">
+            <div class="summary-title">생산 진행중</div>
+            <div class="summary-value" id="summaryProgress">0</div>
+            <div class="summary-desc">현재 진행 중인 스타일</div>
         </div>
-      </div>
 
-    </div>
-
-
-    <div class="table-wrap">
-
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>브랜드</th>
-            <th>시즌</th>
-            <th>Style No.</th>
-            <th>상품명</th>
-            <th>목표수량</th>
-            <th>생산 Pipeline</th>
-            <th>현재 상태</th>
-          </tr>
-
-        </thead>
-
-        <tbody id="styleProjectList"></tbody>
-
-      </table>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================================================
-     TAB : MATERIAL MASTER
-========================================================= -->
-
-<div id="tab-materials"
-     class="tab-content">
-
-  <div class="section-card">
-
-    <div class="section-header">
-
-      <div>
-        <div class="section-title">원자재 Master</div>
-        <div class="section-sub">
-          향후 전체 원사 / 원단 / 부자재 공급처 데이터를 관리합니다.
+        <div class="summary-card">
+            <div class="summary-title">납기 임박</div>
+            <div class="summary-value" id="summaryDeadline">0</div>
+            <div class="summary-desc">D-7 이내</div>
         </div>
-      </div>
 
-    </div>
-
-    <div class="master-grid">
-
-      <div class="master-card">
-        <h3>원사</h3>
-        <p>원사 업체 / 품번 / 종류 / 색상 / 단가 / 거래이력</p>
-      </div>
-
-      <div class="master-card">
-        <h3>원단</h3>
-        <p>원단 업체 / 품번 / 혼용률 / 폭 / 중량 / 거래이력</p>
-      </div>
-
-      <div class="master-card">
-        <h3>부자재</h3>
-        <p>라벨 / 지퍼 / 단추 / 행택 / 폴리백 / 포장재 등</p>
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================================================
-     TAB : FACTORY MASTER
-========================================================= -->
-
-<div id="tab-factories"
-     class="tab-content">
-
-  <div class="section-card">
-
-    <div class="section-header">
-
-      <div>
-        <div class="section-title">공장 / 업체 Master</div>
-        <div class="section-sub">
-          향후 중국 원사 / 원단 / 부자재 / 편직 / 봉제 / QC / 포워더 업체를 연결합니다.
+        <div class="summary-card">
+            <div class="summary-title">평균 진행률</div>
+            <div class="summary-value" id="summaryAverage">0%</div>
+            <div class="summary-desc">전체 스타일 평균</div>
         </div>
-      </div>
 
     </div>
 
-    <div class="master-grid">
 
-      <div class="master-card">
-        <h3>원사 업체</h3>
-        <p>업체별 발주 / 결제 / 생산 / 납기 이력</p>
-      </div>
+    <!-- =========================
+         STYLE BOARD
+    ========================= -->
 
-      <div class="master-card">
-        <h3>원단 / 편직 업체</h3>
-        <p>원단 생산 / 염색 / 가공 / 입고 이력</p>
-      </div>
+    <section class="section">
 
-      <div class="master-card">
-        <h3>봉제공장</h3>
-        <p>샘플 / 생산 / 출고 / QC 이력</p>
-      </div>
+        <div class="section-header">
 
-      <div class="master-card">
-        <h3>QC 업체</h3>
-        <p>검수 / 검사 결과 / 성적서 이력</p>
-      </div>
+            <div>
+                <div class="section-title">Production Board</div>
+                <div class="section-desc">
+                    Style을 클릭하면 전체 생산 과정과 상세 정보를 확인할 수 있습니다.
+                </div>
+            </div>
 
-      <div class="master-card">
-        <h3>포워더</h3>
-        <p>ETD / ETA / BL / 통관 / 입고 이력</p>
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================================================
-     TAB : SCHEDULE
-========================================================= -->
-
-<div id="tab-schedule"
-     class="tab-content">
-
-  <div class="section-card">
-
-    <div class="section-header">
-
-      <div>
-        <div class="section-title">전체 일정 현황</div>
-        <div class="section-sub">
-          현재 필터에 해당하는 Style의 주요 일정입니다.
         </div>
-      </div>
-
-    </div>
-
-    <div id="todoList"
-         class="todo-list"></div>
-
-  </div>
-
-</div>
 
 
-<!-- =========================================================
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>BRAND</th>
+                        <th>SEASON</th>
+                        <th>STYLE NO.</th>
+                        <th>상품명</th>
+                        <th>전체 진행률</th>
+                        <th>현재 단계</th>
+                        <th>최종 납기</th>
+                        <th>D-DAY</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="styleTableBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
      STYLE MODAL
-========================================================= -->
+========================= -->
 
-<div id="styleModal"
-     class="modal-overlay">
+<div class="modal-overlay" id="styleModal">
 
-  <div class="modal">
+    <div class="modal">
 
-    <div class="modal-header">
+        <div class="modal-header">
 
-      <div class="modal-title">
-        신규 Style 등록
-      </div>
+            <div class="modal-title">신규 Style 등록</div>
 
-      <button class="modal-close"
-              onclick="closeStyleModal()">
-        ×
-      </button>
+            <button class="close-btn" onclick="closeStyleModal()">×</button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label class="form-label">브랜드</label>
+
+                    <select id="newBrand">
+                        <option value="SNOWYA">스노야</option>
+                        <option value="MOVON">모브온</option>
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">시즌</label>
+
+                    <select id="newSeason">
+                        <option value="26SS">26SS</option>
+                        <option value="26FW">26FW</option>
+                        <option value="27SS">27SS</option>
+                        <option value="27FW">27FW</option>
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">Style No.</label>
+
+                    <input id="newStyleNo" placeholder="예: ST26005">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">상품명</label>
+
+                    <input id="newStyleName" placeholder="예: 쫀쫀슬림팬츠">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">최종 납기일</label>
+
+                    <input type="date" id="newDeadline">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">생산수량</label>
+
+                    <input type="number" id="newQuantity" placeholder="예: 10000">
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label class="form-label">메모</label>
+
+                    <textarea id="newMemo" placeholder="생산 관련 메모"></textarea>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button class="btn" onclick="closeStyleModal()">취소</button>
+
+            <button class="btn btn-primary" onclick="addStyle()">Style 등록</button>
+
+        </div>
 
     </div>
-
-
-    <div class="modal-body">
-
-      <div class="form-grid">
-
-        <div class="form-group">
-
-          <label class="form-label">
-            브랜드
-          </label>
-
-          <select id="newBrand"
-                  class="form-select">
-
-            <option value="BRD001">스노야</option>
-            <option value="BRD002">모브온</option>
-
-          </select>
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label class="form-label">
-            시즌
-          </label>
-
-          <select id="newSeason"
-                  class="form-select">
-
-            <option>2026 SS</option>
-            <option>2026 FW</option>
-            <option>2027 SS</option>
-            <option>2027 FW</option>
-
-          </select>
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label class="form-label">
-            Style No.
-          </label>
-
-          <input id="newStyleNo"
-                 class="form-input"
-                 placeholder="예: ST27001">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label class="form-label">
-            상품명
-          </label>
-
-          <input id="newStyleName"
-                 class="form-input"
-                 placeholder="예: 쫀쫀 팬츠">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label class="form-label">
-            목표 수량
-          </label>
-
-          <input id="newQty"
-                 class="form-input"
-                 placeholder="예: 5000">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label class="form-label">
-            초기 상태
-          </label>
-
-          <select id="newStatus"
-                  class="form-select">
-
-            <option>디자인 검토</option>
-            <option>샘플 진행</option>
-            <option>원자재 준비</option>
-            <option>봉제 진행</option>
-
-          </select>
-
-        </div>
-
-
-        <div class="form-group full">
-
-          <label class="form-label">
-            메모
-          </label>
-
-          <textarea id="newMemo"
-                    class="form-textarea"
-                    placeholder="작업지시 / 디자인 / 특이사항 등을 입력"></textarea>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="modal-footer">
-
-      <button class="btn-outline"
-              onclick="closeStyleModal()">
-        취소
-      </button>
-
-      <button class="btn-primary"
-              onclick="createStyle()">
-        Style 등록
-      </button>
-
-    </div>
-
-  </div>
 
 </div>
 
@@ -1497,393 +1008,431 @@ td{
 <script>
 
 /* =========================================================
-   VERSO DATA
+   SAMPLE DATA
 ========================================================= */
 
-const defaultDB = {
-
-  brands:[
-    {
-      id:"BRD001",
-      name:"스노야"
-    },
-    {
-      id:"BRD002",
-      name:"모브온"
-    }
-  ],
-
-  styles:[
+let styles = [
 
     {
-      id:"STYLE001",
-      styleNo:"ST26001",
-      brandId:"BRD001",
-      season:"2026 SS",
-      name:"쫀쫀 슬림 팬츠",
-      targetQty:4000,
-      status:"봉제 진행 중",
-      memo:"샘플 확정 후 본생산 진행",
+        id: 1,
+        brand: "SNOWYA",
+        season: "26SS",
+        styleNo: "ST26001",
+        name: "쫀쫀슬림팬츠",
+        quantity: 30000,
+        deadline: "2026-08-28",
+        memo: "기본 생산 스타일",
 
-      pipeline:{
-        design:"완료",
-        workOrder:"완료",
-        sample:"완료",
-        yarn:"완료",
-        fabric:"완료",
-        material:"진행중",
-        knitting:"완료",
-        sewing:"진행중",
-        qc:"대기",
-        logistics:"대기"
-      },
-
-      materials:{
-
-        yarn:[
-          {
-            name:"40S/2 스판 원사",
-            color:"BLACK",
-            qty:"380 KG",
-            supplier:"중국 ○○纱线",
-            order:"완료",
-            payment:"완료",
-            production:"완료",
-            shipment:"완료",
-            arrival:"D-4"
-          }
+        pipeline: [
+            { key:"sample", name:"샘플", status:"완료", date:"2026-07-25", progress:100 },
+            { key:"yarn", name:"원사", status:"완료", date:"2026-07-29", progress:100 },
+            { key:"fabric", name:"원단", status:"완료", date:"2026-08-02", progress:100 },
+            { key:"accessory", name:"부자재", status:"진행중", date:"2026-08-10", progress:75 },
+            { key:"knitting", name:"편직", status:"진행중", date:"2026-08-13", progress:65 },
+            { key:"processing", name:"가공", status:"대기", date:"2026-08-18", progress:0 },
+            { key:"sewing", name:"봉제", status:"대기", date:"2026-08-21", progress:0 },
+            { key:"qc", name:"QC", status:"대기", date:"2026-08-24", progress:0 },
+            { key:"forwarding", name:"포워딩", status:"대기", date:"2026-08-25", progress:0 },
+            { key:"customs", name:"통관", status:"대기", date:"2026-08-27", progress:0 },
+            { key:"warehouse", name:"입고", status:"대기", date:"2026-08-28", progress:0 }
         ],
 
-        fabric:[
-          {
-            name:"NYLON STRETCH",
-            color:"BLACK",
-            qty:"4,500 YD",
-            supplier:"중국 ○○ TEXTILE",
-            order:"완료",
-            payment:"완료",
-            production:"완료",
-            shipment:"완료",
-            arrival:"D-6"
-          }
+        yarns: [
+            {
+                name:"원사 30/1 CVC",
+                supplier:"중국 ○○ Yarn",
+                quantity:"650 KG",
+                status:"입고완료",
+                date:"08/02"
+            }
         ],
 
-        subMaterial:[
-          {
-            name:"허리밴드",
-            qty:"4,500 EA",
-            supplier:"중국 ○○ BAND",
-            order:"완료",
-            payment:"완료",
-            production:"완료",
-            shipment:"완료",
-            arrival:"D-3"
-          },
-          {
-            name:"메인 라벨",
-            qty:"5,000 EA",
-            supplier:"중국 ○○ LABEL",
-            order:"완료",
-            payment:"대기",
-            production:"대기",
-            shipment:"대기",
-            arrival:"D-10"
-          },
-          {
-            name:"케어 라벨",
-            qty:"5,000 EA",
-            supplier:"중국 ○○ LABEL",
-            order:"완료",
-            payment:"완료",
-            production:"진행중",
-            shipment:"대기",
-            arrival:"D-8"
-          },
-          {
-            name:"행택",
-            qty:"5,000 EA",
-            supplier:"중국 ○○ TAG",
-            order:"완료",
-            payment:"대기",
-            production:"대기",
-            shipment:"대기",
-            arrival:"D-12"
-          },
-          {
-            name:"폴리백",
-            qty:"5,000 EA",
-            supplier:"중국 ○○ PACK",
-            order:"완료",
-            payment:"완료",
-            production:"완료",
-            shipment:"완료",
-            arrival:"D-2"
-          }
+        fabrics: [
+            {
+                name:"CVC 쫀쫀 원단",
+                supplier:"중국 ○○ Textile",
+                quantity:"1,200 KG",
+                status:"입고완료",
+                date:"08/02"
+            }
         ],
 
-        sewing:[
-          {
-            factory:"중국 ○○ 봉제공장",
-            sample:"확정",
-            production:"진행중",
-            qty:"4,000 EA",
-            shipment:"대기"
-          }
+        accessories: [
+            {
+                name:"메인라벨",
+                supplier:"중국 ○○ Label",
+                quantity:"30,000 EA",
+                status:"입고완료",
+                date:"08/06"
+            },
+            {
+                name:"케어라벨",
+                supplier:"중국 ○○ Label",
+                quantity:"30,000 EA",
+                status:"생산중",
+                date:"08/12"
+            },
+            {
+                name:"행택",
+                supplier:"중국 ○○ Label",
+                quantity:"30,000 EA",
+                status:"발주완료",
+                date:"08/14"
+            },
+            {
+                name:"폴리백",
+                supplier:"중국 ○○ Packaging",
+                quantity:"30,000 EA",
+                status:"발주전",
+                date:"-"
+            }
         ],
 
-        qc:[
-          {
-            company:"중국 ○○ QC",
-            date:"2026-08-20",
-            method:"전수검사",
-            status:"대기"
-          }
-        ],
-
-        logistics:[
-          {
-            forwarder:"○○ Forwarding",
-            etd:"2026-08-25",
-            eta:"2026-09-03",
-            customs:"대기",
-            warehouse:"대기"
-          }
+        documents: [
+            { name:"ST26001_작업지시서.pdf", type:"작업지시서" },
+            { name:"ST26001_샘플_01.jpg", type:"샘플 이미지" },
+            { name:"중국봉제공장_계약서.pdf", type:"공장 계약서" }
         ]
-
-      },
-
-      documents:{
-        workOrder:"업로드 예정",
-        contract:"업로드 예정",
-        sample:"사진 업로드 예정",
-        qc:"성적서 업로드 예정"
-      }
-
     },
 
 
     {
-      id:"STYLE002",
-      styleNo:"ST26002",
-      brandId:"BRD002",
-      season:"2026 FW",
-      name:"오버핏 에어 티셔츠",
-      targetQty:2500,
-      status:"원단 염색 중",
-      memo:"원단 컬러 확정 완료",
+        id: 2,
+        brand: "SNOWYA",
+        season: "26SS",
+        styleNo: "ST26002",
+        name: "데일리와이드팬츠",
+        quantity: 20000,
+        deadline: "2026-08-22",
+        memo: "",
 
-      pipeline:{
-        design:"완료",
-        workOrder:"완료",
-        sample:"완료",
-        yarn:"완료",
-        fabric:"진행중",
-        material:"대기",
-        knitting:"완료",
-        sewing:"대기",
-        qc:"대기",
-        logistics:"대기"
-      },
-
-      materials:{
-
-        yarn:[
-          {
-            name:"30S COTTON",
-            color:"IVORY",
-            qty:"220 KG",
-            supplier:"중국 ○○纱线",
-            order:"완료",
-            payment:"완료",
-            production:"완료",
-            shipment:"완료",
-            arrival:"완료"
-          }
+        pipeline: [
+            { key:"sample", name:"샘플", status:"완료", date:"2026-07-26", progress:100 },
+            { key:"yarn", name:"원사", status:"완료", date:"2026-07-30", progress:100 },
+            { key:"fabric", name:"원단", status:"진행중", date:"2026-08-13", progress:60 },
+            { key:"accessory", name:"부자재", status:"진행중", date:"2026-08-12", progress:60 },
+            { key:"knitting", name:"편직", status:"대기", date:"2026-08-15", progress:0 },
+            { key:"processing", name:"가공", status:"대기", date:"2026-08-17", progress:0 },
+            { key:"sewing", name:"봉제", status:"대기", date:"2026-08-19", progress:0 },
+            { key:"qc", name:"QC", status:"대기", date:"2026-08-20", progress:0 },
+            { key:"forwarding", name:"포워딩", status:"대기", date:"2026-08-21", progress:0 },
+            { key:"customs", name:"통관", status:"대기", date:"2026-08-22", progress:0 },
+            { key:"warehouse", name:"입고", status:"대기", date:"2026-08-22", progress:0 }
         ],
 
-        fabric:[
-          {
-            name:"COTTON SINGLE",
-            color:"IVORY",
-            qty:"2,800 YD",
-            supplier:"중국 ○○ TEXTILE",
-            order:"완료",
-            payment:"완료",
-            production:"진행중",
-            shipment:"대기",
-            arrival:"D-9"
-          }
+        yarns: [],
+        fabrics: [
+            {
+                name:"NYLON 40D",
+                supplier:"중국 ○○ Textile",
+                quantity:"900 KG",
+                status:"생산중",
+                date:"08/13"
+            }
         ],
 
-        subMaterial:[
-          {
-            name:"메인 라벨",
-            qty:"3,000 EA",
-            supplier:"중국 ○○ LABEL",
-            order:"완료",
-            payment:"완료",
-            production:"진행중",
-            shipment:"대기",
-            arrival:"D-11"
-          }
+        accessories: [
+            {
+                name:"메인라벨",
+                supplier:"중국 ○○ Label",
+                quantity:"20,000 EA",
+                status:"입고완료",
+                date:"08/05"
+            },
+            {
+                name:"케어라벨",
+                supplier:"중국 ○○ Label",
+                quantity:"20,000 EA",
+                status:"생산중",
+                date:"08/12"
+            }
         ],
 
-        sewing:[
-          {
-            factory:"중국 ○○ 봉제공장",
-            sample:"확정",
-            production:"대기",
-            qty:"2,500 EA",
-            shipment:"대기"
-          }
-        ],
-
-        qc:[
-          {
-            company:"중국 ○○ QC",
-            date:"2026-09-15",
-            method:"전수검사",
-            status:"대기"
-          }
-        ],
-
-        logistics:[
-          {
-            forwarder:"○○ Forwarding",
-            etd:"2026-09-20",
-            eta:"2026-09-30",
-            customs:"대기",
-            warehouse:"대기"
-          }
+        documents: [
+            { name:"ST26002_작업지시서.pdf", type:"작업지시서" }
         ]
+    },
 
-      },
 
-      documents:{
-        workOrder:"업로드 예정",
-        contract:"업로드 예정",
-        sample:"사진 업로드 예정",
-        qc:"성적서 업로드 예정"
-      }
+    {
+        id: 3,
+        brand: "MOVON",
+        season: "26SS",
+        styleNo: "MV26001",
+        name: "모브온 베이직팬츠",
+        quantity: 10000,
+        deadline: "2026-09-05",
+        memo: "",
+
+        pipeline: [
+            { key:"sample", name:"샘플", status:"완료", date:"2026-08-02", progress:100 },
+            { key:"yarn", name:"원사", status:"진행중", date:"2026-08-12", progress:70 },
+            { key:"fabric", name:"원단", status:"대기", date:"2026-08-18", progress:0 },
+            { key:"accessory", name:"부자재", status:"대기", date:"2026-08-20", progress:0 },
+            { key:"knitting", name:"편직", status:"대기", date:"2026-08-24", progress:0 },
+            { key:"processing", name:"가공", status:"대기", date:"2026-08-27", progress:0 },
+            { key:"sewing", name:"봉제", status:"대기", date:"2026-08-30", progress:0 },
+            { key:"qc", name:"QC", status:"대기", date:"2026-09-02", progress:0 },
+            { key:"forwarding", name:"포워딩", status:"대기", date:"2026-09-03", progress:0 },
+            { key:"customs", name:"통관", status:"대기", date:"2026-09-04", progress:0 },
+            { key:"warehouse", name:"입고", status:"대기", date:"2026-09-05", progress:0 }
+        ],
+
+        yarns: [
+            {
+                name:"40/1 COTTON",
+                supplier:"중국 ○○ Yarn",
+                quantity:"300 KG",
+                status:"생산중",
+                date:"08/12"
+            }
+        ],
+
+        fabrics: [],
+        accessories: [],
+
+        documents: [
+            { name:"MV26001_작업지시서.pdf", type:"작업지시서" }
+        ]
+    }
+
+];
+
+
+/* =========================================================
+   CURRENT STATE
+========================================================= */
+
+let selectedStyleId = null;
+
+
+/* =========================================================
+   DATE FUNCTIONS
+========================================================= */
+
+function getDDay(dateString) {
+
+    if (!dateString) return "-";
+
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    const target = new Date(dateString);
+    target.setHours(0,0,0,0);
+
+    const diff = target - today;
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+    if (days > 0) return "D-" + days;
+    if (days === 0) return "D-DAY";
+    return "D+" + Math.abs(days);
+}
+
+
+function formatDate(dateString) {
+
+    if (!dateString) return "-";
+
+    const date = new Date(dateString);
+
+    if (isNaN(date.getTime())) return dateString;
+
+    return date.getFullYear() + "." +
+        String(date.getMonth()+1).padStart(2,"0") + "." +
+        String(date.getDate()).padStart(2,"0");
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+function getStyleProgress(style) {
+
+    if (!style.pipeline || style.pipeline.length === 0) return 0;
+
+    const total = style.pipeline.reduce((sum, step) => {
+        return sum + Number(step.progress || 0);
+    }, 0);
+
+    return Math.round(total / style.pipeline.length);
+}
+
+
+function getCurrentStep(style) {
+
+    if (!style.pipeline) return "-";
+
+    const active = style.pipeline.find(step => {
+        return Number(step.progress) > 0 && Number(step.progress) < 100;
+    });
+
+    if (active) return active.name;
+
+    const waiting = style.pipeline.find(step => {
+        return Number(step.progress) === 0;
+    });
+
+    if (waiting) return waiting.name + " 대기";
+
+    return "완료";
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function renderDashboard() {
+
+    const brand = document.getElementById("brandFilter").value;
+    const season = document.getElementById("seasonFilter").value;
+
+    let filtered = styles.filter(style => {
+
+        const brandMatch =
+            brand === "ALL" || style.brand === brand;
+
+        const seasonMatch =
+            season === "ALL" || style.season === season;
+
+        return brandMatch && seasonMatch;
+    });
+
+
+    const tbody = document.getElementById("styleTableBody");
+
+    tbody.innerHTML = "";
+
+
+    if (filtered.length === 0) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8">
+                    <div class="empty">
+                        등록된 Style이 없습니다.
+                    </div>
+                </td>
+            </tr>
+        `;
+
+    } else {
+
+        filtered.forEach(style => {
+
+            const progress = getStyleProgress(style);
+            const currentStep = getCurrentStep(style);
+            const dday = getDDay(style.deadline);
+
+            const tr = document.createElement("tr");
+
+            tr.className = "style-row";
+
+            tr.innerHTML = `
+
+                <td>
+                    <div class="brand-text">
+                        ${style.brand === "SNOWYA" ? "스노야" : "모브온"}
+                    </div>
+                </td>
+
+                <td>
+                    ${style.season}
+                </td>
+
+                <td>
+                    <span class="style-number">
+                        ${style.styleNo}
+                    </span>
+                </td>
+
+                <td>
+                    <span class="style-name">
+                        ${style.name}
+                    </span>
+                </td>
+
+                <td>
+
+                    <div class="progress-box">
+
+                        <div class="progress-top">
+
+                            <span class="progress-percent">
+                                ${progress}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div
+                                class="progress-fill"
+                                style="width:${progress}%">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+                <td>
+                    <span class="status-text">
+                        ${currentStep}
+                    </span>
+                </td>
+
+                <td>
+                    <span class="deadline">
+                        ${formatDate(style.deadline)}
+                    </span>
+                </td>
+
+                <td>
+                    <div class="d-day ${
+                        dday.startsWith("D+")
+                        ? "overdue"
+                        : ""
+                    }">
+                        ${dday}
+                    </div>
+                </td>
+
+            `;
+
+
+            tr.addEventListener("click", () => {
+
+                openStyleDetail(style.id);
+
+            });
+
+
+            tbody.appendChild(tr);
+
+
+            if (selectedStyleId === style.id) {
+
+                const detailRow = document.createElement("tr");
+
+                detailRow.innerHTML = `
+                    <td colspan="8" style="padding:0;">
+                        ${buildDetailPanel(style)}
+                    </td>
+                `;
+
+                tbody.appendChild(detailRow);
+
+            }
+
+        });
 
     }
 
-  ]
 
-};
-
-
-/* =========================================================
-   LOCAL STORAGE
-========================================================= */
-
-let DB;
-
-function loadDB(){
-
-  const saved =
-    localStorage.getItem("VERSO_SCM_DB");
-
-  if(saved){
-
-    try{
-      DB = JSON.parse(saved);
-    }catch(e){
-      DB = JSON.parse(JSON.stringify(defaultDB));
-    }
-
-  }else{
-
-    DB = JSON.parse(JSON.stringify(defaultDB));
-
-  }
-
-}
-
-function saveDB(){
-
-  localStorage.setItem(
-    "VERSO_SCM_DB",
-    JSON.stringify(DB)
-  );
-
-}
-
-
-/* =========================================================
-   HELPER
-========================================================= */
-
-function brandName(id){
-
-  const brand =
-    DB.brands.find(b=>b.id===id);
-
-  return brand ? brand.name : id;
-
-}
-
-
-function ddayClass(value){
-
-  if(!value) return "";
-
-  if(value==="TODAY")
-    return "today";
-
-  if(value.startsWith("D+"))
-    return "late";
-
-  return "ok";
-
-}
-
-
-function progressForStyle(style){
-
-  const values =
-    Object.values(style.pipeline);
-
-  const done =
-    values.filter(v =>
-      v==="완료"
-    ).length;
-
-  const total =
-    values.length;
-
-  return Math.round(
-    (done / total) * 100
-  );
-
-}
-
-
-/* =========================================================
-   FILTER
-========================================================= */
-
-function getFilteredStyles(){
-
-  const season =
-    document.getElementById("seasonFilter").value;
-
-  const brand =
-    document.getElementById("brandFilter").value;
-
-  return DB.styles.filter(style=>{
-
-    const seasonOK =
-      season==="ALL" ||
-      style.season===season;
-
-    const brandOK =
-      brand==="ALL" ||
-      style.brandId===brand;
-
-    return seasonOK && brandOK;
-
-  });
+    updateSummary(filtered);
 
 }
 
@@ -1892,301 +1441,54 @@ function getFilteredStyles(){
    SUMMARY
 ========================================================= */
 
-function renderSummary(){
+function updateSummary(list) {
 
-  const styles =
-    getFilteredStyles();
+    document.getElementById("summaryTotal").textContent =
+        list.length;
 
-  let progress=0;
-  let done=0;
-  let today=0;
-  let late=0;
 
-  styles.forEach(style=>{
+    document.getElementById("summaryProgress").textContent =
+        list.filter(style => {
 
-    const p =
-      progressForStyle(style);
+            const progress = getStyleProgress(style);
 
-    if(p>0 && p<100)
-      progress++;
+            return progress > 0 && progress < 100;
 
-    if(p>=100)
-      done++;
+        }).length;
 
-    Object.values(
-      style.materials || {}
-    ).forEach(list=>{
 
-      if(!Array.isArray(list))
-        return;
+    document.getElementById("summaryDeadline").textContent =
+        list.filter(style => {
 
-      list.forEach(item=>{
+            const dday = getDDay(style.deadline);
 
-        if(item.arrival==="TODAY")
-          today++;
+            if (!dday.startsWith("D-")) return false;
 
-        if(
-          item.arrival &&
-          item.arrival.startsWith("D+")
-        )
-          late++;
+            const days = Number(dday.replace("D-", ""));
 
-      });
+            return days <= 7;
 
-    });
+        }).length;
 
-  });
 
-  document.getElementById("sumTotal").textContent =
-    styles.length;
+    if (list.length === 0) {
 
-  document.getElementById("sumProgress").textContent =
-    progress;
+        document.getElementById("summaryAverage").textContent =
+            "0%";
 
-  document.getElementById("sumToday").textContent =
-    today;
+    } else {
 
-  document.getElementById("sumLate").textContent =
-    late;
+        const avg =
+            list.reduce((sum, style) => {
 
-  document.getElementById("sumDone").textContent =
-    done;
+                return sum + getStyleProgress(style);
 
-}
+            }, 0) / list.length;
 
+        document.getElementById("summaryAverage").textContent =
+            Math.round(avg) + "%";
 
-/* =========================================================
-   RENDER STYLE LIST
-========================================================= */
-
-function renderStyles(){
-
-  const tbody =
-    document.getElementById(
-      "styleProjectList"
-    );
-
-  tbody.innerHTML="";
-
-  const styles =
-    getFilteredStyles();
-
-  if(!styles.length){
-
-    tbody.innerHTML=`
-      <tr>
-        <td colspan="7">
-          <div class="empty">
-            해당 조건의 Style이 없습니다.
-          </div>
-        </td>
-      </tr>
-    `;
-
-    return;
-
-  }
-
-
-  styles.forEach(style=>{
-
-    const progress =
-      progressForStyle(style);
-
-    const tr =
-      document.createElement("tr");
-
-    tr.className="style-row";
-
-    tr.dataset.styleId =
-      style.id;
-
-
-    tr.onclick = function(){
-
-      toggleStyleDetail(
-        style.id,
-        tr
-      );
-
-    };
-
-
-    tr.innerHTML=`
-
-      <td>
-        <span class="badge badge-brand">
-          ${brandName(style.brandId)}
-        </span>
-      </td>
-
-      <td>
-        <span class="badge badge-season">
-          ${style.season}
-        </span>
-      </td>
-
-      <td>
-        <span class="style-no">
-          ${style.styleNo}
-        </span>
-      </td>
-
-      <td>
-        <span class="product-name">
-          ${style.name}
-        </span>
-      </td>
-
-      <td>
-        <span class="qty">
-          ${Number(style.targetQty).toLocaleString()} EA
-        </span>
-      </td>
-
-      <td>
-
-        <div class="pipeline">
-
-          ${pipelineButton(
-            "원사",
-            style.pipeline.yarn,
-            style.id,
-            "yarn"
-          )}
-
-          ${pipelineButton(
-            "원단",
-            style.pipeline.fabric,
-            style.id,
-            "fabric"
-          )}
-
-          ${pipelineButton(
-            "부자재",
-            style.pipeline.material,
-            style.id,
-            "subMaterial"
-          )}
-
-          ${pipelineButton(
-            "편직/가공",
-            style.pipeline.knitting,
-            style.id,
-            "knitting"
-          )}
-
-          ${pipelineButton(
-            "봉제",
-            style.pipeline.sewing,
-            style.id,
-            "sewing"
-          )}
-
-          ${pipelineButton(
-            "QC",
-            style.pipeline.qc,
-            style.id,
-            "qc"
-          )}
-
-        </div>
-
-      </td>
-
-      <td>
-
-        <span class="
-          badge
-          ${
-            style.status.includes("완료")
-              ? "badge-done"
-              : style.status.includes("진행")
-              ? "badge-progress"
-              : "badge-normal"
-          }
-        ">
-          ${style.status}
-        </span>
-
-      </td>
-
-    `;
-
-
-    tbody.appendChild(tr);
-
-
-    const detail =
-      document.createElement("tr");
-
-    detail.className="detail-row";
-
-    detail.id=
-      `detail-${style.id}`;
-
-
-    detail.innerHTML=`
-
-      <td colspan="7"
-          class="detail-cell">
-
-        ${buildDetailPanel(style)}
-
-      </td>
-
-    `;
-
-
-    tbody.appendChild(detail);
-
-  });
-
-}
-
-
-/* =========================================================
-   PIPELINE BUTTON
-========================================================= */
-
-function pipelineButton(
-  title,
-  status,
-  styleId,
-  process
-){
-
-  const active =
-    status==="완료"
-      ? "active"
-      : "";
-
-  const current =
-    status==="진행중"
-      ? "current"
-      : "";
-
-  return `
-
-    <button
-      class="pipe-btn ${active} ${current}"
-      onclick="
-        event.stopPropagation();
-        openProcess('${styleId}','${process}');
-      "
-    >
-
-      <div class="pipe-title">
-        ${title}
-      </div>
-
-      <div class="pipe-status">
-        ${status || "대기"}
-      </div>
-
-    </button>
-
-  `;
+    }
 
 }
 
@@ -2195,1645 +1497,849 @@ function pipelineButton(
    DETAIL PANEL
 ========================================================= */
 
-function buildDetailPanel(style){
+function buildDetailPanel(style) {
 
-  return `
-
-    <div class="detail-panel">
-
-      <div class="detail-head">
-
-        <div>
-
-          <div class="detail-title">
-            ${style.styleNo}
-            ·
-            ${style.name}
-          </div>
-
-          <div class="detail-meta">
-            ${brandName(style.brandId)}
-            ·
-            ${style.season}
-            ·
-            목표 ${Number(style.targetQty).toLocaleString()} EA
-          </div>
-
-        </div>
-
-        <button
-          class="close-detail"
-          onclick="
-            event.stopPropagation();
-            closeStyleDetail('${style.id}');
-          "
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <div class="progress-wrap">
-
-        <div class="progress-head">
-
-          <span class="progress-label">
-            전체 생산 진행률
-          </span>
-
-          <span class="progress-percent">
-            ${progressForStyle(style)}%
-          </span>
-
-        </div>
-
-        <div class="progress-bar">
-
-          <div
-            class="progress-fill"
-            style="width:${progressForStyle(style)}%"
-          ></div>
-
-        </div>
-
-      </div>
-
-
-      <div
-        class="process-tabs"
-        id="process-tabs-${style.id}"
-      >
-
-        ${processButton(
-          style.id,
-          "workOrder",
-          "작업지시"
-        )}
-
-        ${processButton(
-          style.id,
-          "sample",
-          "샘플"
-        )}
-
-        ${processButton(
-          style.id,
-          "yarn",
-          "원사"
-        )}
-
-        ${processButton(
-          style.id,
-          "fabric",
-          "원단"
-        )}
-
-        ${processButton(
-          style.id,
-          "subMaterial",
-          "부자재"
-        )}
-
-        ${processButton(
-          style.id,
-          "knitting",
-          "편직/가공"
-        )}
-
-        ${processButton(
-          style.id,
-          "sewing",
-          "봉제공장"
-        )}
-
-        ${processButton(
-          style.id,
-          "qc",
-          "QC"
-        )}
-
-        ${processButton(
-          style.id,
-          "logistics",
-          "물류"
-        )}
-
-        ${processButton(
-          style.id,
-          "documents",
-          "문서"
-        )}
-
-      </div>
-
-
-      <div
-        id="process-detail-${style.id}"
-        class="process-detail"
-      >
-
-        ${buildProcessDetail(
-          style,
-          "yarn"
-        )}
-
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================================
-   PROCESS BUTTON
-========================================================= */
-
-function processButton(
-  styleId,
-  process,
-  label
-){
-
-  return `
-
-    <button
-      class="process-btn"
-      onclick="
-        event.stopPropagation();
-        openProcess('${styleId}','${process}');
-      "
-    >
-      ${label}
-    </button>
-
-  `;
-
-}
-
-
-/* =========================================================
-   OPEN PROCESS
-========================================================= */
-
-function openProcess(
-  styleId,
-  process
-){
-
-  const style =
-    DB.styles.find(
-      s=>s.id===styleId
-    );
-
-  if(!style)
-    return;
-
-
-  const detail =
-    document.getElementById(
-      `detail-${styleId}`
-    );
-
-  if(
-    detail &&
-    !detail.classList.contains("open")
-  ){
-
-    const row =
-      document.querySelector(
-        `[data-style-id="${styleId}"]`
-      );
-
-    toggleStyleDetail(
-      styleId,
-      row
-    );
-
-  }
-
-
-  const processDetail =
-    document.getElementById(
-      `process-detail-${styleId}`
-    );
-
-  if(processDetail){
-
-    processDetail.innerHTML =
-      buildProcessDetail(
-        style,
-        process
-      );
-
-  }
-
-
-  const buttons =
-    document.querySelectorAll(
-      `#process-tabs-${styleId} .process-btn`
-    );
-
-  buttons.forEach(btn=>{
-
-    btn.classList.remove(
-      "active"
-    );
-
-  });
-
-
-  buttons.forEach(btn=>{
-
-    if(
-      btn.textContent.trim() ===
-      getProcessLabel(process)
-    ){
-
-      btn.classList.add("active");
-
-    }
-
-  });
-
-}
-
-
-/* =========================================================
-   PROCESS LABEL
-========================================================= */
-
-function getProcessLabel(process){
-
-  const map={
-
-    workOrder:"작업지시",
-    sample:"샘플",
-    yarn:"원사",
-    fabric:"원단",
-    subMaterial:"부자재",
-    knitting:"편직/가공",
-    sewing:"봉제공장",
-    qc:"QC",
-    logistics:"물류",
-    documents:"문서"
-
-  };
-
-  return map[process] || process;
-
-}
-
-
-/* =========================================================
-   PROCESS DETAIL BUILDER
-========================================================= */
-
-function buildProcessDetail(
-  style,
-  process
-){
-
-  if(process==="yarn")
-    return buildMaterialDetail(
-      style,
-      "yarn",
-      "원사"
-    );
-
-  if(process==="fabric")
-    return buildMaterialDetail(
-      style,
-      "fabric",
-      "원단"
-    );
-
-  if(process==="subMaterial")
-    return buildMaterialDetail(
-      style,
-      "subMaterial",
-      "부자재"
-    );
-
-  if(process==="sewing")
-    return buildSewingDetail(style);
-
-  if(process==="qc")
-    return buildQCDetail(style);
-
-  if(process==="logistics")
-    return buildLogisticsDetail(style);
-
-  if(process==="knitting")
-    return buildKnittingDetail(style);
-
-  if(process==="sample")
-    return buildSampleDetail(style);
-
-  if(process==="workOrder")
-    return buildWorkOrderDetail(style);
-
-  if(process==="documents")
-    return buildDocumentsDetail(style);
-
-  return "";
-
-}
-
-
-/* =========================================================
-   MATERIAL DETAIL
-========================================================= */
-
-function buildMaterialDetail(
-  style,
-  type,
-  title
-){
-
-  const items =
-    style.materials &&
-    style.materials[type]
-      ? style.materials[type]
-      : [];
-
-
-  if(!items.length){
+    const progress = getStyleProgress(style);
 
     return `
 
-      <div class="process-title">
-        <strong>${title}</strong>
-        <span>등록된 항목 없음</span>
-      </div>
+        <div class="detail-panel active">
 
-      <div class="empty">
-        아직 ${title} 데이터가 등록되지 않았습니다.
-      </div>
+            <div class="detail-header">
+
+                <div>
+
+                    <div class="detail-title">
+                        ${style.styleNo} · ${style.name}
+                    </div>
+
+                    <div class="detail-subtitle">
+                        ${
+                            style.brand === "SNOWYA"
+                            ? "스노야"
+                            : "모브온"
+                        }
+                        · ${style.season}
+                        · 생산수량 ${Number(style.quantity || 0).toLocaleString()} EA
+                    </div>
+
+                </div>
+
+
+                <div class="detail-deadline">
+
+                    <div class="detail-deadline-label">
+                        최종 납기
+                    </div>
+
+                    <div class="detail-deadline-date">
+                        ${formatDate(style.deadline)}
+                    </div>
+
+                    <div class="detail-dday">
+                        ${getDDay(style.deadline)}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="detail-progress">
+
+                <div class="detail-progress-header">
+
+                    <div class="detail-progress-title">
+                        전체 생산 진행률
+                    </div>
+
+                    <div class="detail-progress-number">
+                        ${progress}%
+                    </div>
+
+                </div>
+
+
+                <div class="progress-bar large-progress">
+
+                    <div
+                        class="progress-fill"
+                        style="width:${progress}%">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="pipeline">
+
+                ${style.pipeline.map((step,index) => `
+
+                    <div
+                        class="pipeline-step ${
+                            step.progress > 0 &&
+                            step.progress < 100
+                            ? "active"
+                            : ""
+                        }"
+                        onclick="showStepDetail(
+                            ${style.id},
+                            ${index}
+                        ); event.stopPropagation();"
+                    >
+
+                        <div class="pipeline-name">
+                            ${step.name}
+                        </div>
+
+                        <div class="pipeline-status">
+                            ${step.status}
+                        </div>
+
+                        <div class="pipeline-date">
+                            ${formatDate(step.date)}
+                        </div>
+
+                    </div>
+
+                `).join("")}
+
+            </div>
+
+
+            <div
+                id="stepDetail-${style.id}"
+                class="detail-content"
+            >
+
+                ${buildDefaultDetail(style)}
+
+            </div>
+
+        </div>
 
     `;
 
-  }
-
-
-  const total =
-    items.length;
-
-
-  const completed =
-    items.filter(item =>
-      item.order==="완료" &&
-      item.payment==="완료" &&
-      item.production==="완료" &&
-      item.shipment==="완료"
-    ).length;
-
-
-  const progress =
-    Math.round(
-      completed / total * 100
-    );
-
-
-  return `
-
-    <div class="process-title">
-
-      <strong>
-        ${title}
-      </strong>
-
-      <span>
-        ${items.length}개 품목 ·
-        ${progress}% 진행
-      </span>
-
-    </div>
-
-
-    <div class="info-grid">
-
-      <div class="info-box">
-        <div class="info-label">
-          품목 수
-        </div>
-        <div class="info-value">
-          ${items.length}개
-        </div>
-      </div>
-
-      <div class="info-box">
-        <div class="info-label">
-          발주
-        </div>
-        <div class="info-value">
-          ${items.filter(i=>i.order==="완료").length}/${items.length}
-        </div>
-      </div>
-
-      <div class="info-box">
-        <div class="info-label">
-          결제
-        </div>
-        <div class="info-value">
-          ${items.filter(i=>i.payment==="완료").length}/${items.length}
-        </div>
-      </div>
-
-      <div class="info-box">
-        <div class="info-label">
-          입고
-        </div>
-        <div class="info-value">
-          ${items.filter(i=>i.arrival==="완료").length}/${items.length}
-        </div>
-      </div>
-
-    </div>
-
-
-    <div class="progress-wrap">
-
-      <div class="progress-head">
-
-        <span class="progress-label">
-          ${title} 전체 진행률
-        </span>
-
-        <span class="progress-percent">
-          ${progress}%
-        </span>
-
-      </div>
-
-      <div class="progress-bar">
-
-        <div
-          class="progress-fill"
-          style="width:${progress}%"
-        ></div>
-
-      </div>
-
-    </div>
-
-
-    <div class="table-wrap">
-
-      <table class="material-table">
-
-        <thead>
-
-          <tr>
-
-            <th>품목</th>
-            <th>업체</th>
-            <th>색상</th>
-            <th>수량</th>
-            <th>발주</th>
-            <th>결제</th>
-            <th>생산</th>
-            <th>출고</th>
-            <th>입고예정</th>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          ${items.map(item=>`
-
-            <tr>
-
-              <td>
-                <span class="material-name">
-                  ${item.name}
-                </span>
-              </td>
-
-              <td>
-                ${item.supplier || "-"}
-              </td>
-
-              <td>
-                ${item.color || "-"}
-              </td>
-
-              <td>
-                ${item.qty || "-"}
-              </td>
-
-              <td>
-                ${statusBadge(item.order)}
-              </td>
-
-              <td>
-                ${statusBadge(item.payment)}
-              </td>
-
-              <td>
-                ${statusBadge(item.production)}
-              </td>
-
-              <td>
-                ${statusBadge(item.shipment)}
-              </td>
-
-              <td>
-                <span class="dday ${ddayClass(item.arrival)}">
-                  ${item.arrival || "-"}
-                </span>
-              </td>
-
-            </tr>
-
-          `).join("")}
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  `;
-
 }
 
 
 /* =========================================================
-   STATUS BADGE
+   DEFAULT DETAIL
 ========================================================= */
 
-function statusBadge(status){
+function buildDefaultDetail(style) {
 
-  if(!status)
-    return "-";
+    return `
 
-  let cls="badge-normal";
+        <div class="detail-card">
 
-  if(status==="완료")
-    cls="badge-done";
-
-  if(status==="진행중")
-    cls="badge-progress";
-
-  if(status==="대기")
-    cls="badge-normal";
-
-  return `
-    <span class="badge ${cls}">
-      ${status}
-    </span>
-  `;
-
-}
-
-
-/* =========================================================
-   SEWING
-========================================================= */
-
-function buildSewingDetail(style){
-
-  const list =
-    style.materials.sewing || [];
-
-
-  return `
-
-    <div class="process-title">
-
-      <strong>봉제공장</strong>
-
-      <span>
-        ${style.pipeline.sewing}
-      </span>
-
-    </div>
-
-
-    ${list.map(item=>`
-
-      <div class="info-grid">
-
-        <div class="info-box">
-          <div class="info-label">
-            봉제공장
-          </div>
-          <div class="info-value">
-            ${item.factory}
-          </div>
-        </div>
-
-        <div class="info-box">
-          <div class="info-label">
-            샘플
-          </div>
-          <div class="info-value">
-            ${item.sample}
-          </div>
-        </div>
-
-        <div class="info-box">
-          <div class="info-label">
-            본생산
-          </div>
-          <div class="info-value">
-            ${item.production}
-          </div>
-        </div>
-
-        <div class="info-box">
-          <div class="info-label">
-            생산수량
-          </div>
-          <div class="info-value">
-            ${item.qty}
-          </div>
-        </div>
-
-      </div>
-
-      <div class="timeline">
-
-        <div class="timeline-item done">
-          <div class="timeline-dot"></div>
-          <div class="timeline-label">샘플</div>
-          <div class="timeline-date">확정</div>
-        </div>
-
-        <div class="timeline-item current">
-          <div class="timeline-dot"></div>
-          <div class="timeline-label">본생산</div>
-          <div class="timeline-date">진행</div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-label">QC</div>
-          <div class="timeline-date">대기</div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-label">출고</div>
-          <div class="timeline-date">대기</div>
-        </div>
-
-      </div>
-
-    `).join("")}
-
-  `;
-
-}
-
-
-/* =========================================================
-   QC
-========================================================= */
-
-function buildQCDetail(style){
-
-  const list =
-    style.materials.qc || [];
-
-
-  return `
-
-    <div class="process-title">
-
-      <strong>QC / 품질검수</strong>
-
-      <span>
-        ${style.pipeline.qc}
-      </span>
-
-    </div>
-
-
-    ${list.map(item=>`
-
-      <div class="info-grid">
-
-        <div class="info-box">
-          <div class="info-label">
-            검사 업체
-          </div>
-          <div class="info-value">
-            ${item.company}
-          </div>
-        </div>
-
-        <div class="info-box">
-          <div class="info-label">
-            검사 예정일
-          </div>
-          <div class="info-value">
-            ${item.date}
-          </div>
-        </div>
-
-        <div class="info-box">
-          <div class="info-label">
-            검사 방식
-          </div>
-          <div class="info-value">
-            ${item.method}
-          </div>
-        </div>
-
-        <div class="info-box">
-          <div class="info-label">
-            검사 상태
-          </div>
-          <div class="info-value">
-            ${item.status}
-          </div>
-        </div>
-
-      </div>
-
-      <div class="document-grid">
-
-        <div class="document-box">
-          <div class="document-name">
-            검사 요청서
-          </div>
-          <div class="document-status">
-            업로드 예정
-          </div>
-        </div>
-
-        <div class="document-box">
-          <div class="document-name">
-            QC 성적서
-          </div>
-          <div class="document-status">
-            업로드 예정
-          </div>
-        </div>
-
-        <div class="document-box">
-          <div class="document-name">
-            검사 사진
-          </div>
-          <div class="document-status">
-            업로드 예정
-          </div>
-        </div>
-
-      </div>
-
-    `).join("")}
-
-  `;
-
-}
-
-
-/* =========================================================
-   LOGISTICS
-========================================================= */
-
-function buildLogisticsDetail(style){
-
-  const list =
-    style.materials.logistics || [];
-
-
-  return `
-
-    <div class="process-title">
-
-      <strong>물류 / 통관 / 국내입고</strong>
-
-      <span>
-        ${style.pipeline.logistics}
-      </span>
-
-    </div>
-
-
-    ${list.map(item=>`
-
-      <div class="info-grid">
-
-        <div class="info-box">
-          <div class="info-label">
-            포워더
-          </div>
-          <div class="info-value">
-            ${item.forwarder}
-          </div>
-        </div>
-
-        <div class="info-box">
-          <div class="info-label">
-            ETD
-          </div>
-          <div class="info-value">
-            ${item.etd}
-          </div>
-        </div>
-
-        <div class="info-box">
-          <div class="info-label">
-            ETA
-          </div>
-          <div class="info-value">
-            ${item.eta}
-          </div>
-        </div>
-
-        <div class="info-box">
-          <div class="info-label">
-            통관
-          </div>
-          <div class="info-value">
-            ${item.customs}
-          </div>
-        </div>
-
-      </div>
-
-      <div class="timeline">
-
-        <div class="timeline-item done">
-          <div class="timeline-dot"></div>
-          <div class="timeline-label">출고</div>
-          <div class="timeline-date">${item.etd}</div>
-        </div>
-
-        <div class="timeline-item current">
-          <div class="timeline-dot"></div>
-          <div class="timeline-label">해상운송</div>
-          <div class="timeline-date">${item.eta}</div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-label">통관</div>
-          <div class="timeline-date">${item.customs}</div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-label">창고입고</div>
-          <div class="timeline-date">${item.warehouse}</div>
-        </div>
-
-      </div>
-
-    `).join("")}
-
-  `;
-
-}
-
-
-/* =========================================================
-   KNITTING
-========================================================= */
-
-function buildKnittingDetail(style){
-
-  return `
-
-    <div class="process-title">
-
-      <strong>편직 / 가공</strong>
-
-      <span>
-        ${style.pipeline.knitting}
-      </span>
-
-    </div>
-
-
-    <div class="info-grid">
-
-      <div class="info-box">
-        <div class="info-label">
-          현재 단계
-        </div>
-        <div class="info-value">
-          ${style.pipeline.knitting}
-        </div>
-      </div>
-
-      <div class="info-box">
-        <div class="info-label">
-          원사 상태
-        </div>
-        <div class="info-value">
-          ${style.pipeline.yarn}
-        </div>
-      </div>
-
-      <div class="info-box">
-        <div class="info-label">
-          원단 상태
-        </div>
-        <div class="info-value">
-          ${style.pipeline.fabric}
-        </div>
-      </div>
-
-      <div class="info-box">
-        <div class="info-label">
-          다음 단계
-        </div>
-        <div class="info-value">
-          봉제 준비
-        </div>
-      </div>
-
-    </div>
-
-
-    <div class="timeline">
-
-      <div class="timeline-item done">
-        <div class="timeline-dot"></div>
-        <div class="timeline-label">원사</div>
-        <div class="timeline-date">완료</div>
-      </div>
-
-      <div class="timeline-item done">
-        <div class="timeline-dot"></div>
-        <div class="timeline-label">편직</div>
-        <div class="timeline-date">완료</div>
-      </div>
-
-      <div class="timeline-item current">
-        <div class="timeline-dot"></div>
-        <div class="timeline-label">염색/가공</div>
-        <div class="timeline-date">진행</div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-label">입고</div>
-        <div class="timeline-date">대기</div>
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================================
-   SAMPLE
-========================================================= */
-
-function buildSampleDetail(style){
-
-  return `
-
-    <div class="process-title">
-
-      <strong>샘플 개발</strong>
-
-      <span>
-        ${style.pipeline.sample}
-      </span>
-
-    </div>
-
-
-    <div class="info-grid">
-
-      <div class="info-box">
-        <div class="info-label">
-          현재 상태
-        </div>
-        <div class="info-value">
-          ${style.pipeline.sample}
-        </div>
-      </div>
-
-      <div class="info-box">
-        <div class="info-label">
-          샘플 버전
-        </div>
-        <div class="info-value">
-          Sample V1
-        </div>
-      </div>
-
-      <div class="info-box">
-        <div class="info-label">
-          샘플 이미지
-        </div>
-        <div class="info-value">
-          업로드 예정
-        </div>
-      </div>
-
-      <div class="info-box">
-        <div class="info-label">
-          다음 단계
-        </div>
-        <div class="info-value">
-          본생산
-        </div>
-      </div>
-
-    </div>
-
-
-    <div class="document-grid">
-
-      <div class="document-box">
-        <div class="document-name">
-          작업지시서
-        </div>
-        <div class="document-status">
-          ${style.documents.workOrder}
-        </div>
-      </div>
-
-      <div class="document-box">
-        <div class="document-name">
-          샘플 이미지
-        </div>
-        <div class="document-status">
-          ${style.documents.sample}
-        </div>
-      </div>
-
-      <div class="document-box">
-        <div class="document-name">
-          샘플 수정사항
-        </div>
-        <div class="document-status">
-          기록 영역
-        </div>
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================================
-   WORK ORDER
-========================================================= */
-
-function buildWorkOrderDetail(style){
-
-  return `
-
-    <div class="process-title">
-
-      <strong>작업지시서</strong>
-
-      <span>
-        디자인 → 생산 지시
-      </span>
-
-    </div>
-
-
-    <div class="info-grid">
-
-      <div class="info-box">
-        <div class="info-label">
-          Style No.
-        </div>
-        <div class="info-value">
-          ${style.styleNo}
-        </div>
-      </div>
-
-      <div class="info-box">
-        <div class="info-label">
-          상품명
-        </div>
-        <div class="info-value">
-          ${style.name}
-        </div>
-      </div>
-
-      <div class="info-box">
-        <div class="info-label">
-          목표수량
-        </div>
-        <div class="info-value">
-          ${Number(style.targetQty).toLocaleString()} EA
-        </div>
-      </div>
-
-      <div class="info-box">
-        <div class="info-label">
-          현재상태
-        </div>
-        <div class="info-value">
-          ${style.pipeline.workOrder}
-        </div>
-      </div>
-
-    </div>
-
-
-    <div class="document-grid">
-
-      <div class="document-box">
-        <div class="document-name">
-          작업지시서 파일
-        </div>
-        <div class="document-status">
-          ${style.documents.workOrder}
-        </div>
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================================
-   DOCUMENTS
-========================================================= */
-
-function buildDocumentsDetail(style){
-
-  return `
-
-    <div class="process-title">
-
-      <strong>Style 관련 문서</strong>
-
-      <span>
-        모든 기록을 Style 기준으로 관리
-      </span>
-
-    </div>
-
-
-    <div class="document-grid">
-
-      <div class="document-box">
-        <div class="document-name">
-          작업지시서
-        </div>
-        <div class="document-status">
-          ${style.documents.workOrder}
-        </div>
-      </div>
-
-      <div class="document-box">
-        <div class="document-name">
-          중국 공장 계약서
-        </div>
-        <div class="document-status">
-          ${style.documents.contract}
-        </div>
-      </div>
-
-      <div class="document-box">
-        <div class="document-name">
-          샘플 이미지
-        </div>
-        <div class="document-status">
-          ${style.documents.sample}
-        </div>
-      </div>
-
-      <div class="document-box">
-        <div class="document-name">
-          QC 성적서
-        </div>
-        <div class="document-status">
-          ${style.documents.qc}
-        </div>
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================================
-   STYLE DETAIL OPEN / CLOSE
-========================================================= */
-
-function toggleStyleDetail(
-  styleId,
-  row
-){
-
-  const detail =
-    document.getElementById(
-      `detail-${styleId}`
-    );
-
-  if(!detail)
-    return;
-
-
-  const isOpen =
-    detail.classList.contains("open");
-
-
-  document.querySelectorAll(
-    ".detail-row.open"
-  ).forEach(el=>{
-
-    el.classList.remove("open");
-
-  });
-
-
-  document.querySelectorAll(
-    ".style-row.selected"
-  ).forEach(el=>{
-
-    el.classList.remove("selected");
-
-  });
-
-
-  if(!isOpen){
-
-    detail.classList.add("open");
-
-    if(row)
-      row.classList.add("selected");
-
-  }
-
-}
-
-
-function closeStyleDetail(styleId){
-
-  const detail =
-    document.getElementById(
-      `detail-${styleId}`
-    );
-
-  if(detail)
-    detail.classList.remove("open");
-
-
-  const row =
-    document.querySelector(
-      `[data-style-id="${styleId}"]`
-    );
-
-  if(row)
-    row.classList.remove("selected");
-
-}
-
-
-/* =========================================================
-   TAB SWITCH
-========================================================= */
-
-function switchTab(
-  tabName,
-  button
-){
-
-  document.querySelectorAll(
-    ".tab-content"
-  ).forEach(tab=>{
-
-    tab.classList.remove(
-      "active"
-    );
-
-  });
-
-
-  document.getElementById(
-    `tab-${tabName}`
-  ).classList.add("active");
-
-
-  document.querySelectorAll(
-    ".tab-btn"
-  ).forEach(btn=>{
-
-    btn.classList.remove(
-      "active"
-    );
-
-  });
-
-
-  button.classList.add("active");
-
-
-  if(tabName==="schedule")
-    renderSchedule();
-
-}
-
-
-/* =========================================================
-   SCHEDULE
-========================================================= */
-
-function renderSchedule(){
-
-  const container =
-    document.getElementById(
-      "todoList"
-    );
-
-  const styles =
-    getFilteredStyles();
-
-  let html="";
-
-
-  styles.forEach(style=>{
-
-    const items =
-      style.materials || {};
-
-
-    Object.keys(items).forEach(type=>{
-
-      if(!Array.isArray(items[type]))
-        return;
-
-
-      items[type].forEach(item=>{
-
-        if(!item.arrival)
-          return;
-
-
-        let dday =
-          item.arrival;
-
-
-        let cls =
-          ddayClass(dday);
-
-
-        html += `
-
-          <div class="todo-item">
-
-            <div class="todo-style">
-              ${style.styleNo}
+            <div class="detail-card-title">
+                생산 기본 정보
             </div>
 
-            <div class="todo-text">
+            <div class="info-grid">
 
-              ${style.name}
-              ·
-              ${getProcessLabel(type)}
-              ·
-              ${item.name || item.supplier || ""}
+                <div class="info-item">
+
+                    <div class="info-label">
+                        브랜드
+                    </div>
+
+                    <div class="info-value">
+                        ${
+                            style.brand === "SNOWYA"
+                            ? "스노야"
+                            : "모브온"
+                        }
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        시즌
+                    </div>
+
+                    <div class="info-value">
+                        ${style.season}
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Style No.
+                    </div>
+
+                    <div class="info-value">
+                        ${style.styleNo}
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        생산수량
+                    </div>
+
+                    <div class="info-value">
+                        ${Number(style.quantity || 0).toLocaleString()} EA
+                    </div>
+
+                </div>
 
             </div>
 
-            <div
-              class="todo-dday dday ${cls}"
-            >
-              ${dday}
+        </div>
+
+
+        <div class="detail-card">
+
+            <div class="detail-card-title">
+                등록 문서
             </div>
 
-          </div>
+            <div class="document-list">
+
+                ${
+                    style.documents && style.documents.length
+                    ? style.documents.map(doc => `
+
+                        <div class="document-item">
+
+                            <div>
+
+                                <div class="document-name">
+                                    ${doc.name}
+                                </div>
+
+                                <div class="document-type">
+                                    ${doc.type}
+                                </div>
+
+                            </div>
+
+                            <button
+                                class="btn"
+                                onclick="event.stopPropagation();"
+                            >
+                                확인
+                            </button>
+
+                        </div>
+
+                    `).join("")
+                    :
+                    `
+                        <div class="empty">
+                            등록된 문서가 없습니다.
+                        </div>
+                    `
+                }
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   STEP DETAIL
+========================================================= */
+
+function showStepDetail(styleId, stepIndex) {
+
+    const style =
+        styles.find(item => item.id === styleId);
+
+    if (!style) return;
+
+    const step =
+        style.pipeline[stepIndex];
+
+    const container =
+        document.getElementById("stepDetail-" + styleId);
+
+    if (!container) return;
+
+
+    let content = "";
+
+
+    /* =========================
+       YARN
+    ========================= */
+
+    if (step.key === "yarn") {
+
+        content = `
+
+            <div class="detail-card">
+
+                <div class="detail-card-title">
+                    원사 상세
+                </div>
+
+                <div class="material-list">
+
+                    ${
+                        style.yarns.length
+                        ?
+                        style.yarns.map(item => `
+
+                            <div class="material-item">
+
+                                <div>
+
+                                    <div class="material-name">
+                                        ${item.name}
+                                    </div>
+
+                                    <div class="material-meta">
+                                        ${item.supplier}
+                                    </div>
+
+                                </div>
+
+                                <div class="material-meta">
+                                    ${item.quantity}
+                                </div>
+
+                                <div class="material-status">
+                                    ${item.status}
+                                </div>
+
+                                <div class="material-meta">
+                                    ${item.date}
+                                </div>
+
+                            </div>
+
+                        `).join("")
+                        :
+                        `<div class="empty">등록된 원사가 없습니다.</div>`
+                    }
+
+                </div>
+
+            </div>
+
+
+            ${buildProcessInfo(step)}
 
         `;
 
-      });
-
-    });
-
-  });
-
-
-  if(!html){
-
-    html=`
-      <div class="empty">
-        등록된 일정이 없습니다.
-      </div>
-    `;
-
-  }
-
-
-  container.innerHTML=html;
-
-}
-
-
-/* =========================================================
-   NEW STYLE MODAL
-========================================================= */
-
-function openStyleModal(){
-
-  document.getElementById(
-    "styleModal"
-  ).classList.add("active");
-
-}
-
-
-function closeStyleModal(){
-
-  document.getElementById(
-    "styleModal"
-  ).classList.remove("active");
-
-}
-
-
-function createStyle(){
-
-  const brand =
-    document.getElementById(
-      "newBrand"
-    ).value;
-
-  const season =
-    document.getElementById(
-      "newSeason"
-    ).value;
-
-  const styleNo =
-    document.getElementById(
-      "newStyleNo"
-    ).value.trim();
-
-  const name =
-    document.getElementById(
-      "newStyleName"
-    ).value.trim();
-
-  const qty =
-    document.getElementById(
-      "newQty"
-    ).value.trim();
-
-  const status =
-    document.getElementById(
-      "newStatus"
-    ).value;
-
-  const memo =
-    document.getElementById(
-      "newMemo"
-    ).value.trim();
-
-
-  if(!styleNo || !name || !qty){
-
-    alert(
-      "Style No., 상품명, 목표수량은 입력해주세요."
-    );
-
-    return;
-
-  }
-
-
-  const exists =
-    DB.styles.some(
-      s=>s.styleNo===styleNo
-    );
-
-
-  if(exists){
-
-    alert(
-      "이미 존재하는 Style No.입니다."
-    );
-
-    return;
-
-  }
-
-
-  const newStyle={
-
-    id:
-      "STYLE_" +
-      Date.now(),
-
-    styleNo,
-    brandId:brand,
-    season,
-    name,
-    targetQty:Number(qty),
-    status,
-    memo,
-
-    pipeline:{
-      design:"완료",
-      workOrder:"대기",
-      sample:"대기",
-      yarn:"대기",
-      fabric:"대기",
-      material:"대기",
-      knitting:"대기",
-      sewing:"대기",
-      qc:"대기",
-      logistics:"대기"
-    },
-
-    materials:{
-      yarn:[],
-      fabric:[],
-      subMaterial:[],
-      sewing:[],
-      qc:[],
-      logistics:[]
-    },
-
-    documents:{
-      workOrder:"업로드 예정",
-      contract:"업로드 예정",
-      sample:"업로드 예정",
-      qc:"업로드 예정"
     }
 
-  };
+
+    /* =========================
+       FABRIC
+    ========================= */
+
+    else if (step.key === "fabric") {
+
+        content = `
+
+            <div class="detail-card">
+
+                <div class="detail-card-title">
+                    원단 상세
+                </div>
+
+                <div class="material-list">
+
+                    ${
+                        style.fabrics.length
+                        ?
+                        style.fabrics.map(item => `
+
+                            <div class="material-item">
+
+                                <div>
+
+                                    <div class="material-name">
+                                        ${item.name}
+                                    </div>
+
+                                    <div class="material-meta">
+                                        ${item.supplier}
+                                    </div>
+
+                                </div>
+
+                                <div class="material-meta">
+                                    ${item.quantity}
+                                </div>
+
+                                <div class="material-status">
+                                    ${item.status}
+                                </div>
+
+                                <div class="material-meta">
+                                    ${item.date}
+                                </div>
+
+                            </div>
+
+                        `).join("")
+                        :
+                        `<div class="empty">등록된 원단이 없습니다.</div>`
+                    }
+
+                </div>
+
+            </div>
 
 
-  DB.styles.push(
-    newStyle
-  );
+            ${buildProcessInfo(step)}
+
+        `;
+
+    }
 
 
-  saveDB();
+    /* =========================
+       ACCESSORY
+    ========================= */
 
-  closeStyleModal();
+    else if (step.key === "accessory") {
 
-  renderAll();
+        content = `
+
+            <div class="detail-card">
+
+                <div class="detail-card-title">
+                    부자재 상세
+                </div>
+
+                <div class="material-list">
+
+                    ${
+                        style.accessories.length
+                        ?
+                        style.accessories.map(item => `
+
+                            <div class="material-item">
+
+                                <div>
+
+                                    <div class="material-name">
+                                        ${item.name}
+                                    </div>
+
+                                    <div class="material-meta">
+                                        ${item.supplier}
+                                    </div>
+
+                                </div>
+
+                                <div class="material-meta">
+                                    ${item.quantity}
+                                </div>
+
+                                <div class="material-status">
+                                    ${item.status}
+                                </div>
+
+                                <div class="material-meta">
+                                    ${item.date}
+                                </div>
+
+                            </div>
+
+                        `).join("")
+                        :
+                        `<div class="empty">등록된 부자재가 없습니다.</div>`
+                    }
+
+                </div>
+
+            </div>
 
 
-  alert(
-    `${styleNo} Style이 등록되었습니다.`
-  );
+            ${buildProcessInfo(step)}
+
+        `;
+
+    }
+
+
+    /* =========================
+       OTHER PROCESS
+    ========================= */
+
+    else {
+
+        content = `
+
+            <div class="detail-card">
+
+                <div class="detail-card-title">
+                    ${step.name} 진행 상세
+                </div>
+
+                <div class="info-grid">
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            현재 상태
+                        </div>
+
+                        <div class="info-value">
+                            ${step.status}
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            예정일
+                        </div>
+
+                        <div class="info-value">
+                            ${formatDate(step.date)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            현재 진행률
+                        </div>
+
+                        <div class="info-value">
+                            ${step.progress}%
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            남은 기간
+                        </div>
+
+                        <div class="info-value">
+                            ${getDDay(step.date)}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            ${buildProcessInfo(step)}
+
+        `;
+
+    }
+
+
+    container.innerHTML = content;
 
 }
 
 
 /* =========================================================
-   RENDER ALL
+   PROCESS INFO
 ========================================================= */
 
-function renderAll(){
+function buildProcessInfo(step) {
 
-  renderStyles();
+    return `
 
-  renderSummary();
+        <div class="detail-card">
 
-  renderSchedule();
+            <div class="detail-card-title">
+                일정 및 진행 정보
+            </div>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        상태
+                    </div>
+
+                    <div class="info-value">
+                        ${step.status}
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        진행률
+                    </div>
+
+                    <div class="info-value">
+                        ${step.progress}%
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        예정일
+                    </div>
+
+                    <div class="info-value">
+                        ${formatDate(step.date)}
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        D-DAY
+                    </div>
+
+                    <div class="info-value">
+                        ${getDDay(step.date)}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
 
 }
+
+
+/* =========================================================
+   OPEN STYLE
+========================================================= */
+
+function openStyleDetail(styleId) {
+
+    if (selectedStyleId === styleId) {
+
+        selectedStyleId = null;
+
+    } else {
+
+        selectedStyleId = styleId;
+
+    }
+
+    renderDashboard();
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function openStyleModal() {
+
+    document
+        .getElementById("styleModal")
+        .classList.add("active");
+
+}
+
+
+function closeStyleModal() {
+
+    document
+        .getElementById("styleModal")
+        .classList.remove("active");
+
+}
+
+
+/* =========================================================
+   ADD STYLE
+========================================================= */
+
+function addStyle() {
+
+    const brand =
+        document.getElementById("newBrand").value;
+
+    const season =
+        document.getElementById("newSeason").value;
+
+    const styleNo =
+        document.getElementById("newStyleNo").value.trim();
+
+    const name =
+        document.getElementById("newStyleName").value.trim();
+
+    const deadline =
+        document.getElementById("newDeadline").value;
+
+    const quantity =
+        Number(
+            document.getElementById("newQuantity").value || 0
+        );
+
+    const memo =
+        document.getElementById("newMemo").value.trim();
+
+
+    if (!styleNo || !name || !deadline) {
+
+        alert("Style No., 상품명, 최종 납기일은 입력해주세요.");
+
+        return;
+
+    }
+
+
+    const newStyle = {
+
+        id: Date.now(),
+
+        brand,
+        season,
+        styleNo,
+        name,
+        quantity,
+        deadline,
+        memo,
+
+        pipeline: [
+
+            { key:"sample", name:"샘플", status:"대기", date:"", progress:0 },
+            { key:"yarn", name:"원사", status:"대기", date:"", progress:0 },
+            { key:"fabric", name:"원단", status:"대기", date:"", progress:0 },
+            { key:"accessory", name:"부자재", status:"대기", date:"", progress:0 },
+            { key:"knitting", name:"편직", status:"대기", date:"", progress:0 },
+            { key:"processing", name:"가공", status:"대기", date:"", progress:0 },
+            { key:"sewing", name:"봉제", status:"대기", date:"", progress:0 },
+            { key:"qc", name:"QC", status:"대기", date:"", progress:0 },
+            { key:"forwarding", name:"포워딩", status:"대기", date:"", progress:0 },
+            { key:"customs", name:"통관", status:"대기", date:"", progress:0 },
+            { key:"warehouse", name:"입고", status:"대기", date:"", progress:0 }
+
+        ],
+
+        yarns: [],
+        fabrics: [],
+        accessories: [],
+        documents: []
+
+    };
+
+
+    styles.push(newStyle);
+
+
+    saveData();
+
+
+    closeStyleModal();
+
+
+    document.getElementById("newStyleNo").value = "";
+    document.getElementById("newStyleName").value = "";
+    document.getElementById("newDeadline").value = "";
+    document.getElementById("newQuantity").value = "";
+    document.getElementById("newMemo").value = "";
+
+
+    selectedStyleId = newStyle.id;
+
+
+    renderDashboard();
+
+}
+
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+
+function saveData() {
+
+    localStorage.setItem(
+        "verso_scm_styles",
+        JSON.stringify(styles)
+    );
+
+}
+
+
+function loadData() {
+
+    const saved =
+        localStorage.getItem("verso_scm_styles");
+
+    if (!saved) return;
+
+    try {
+
+        const parsed = JSON.parse(saved);
+
+        if (Array.isArray(parsed)) {
+
+            styles = parsed;
+
+        }
+
+    } catch(error) {
+
+        console.log("저장된 데이터를 불러오지 못했습니다.");
+
+    }
+
+}
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+loadData();
+
+renderDashboard();
 
 
 /* =========================================================
    MODAL OUTSIDE CLICK
 ========================================================= */
 
-document.getElementById(
-  "styleModal"
-).addEventListener(
-  "click",
-  function(e){
+document
+    .getElementById("styleModal")
+    .addEventListener("click", function(event) {
 
-    if(e.target===this){
+        if (event.target === this) {
 
-      closeStyleModal();
+            closeStyleModal();
 
-    }
+        }
 
-  }
-);
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-loadDB();
-
-renderAll();
+    });
 
 </script>
 
