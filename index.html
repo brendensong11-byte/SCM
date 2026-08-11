@@ -5,41 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JPROJECT SCM System</title>
     <style>
-        /* ==========================================
-           [GLOBAL_STYLES] 하이엔드 B2B 프리미엄 UI
-           ========================================== */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
         body { background-color: #f8fafc; color: #0f172a; line-height: 1.4; padding: 20px; font-size: 13px; }
         
         .container { max-width: 1480px; margin: 0 auto; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 2px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         
-        /* Header */
         header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 2px solid #0f172a; margin-bottom: 20px; }
         .logo { font-size: 20px; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; text-transform: uppercase; }
         .logo span { color: #2563eb; font-weight: 400; }
         .brand-select { padding: 6px 12px; border-radius: 2px; border: 1px solid #94a3b8; font-size: 13px; font-weight: 600; outline: none; background: #fff; color: #0f172a; }
         
-        /* Alert Bar */
         .alert-bar { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 2px; padding: 10px 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.15s; }
         .alert-bar:hover { background: #fee2e2; }
         .alert-title { color: #991b1b; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; }
         .alert-badge { background: #dc2626; color: white; padding: 2px 6px; font-size: 11px; font-weight: 700; border-radius: 2px; }
 
-        /* Nav Tabs */
         .nav-tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 1px solid #cbd5e1; }
         .tab-btn { padding: 10px 22px; border: 1px solid transparent; border-bottom: none; background: none; font-size: 13px; font-weight: 600; color: #64748b; cursor: pointer; border-radius: 2px 2px 0 0; transition: all 0.15s; }
         .tab-btn.active { color: #0f172a; background: #fff; border-color: #cbd5e1 #cbd5e1 #fff #cbd5e1; font-weight: 700; }
         .tab-btn .badge { background: #f1f3f5; color: #475569; padding: 1px 6px; font-size: 11px; margin-left: 6px; border-radius: 2px; border: 1px solid #cbd5e1; }
         .tab-btn.active .badge { background: #0f172a; color: #fff; border-color: #0f172a; }
         
-        /* Buttons */
         .btn-action { background: #0f172a; color: white; border: none; padding: 7px 14px; border-radius: 2px; font-weight: 600; cursor: pointer; font-size: 12px; letter-spacing: -0.2px; }
         .btn-action:hover { background: #1e293b; }
         .btn-secondary { background: #e2e8f0; color: #334155; border: 1px solid #cbd5e1; padding: 7px 14px; border-radius: 2px; font-weight: 600; cursor: pointer; font-size: 12px; }
         .btn-secondary:hover { background: #cbd5e1; }
-        .btn-danger { background: #dc2626; color: white; border: none; padding: 4px 8px; border-radius: 2px; font-weight: 600; cursor: pointer; font-size: 11px; }
-
-        /* Tables & Clickable Rows */
+        
         .table-container { overflow-x: auto; border: 1px solid #cbd5e1; margin-bottom: 10px; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
         th { background: #f8fafc; color: #334155; font-weight: 700; padding: 10px 12px; border-bottom: 1px solid #cbd5e1; border-right: 1px solid #e2e8f0; text-transform: uppercase; font-size: 11px; letter-spacing: 0.3px; }
@@ -48,17 +39,12 @@
         .clickable-row { cursor: pointer; transition: background-color 0.12s; }
         .clickable-row:hover { background-color: #f1f5f9; }
         
-        /* Badges & Progress */
         .status-badge { display: inline-block; padding: 2px 6px; border-radius: 2px; font-size: 11px; font-weight: 600; }
         .status-in-progress { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
         .status-partial { background: #fefce8; color: #a16207; border: 1px solid #fef08a; }
         .status-completed { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
         .status-danger { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
         
-        .progress-bar-bg { width: 80px; height: 6px; background: #e2e8f0; border-radius: 1px; overflow: hidden; display: inline-block; vertical-align: middle; }
-        .progress-bar-fill { height: 100%; background: #2563eb; }
-
-        /* Detail View Cards */
         .detail-view { display: none; }
         .detail-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 2px solid #0f172a; margin-bottom: 20px; }
         
@@ -68,7 +54,6 @@
         .info-item label { display: block; font-size: 11px; color: #64748b; margin-bottom: 3px; font-weight: 600; text-transform: uppercase; }
         .info-item span { font-weight: 700; color: #0f172a; font-size: 13px; }
 
-        /* Modals */
         .modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(15, 23, 42, 0.6); justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: white; padding: 20px; border-radius: 2px; width: 100%; max-width: 560px; border: 1px solid #0f172a; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
         .modal-header { font-size: 14px; font-weight: 700; margin-bottom: 14px; display: flex; justify-content: space-between; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; text-transform: uppercase; }
@@ -81,7 +66,6 @@
 <body>
 
 <div class="container">
-    <!-- Header -->
     <header>
         <div class="logo">JPROJECT <span>SCM</span></div>
         <div>
@@ -97,7 +81,7 @@
     <div id="mainListView">
         <div class="alert-bar" onclick="openAlertModal()">
             <div class="alert-title">
-                <span class="alert-badge" id="alertCountBadge">0건</span> 확인 필요 지연 및 봉제 이슈 항목
+                <span class="alert-badge" id="alertCountBadge">1건</span> 지연 및 이슈 항목 확인 필요
             </div>
             <span style="font-size:12px; color:#7f1d1d; text-decoration: underline;">클릭하여 이슈 세부사항 확인 →</span>
         </div>
@@ -122,8 +106,7 @@
                         <th>시즌</th>
                         <th>Style No.</th>
                         <th>상품명</th>
-                        <th>진행률</th>
-                        <th>현재 단계</th>
+                        <th>진행 단계</th>
                         <th>목표일</th>
                         <th>상태</th>
                     </tr>
@@ -138,7 +121,7 @@
         <div class="detail-header">
             <div>
                 <button class="btn-secondary" onclick="closeDetailView()">← 메인 목록으로</button>
-                <h2 style="display:inline-block; margin-left: 14px; font-size: 18px; color: #0f172a;" id="detailTitle">ST26001 - 쫀쫀슬림팬츠</h2>
+                <h2 style="display:inline-block; margin-left: 14px; font-size: 18px; color: #0f172a;" id="detailTitle">-</h2>
             </div>
             <div>
                 <button class="btn-action" style="background:#2563eb;" onclick="tryCompleteStyle()">완료 상태로 전환</button>
@@ -149,18 +132,18 @@
         <div class="section-card">
             <div class="section-title">기본 정보 (STYLE INFO)</div>
             <div class="grid-4">
-                <div class="info-item"><label>브랜드 / 시즌</label><span id="infoBrandSeason">스노야 / 26SS</span></div>
-                <div class="info-item"><label>Style No.</label><span id="infoStyleNo">ST26001</span></div>
-                <div class="info-item"><label>상품명</label><span id="infoStyleName">쫀쫀슬림팬츠</span></div>
-                <div class="info-item"><label>목표 납기일</label><span id="infoTargetDate">2026-08-25</span></div>
+                <div class="info-item"><label>브랜드 / 시즌</label><span id="infoBrandSeason">-</span></div>
+                <div class="info-item"><label>Style No.</label><span id="infoStyleNo">-</span></div>
+                <div class="info-item"><label>상품명</label><span id="infoStyleName">-</span></div>
+                <div class="info-item"><label>목표 납기일</label><span id="infoTargetDate">-</span></div>
             </div>
         </div>
 
-        <!-- 2. 자재 관리 (원사/원단/부자재 - 분할 입고 지원) -->
+        <!-- 2. 자재 관리 (원단/부자재 - 분할 입고 지원) -->
         <div class="section-card">
             <div class="section-title">
                 원단 관리 (FABRIC)
-                <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openItemModal('FABRIC')">+ 원단 추가</button>
+                <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openItemModal('fabric')">+ 원단 추가</button>
             </div>
             <div class="table-container">
                 <table>
@@ -175,7 +158,7 @@
         <div class="section-card">
             <div class="section-title">
                 부자재 관리 (TRIMS)
-                <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openItemModal('TRIM')">+ 부자재 추가</button>
+                <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openItemModal('trim')">+ 부자재 추가</button>
             </div>
             <div class="table-container">
                 <table>
@@ -187,7 +170,7 @@
             </div>
         </div>
 
-        <!-- 3. 봉제 공장 및 선출고(분할 출고) 관리 -->
+        <!-- 3. 봉제 공장 및 완제품 분할 출고 관리 -->
         <div class="section-card">
             <div class="section-title">
                 봉제 공장 및 완제품 분할 출고 (SEWING & SHIPMENT)
@@ -196,7 +179,7 @@
             <div class="table-container">
                 <table>
                     <thead>
-                        <tr><th>국가/공장</th><th>총 생산 목표</th><th>누적 출고량</th><th>출고 상태</th><th>분할 출고 현황</th><th>출고 추가 / 이슈</th></tr>
+                        <tr><th>국가/공장</th><th>총 생산 목표</th><th>누적 출고량</th><th>출고 상태</th><th>분할 출고 현황</th><th>출고/이슈 관리</th></tr>
                     </thead>
                     <tbody id="sewingFactoryTableBody"></tbody>
                 </table>
@@ -207,7 +190,7 @@
         <div class="section-card">
             <div class="section-title">
                 QC (품질 검사) 관리
-                <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openQcModal()">+ QC 결과 입력</button>
+                <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openQcModal()">+ QC 설정</button>
             </div>
             <div class="grid-4">
                 <div class="info-item"><label>QC 대행업체</label><span id="qcCompany">-</span></div>
@@ -219,37 +202,133 @@
     </div>
 </div>
 
-<!-- 모달 1: 분할 입고 등록 모달 -->
+<!-- [모달 모음] -->
+
+<!-- 1. 신규 Style 등록 모달 -->
+<div class="modal-overlay" id="styleModal">
+    <div class="modal-content">
+        <div class="modal-header">신규 Style 등록</div>
+        <div class="form-group"><label>브랜드</label><select id="newBrand"><option value="스노야">스노야</option><option value="모브온">모브온</option></select></div>
+        <div class="form-group"><label>시즌</label><input type="text" id="newSeason" value="26SS"></div>
+        <div class="form-group"><label>Style No.</label><input type="text" id="newStyleNo" placeholder="예: ST26002"></div>
+        <div class="form-group"><label>상품명</label><input type="text" id="newStyleName" placeholder="예: 데일리 오버핏 셔츠"></div>
+        <div class="form-group"><label>목표 납기일</label><input type="date" id="newTargetDate"></div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('styleModal')">취소</button>
+            <button class="btn-action" onclick="saveNewStyle()">등록</button>
+        </div>
+    </div>
+</div>
+
+<!-- 2. 자재 부분(분할) 입고 등록 모달 -->
 <div class="modal-overlay" id="partialInModal">
     <div class="modal-content">
-        <div class="modal-header">자재 부분(분할) 입고 등록</div>
+        <div class="modal-header">자재 부분 입고 등록</div>
         <div class="form-group"><label>금회 입고 수량</label><input type="number" id="partialInQty" placeholder="예: 2000"></div>
         <div class="modal-footer">
-            <button class="btn-secondary" onclick="closePartialInModal()">취소</button>
+            <button class="btn-secondary" onclick="closeModal('partialInModal')">취소</button>
             <button class="btn-action" onclick="savePartialIn()">입고 반영</button>
         </div>
     </div>
 </div>
 
-<!-- 모달 2: 선출고(분할 출고) 등록 모달 -->
+<!-- 3. 자재(원단/부자재) 신규 추가 모달 -->
+<div class="modal-overlay" id="itemModal">
+    <div class="modal-content">
+        <div class="modal-header" id="itemModalHeader">자재 추가</div>
+        <div class="form-group"><label>품목/자재명</label><input type="text" id="newItemName" placeholder="예: 코튼 100% 원단"></div>
+        <div class="form-group"><label>업체명</label><input type="text" id="newItemSupplier" placeholder="예: 중국 B사"></div>
+        <div class="form-group"><label>발주 수량</label><input type="number" id="newItemTotalQty" placeholder="10000"></div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('itemModal')">취소</button>
+            <button class="btn-action" onclick="saveNewItem()">추가</button>
+        </div>
+    </div>
+</div>
+
+<!-- 4. 봉제 공장 추가 모달 -->
+<div class="modal-overlay" id="sewingModal">
+    <div class="modal-content">
+        <div class="modal-header">봉제 공장 추가</div>
+        <div class="form-group"><label>국가</label><input type="text" id="newFacCountry" placeholder="예: 베트남"></div>
+        <div class="form-group"><label>공장명</label><input type="text" id="newFacName" placeholder="예: ABCD 공장"></div>
+        <div class="form-group"><label>목표 생산 수량</label><input type="number" id="newFacTarget" placeholder="10000"></div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('sewingModal')">취소</button>
+            <button class="btn-action" onclick="saveNewSewingFactory()">등록</button>
+        </div>
+    </div>
+</div>
+
+<!-- 5. 완제품 분할 출고 등록 모달 -->
 <div class="modal-overlay" id="shipmentModal">
     <div class="modal-content">
         <div class="modal-header">완제품 분할 출고 등록</div>
         <div class="form-group"><label>출고 일자</label><input type="date" id="shipmentDate"></div>
         <div class="form-group"><label>금회 출고 수량</label><input type="number" id="shipmentQty" placeholder="예: 2000"></div>
-        <div class="form-group"><label>비고/차수</label><input type="text" id="shipmentNote" placeholder="예: 1차 선출고"></div>
+        <div class="form-group"><label>비고/차수</label><input type="text" id="shipmentNote" placeholder="예: 1차 선출고 (선적 완료)"></div>
         <div class="modal-footer">
-            <button class="btn-secondary" onclick="closeShipmentModal()">취소</button>
+            <button class="btn-secondary" onclick="closeModal('shipmentModal')">취소</button>
             <button class="btn-action" onclick="saveShipment()">출고 등록</button>
         </div>
     </div>
 </div>
 
-<!-- 나머지 공통 모달생략 및 스크립트 연결 -->
+<!-- 6. 공장 이슈 입력 모달 -->
+<div class="modal-overlay" id="issueModal">
+    <div class="modal-content">
+        <div class="modal-header">봉제/생산 이슈 등록</div>
+        <div class="form-group"><label>이슈 내용</label><textarea id="issueText" rows="3" placeholder="예: 전력 수급 문제로 인한 출고 3일 지연 예상"></textarea></div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('issueModal')">취소</button>
+            <button class="btn-action" onclick="saveIssue()">이슈 저장</button>
+        </div>
+    </div>
+</div>
+
+<!-- 7. QC 설정 모달 -->
+<div class="modal-overlay" id="qcModal">
+    <div class="modal-content">
+        <div class="modal-header">QC 검사 정보 설정</div>
+        <div class="form-group"><label>검사 대행업체</label><input type="text" id="qcInputCompany" placeholder="예: KATRI"></div>
+        <div class="form-group"><label>검사 예정일</label><input type="date" id="qcInputDate"></div>
+        <div class="form-group"><label>불량률 (%)</label><input type="text" id="qcInputRate" placeholder="예: 0.5%"></div>
+        <div class="form-group"><label>판정</label>
+            <select id="qcInputStatus">
+                <option value="WAITING">검사 대기</option>
+                <option value="PASSED">합격 (PASSED)</option>
+                <option value="FAILED">불합격 (FAILED)</option>
+            </select>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('qcModal')">취소</button>
+            <button class="btn-action" onclick="saveQc()">저장</button>
+        </div>
+    </div>
+</div>
+
+<!-- 8. 이슈 모아보기 모달 -->
+<div class="modal-overlay" id="alertModal">
+    <div class="modal-content">
+        <div class="modal-header">전체 생산 이슈 및 지연 현황</div>
+        <div id="alertListContainer" style="max-height: 300px; overflow-y: auto; font-size:12px;"></div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('alertModal')">닫기</button>
+        </div>
+    </div>
+</div>
+
 <script>
+    let currentTab = 'ACTIVE';
+    let currentDetailId = 1;
+    let selectedMaterialId = null;
+    let selectedMaterialType = '';
+    let selectedFactoryId = null;
+
+    // 데이터 초기값
     let stylesData = [
         { 
-            id: 1, brand: '스노야', season: '26SS', styleNo: 'ST26001', name: '쫀쫀슬림팬츠', progress: 50, step: '부분 출고 중', targetDate: '2026-08-25', status: 'ACTIVE',
+            id: 1, brand: '스노야', season: '26SS', styleNo: 'ST26001', name: '쫀쫀슬림팬츠', targetDate: '2026-08-25', status: 'ACTIVE',
             fabrics: [{ id: 1, name: '쫀쫀 스판 원단', supplier: '중국 B사', totalQty: 10000, currentQty: 7000 }],
             trims: [{ id: 1, name: 'YKK 지퍼', supplier: '중국 C사', totalQty: 10000, currentQty: 10000 }],
             factories: [
@@ -259,20 +338,99 @@
                         { date: '2026-08-10', qty: 2000, note: '1차 선출고' },
                         { date: '2026-08-13', qty: 5000, note: '2차 출고' }
                     ],
-                    issues: []
+                    issues: ['원단 입고 지연으로 라인 가동 2일 차질 발생']
                 }
             ],
-            qcCompany: 'KATRI', qcDate: '2026-08-22', qcRate: '0.8%', qcStatus: 'PASSED'
+            qcCompany: 'KATRI', qcDate: '2026-08-22', qcRate: '0.8%', qcStatus: 'WAITING'
         }
     ];
 
-    let currentDetailId = 1;
-    let selectedMaterialId = null;
-    let selectedMaterialType = '';
-    let selectedFactoryId = null;
+    // 메인 리스트 렌더링
+    function renderMainList() {
+        const brandFilter = document.getElementById('brandFilter').value;
+        const tbody = document.getElementById('styleTableBody');
+        tbody.innerHTML = '';
 
+        let activeCount = 0;
+        let completedCount = 0;
+        let totalAlerts = 0;
+
+        stylesData.forEach(item => {
+            if (item.status === 'ACTIVE') activeCount++;
+            if (item.status === 'COMPLETED') completedCount++;
+
+            // 이슈 카운트
+            item.factories.forEach(f => { if(f.issues && f.issues.length > 0) totalAlerts += f.issues.length; });
+
+            if (item.status !== currentTab) return;
+            if (brandFilter !== 'ALL' && item.brand !== brandFilter) return;
+
+            const tr = document.createElement('tr');
+            tr.className = 'clickable-row';
+            tr.onclick = () => openDetailView(item.id);
+
+            // 현재 단계 및 상태 파악
+            let stepText = '원자재 입고 중';
+            let statusBadge = `<span class="status-badge status-in-progress">진행 중</span>`;
+            if (item.status === 'COMPLETED') {
+                stepText = '최종 완료';
+                statusBadge = `<span class="status-badge status-completed">완료</span>`;
+            } else if (item.factories.some(f => f.shipments.length > 0)) {
+                stepText = '부분 출고 진행 중';
+                statusBadge = `<span class="status-badge status-partial">부분 출고</span>`;
+            }
+
+            tr.innerHTML = `
+                <td><b>${item.brand}</b></td>
+                <td>${item.season}</td>
+                <td style="font-weight:700; color:#2563eb;">${item.styleNo}</td>
+                <td>${item.name}</td>
+                <td>${stepText}</td>
+                <td>${item.targetDate}</td>
+                <td>${statusBadge}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        document.getElementById('countActive').innerText = activeCount;
+        document.getElementById('countCompleted').innerText = completedCount;
+        document.getElementById('alertCountBadge').innerText = `${totalAlerts}건`;
+    }
+
+    function switchMainTab(tab) {
+        currentTab = tab;
+        document.getElementById('tabActive').classList.toggle('active', tab === 'ACTIVE');
+        document.getElementById('tabCompleted').classList.toggle('active', tab === 'COMPLETED');
+        renderMainList();
+    }
+
+    // 상세 화면 열기
+    function openDetailView(id) {
+        currentDetailId = id;
+        const item = stylesData.find(s => s.id === id);
+        if(!item) return;
+
+        document.getElementById('mainListView').style.display = 'none';
+        document.getElementById('styleDetailView').style.display = 'block';
+
+        document.getElementById('detailTitle').innerText = `${item.styleNo} - ${item.name}`;
+        document.getElementById('infoBrandSeason').innerText = `${item.brand} / ${item.season}`;
+        document.getElementById('infoStyleNo').innerText = item.styleNo;
+        document.getElementById('infoStyleName').innerText = item.name;
+        document.getElementById('infoTargetDate').innerText = item.targetDate;
+
+        renderSubTables(item);
+    }
+
+    function closeDetailView() {
+        document.getElementById('styleDetailView').style.display = 'none';
+        document.getElementById('mainListView').style.display = 'block';
+        renderMainList();
+    }
+
+    // 자재 및 봉제 테이블 렌더링
     function renderSubTables(item) {
-        // 원단 및 부자재 부분 입고 계산
+        // 1. 원단 / 부자재
         ['fabric', 'trim'].forEach(type => {
             const tbody = document.getElementById(`${type}TableBody`);
             tbody.innerHTML = '';
@@ -287,7 +445,9 @@
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${i.name}</td><td>${i.supplier}</td><td>${i.totalQty.toLocaleString()}</td>
+                    <td><b>${i.name}</b></td>
+                    <td>${i.supplier}</td>
+                    <td>${i.totalQty.toLocaleString()}</td>
                     <td style="font-weight:700;">${i.currentQty.toLocaleString()}</td>
                     <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
                     <td><button class="btn-secondary" style="font-size:11px;" onclick="openPartialInModal('${type}', ${i.id})">+ 입고 추가</button></td>
@@ -296,7 +456,7 @@
             });
         });
 
-        // 봉제공장 및 분할 출고 계산
+        // 2. 봉제 및 분할 출고
         const factoryTbody = document.getElementById('sewingFactoryTableBody');
         factoryTbody.innerHTML = '';
 
@@ -313,85 +473,196 @@
                 <div style="font-size:11px; color:#334155;">• ${s.date} : <b>${s.qty.toLocaleString()}개</b> (${s.note})</div>
             `).join('');
 
+            const issueHistory = (fac.issues || []).map(is => `
+                <div style="font-size:11px; color:#dc2626; margin-top:2px;">⚠️ ${is}</div>
+            `).join('');
+
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>[${fac.country}] <b>${fac.name}</b></td>
                 <td>${fac.totalTarget.toLocaleString()} pcs</td>
                 <td style="font-weight:700; color:#2563eb;">${totalShipped.toLocaleString()} pcs</td>
                 <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
-                <td>${shipmentHistory || '<span style="color:#94a3b8;">출고 기록 없음</span>'}</td>
+                <td>
+                    ${shipmentHistory || '<span style="color:#94a3b8; font-size:11px;">출고 내역 없음</span>'}
+                    ${issueHistory}
+                </td>
                 <td>
                     <button class="btn-action" style="font-size:11px; padding:3px 6px;" onclick="openShipmentModal(${fac.id})">+ 분할 출고</button>
+                    <button class="btn-secondary" style="font-size:11px; padding:3px 6px; margin-left:4px;" onclick="openIssueModal(${fac.id})">+ 이슈 등록</button>
                 </td>
             `;
             factoryTbody.appendChild(tr);
         });
+
+        // 3. QC 정보
+        document.getElementById('qcCompany').innerText = item.qcCompany || '-';
+        document.getElementById('qcTargetDate').innerText = item.qcDate || '-';
+        document.getElementById('qcDefectRate').innerText = item.qcRate || '-';
+        
+        let qcBadge = `<span class="status-badge status-in-progress">검사 대기</span>`;
+        if(item.qcStatus === 'PASSED') qcBadge = `<span class="status-badge status-completed">합격 (PASSED)</span>`;
+        if(item.qcStatus === 'FAILED') qcBadge = `<span class="status-badge status-danger">불합격 (FAILED)</span>`;
+        document.getElementById('qcStatusBadge').innerHTML = qcBadge;
     }
 
-    /* 자재 분할 입고 모달 로직 */
+    // 모달 열기/닫기 공통
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+
+    // 모달 관련 액션 함수들
+    function openStyleModal() { openModal('styleModal'); }
+    function saveNewStyle() {
+        const brand = document.getElementById('newBrand').value;
+        const season = document.getElementById('newSeason').value;
+        const styleNo = document.getElementById('newStyleNo').value;
+        const name = document.getElementById('newStyleName').value;
+        const targetDate = document.getElementById('newTargetDate').value;
+
+        if(!styleNo || !name) { alert('Style No.와 상품명을 입력해주세요.'); return; }
+
+        stylesData.push({
+            id: Date.now(), brand, season, styleNo, name, targetDate, status: 'ACTIVE',
+            fabrics: [], trims: [], factories: [], qcStatus: 'WAITING'
+        });
+
+        closeModal('styleModal');
+        renderMainList();
+    }
+
     function openPartialInModal(type, id) {
         selectedMaterialType = type;
         selectedMaterialId = id;
-        document.getElementById('partialInModal').style.display = 'flex';
+        openModal('partialInModal');
     }
-    function closePartialInModal() { document.getElementById('partialInModal').style.display = 'none'; }
-
     function savePartialIn() {
         const qty = parseInt(document.getElementById('partialInQty').value) || 0;
         const item = stylesData.find(s => s.id === currentDetailId);
-        const list = item[`${selectedMaterialType}s`];
-        const mat = list.find(m => m.id === selectedMaterialId);
-        
+        const mat = item[`${selectedMaterialType}s`].find(m => m.id === selectedMaterialId);
         mat.currentQty = Math.min(mat.totalQty, mat.currentQty + qty);
-        closePartialInModal();
+        closeModal('partialInModal');
         renderSubTables(item);
     }
 
-    /* 완제품 분할 출고 모달 로직 */
+    function openItemModal(type) {
+        selectedMaterialType = type;
+        document.getElementById('itemModalHeader').innerText = type === 'fabric' ? '원단 추가' : '부자재 추가';
+        openModal('itemModal');
+    }
+    function saveNewItem() {
+        const name = document.getElementById('newItemName').value;
+        const supplier = document.getElementById('newItemSupplier').value;
+        const totalQty = parseInt(document.getElementById('newItemTotalQty').value) || 0;
+
+        const item = stylesData.find(s => s.id === currentDetailId);
+        item[`${selectedMaterialType}s`].push({ id: Date.now(), name, supplier, totalQty, currentQty: 0 });
+        closeModal('itemModal');
+        renderSubTables(item);
+    }
+
+    function openSewingFactoryModal() { openModal('sewingModal'); }
+    function saveNewSewingFactory() {
+        const country = document.getElementById('newFacCountry').value;
+        const name = document.getElementById('newFacName').value;
+        const totalTarget = parseInt(document.getElementById('newFacTarget').value) || 0;
+
+        const item = stylesData.find(s => s.id === currentDetailId);
+        item.factories.push({ id: Date.now(), country, name, totalTarget, shipments: [], issues: [] });
+        closeModal('sewingModal');
+        renderSubTables(item);
+    }
+
     function openShipmentModal(facId) {
         selectedFactoryId = facId;
-        document.getElementById('shipmentModal').style.display = 'flex';
+        openModal('shipmentModal');
     }
-    function closeShipmentModal() { document.getElementById('shipmentModal').style.display = 'none'; }
-
     function saveShipment() {
-        const date = document.getElementById('shipmentDate').value;
+        const date = document.getElementById('shipmentDate').value || new Date().toISOString().split('T')[0];
         const qty = parseInt(document.getElementById('shipmentQty').value) || 0;
-        const note = document.getElementById('shipmentNote').value;
+        const note = document.getElementById('shipmentNote').value || '선출고';
 
         const item = stylesData.find(s => s.id === currentDetailId);
         const fac = item.factories.find(f => f.id === selectedFactoryId);
-
-        fac.shipments.push({ date: date || new Date().toISOString().split('T')[0], qty, note: note || '선출고' });
-        closeShipmentModal();
+        fac.shipments.push({ date, qty, note });
+        closeModal('shipmentModal');
         renderSubTables(item);
     }
 
-    /* 엄격한 완료 검증 로직 */
+    function openIssueModal(facId) {
+        selectedFactoryId = facId;
+        openModal('issueModal');
+    }
+    function saveIssue() {
+        const issue = document.getElementById('issueText').value;
+        if(!issue) return;
+        const item = stylesData.find(s => s.id === currentDetailId);
+        const fac = item.factories.find(f => f.id === selectedFactoryId);
+        if(!fac.issues) fac.issues = [];
+        fac.issues.push(issue);
+        closeModal('issueModal');
+        renderSubTables(item);
+    }
+
+    function openQcModal() { openModal('qcModal'); }
+    function saveQc() {
+        const item = stylesData.find(s => s.id === currentDetailId);
+        item.qcCompany = document.getElementById('qcInputCompany').value;
+        item.qcDate = document.getElementById('qcInputDate').value;
+        item.qcRate = document.getElementById('qcInputRate').value;
+        item.qcStatus = document.getElementById('qcInputStatus').value;
+        closeModal('qcModal');
+        renderSubTables(item);
+    }
+
+    function openAlertModal() {
+        const container = document.getElementById('alertListContainer');
+        container.innerHTML = '';
+        let count = 0;
+
+        stylesData.forEach(s => {
+            s.factories.forEach(f => {
+                (f.issues || []).forEach(is => {
+                    count++;
+                    const div = document.createElement('div');
+                    div.style.padding = '8px';
+                    div.style.borderBottom = '1px solid #e2e8f0';
+                    div.innerHTML = `<b>[${s.styleNo} - ${s.name}]</b> [${f.name}] <br><span style="color:#dc2626;">⚠️ ${is}</span>`;
+                    container.appendChild(div);
+                });
+            });
+        });
+
+        if(count === 0) container.innerHTML = '<div style="padding:10px;">등록된 지연/생산 이슈가 없습니다.</div>';
+        openModal('alertModal');
+    }
+
+    // 최종 완료 전환 검증
     function tryCompleteStyle() {
         const item = stylesData.find(s => s.id === currentDetailId);
         let errors = [];
 
-        // 원단/부자재 100% 입고 여부 검증
+        // 자재 검증
         [...item.fabrics, ...item.trims].forEach(m => {
-            if (m.currentQty < m.totalQty) errors.push(`• [${m.name}] 자재가 아직 전량 입고되지 않았습니다. (${m.currentQty}/${m.totalQty})`);
+            if (m.currentQty < m.totalQty) errors.push(`• 자재 [${m.name}] 입고 미달 (${m.currentQty.toLocaleString()}/${m.totalQty.toLocaleString()})`);
         });
 
-        // 분할 출고 전량 완료 여부 검증
+        // 출고 검증
         item.factories.forEach(f => {
-            const total = f.shipments.reduce((sum, s) => sum + s.qty, 0);
-            if (total < f.totalTarget) errors.push(`• [${f.name}] 공장의 출고 수량이 부족합니다. (${total}/${f.totalTarget})`);
+            const totalShipped = f.shipments.reduce((sum, s) => sum + s.qty, 0);
+            if (totalShipped < f.totalTarget) errors.push(`• 공장 [${f.name}] 출고 미달 (${totalShipped.toLocaleString()}/${f.totalTarget.toLocaleString()})`);
         });
 
         if (errors.length > 0) {
-            alert(`[완료 전환 불가 안내]\n\n수량이 미달된 항목이 있어 완료 처리가 차단되었습니다:\n\n${errors.join('\n')}`);
+            alert(`[완료 전환 불가]\n아래 항목들의 입/출고 수량이 미달되어 완료할 수 없습니다:\n\n${errors.join('\n')}`);
         } else {
-            alert('모든 분할 입출고가 100% 완결되어 보관함으로 이동합니다.');
+            item.status = 'COMPLETED';
+            alert('모든 자재 및 출고가 100% 완료되었습니다. 완료 보관함으로 이동합니다.');
+            closeDetailView();
         }
     }
 
     // 초기 실행
-    renderSubTables(stylesData[0]);
+    renderMainList();
 </script>
 </body>
 </html>
