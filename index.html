@@ -5,7 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JPROJECT SCM System</title>
     <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}body{background:#f8fafc;color:#1e293b;line-height:1.45;padding:20px;font-size:13px}.container{max-width:1480px;margin:0 auto}header{background:#fff;padding:20px 25px;border-radius:12px;box-shadow:0 2px 8px rgba(15,23,42,.06);margin-bottom:15px;display:flex;justify-content:space-between;align-items:center}.logo{font-size:20px;font-weight:800;color:#111827;letter-spacing:-.4px}.logo span{color:#315a8a;font-weight:500}.brand-select{padding:9px 13px;border:1px solid #cbd5e1;border-radius:7px;font-size:13px;font-weight:600;background:#fff;color:#334155;outline:none}.alert-bar{background:#fff;border:1px solid #e2e8f0;border-left:3px solid #315a8a;border-radius:10px;padding:11px 16px;margin-bottom:15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}.alert-title{color:#334155;font-weight:700;font-size:13px;display:flex;align-items:center;gap:8px}.alert-badge{background:#eef2f7;color:#315a8a;padding:3px 7px;font-size:11px;font-weight:700;border-radius:5px;border:1px solid #d8e0ea}.nav-tabs{display:flex;gap:8px;margin-bottom:20px;border-bottom:2px solid #e2e8f0;padding-bottom:0}.tab-btn{padding:10px 16px;border:none;background:none;font-size:14px;font-weight:600;color:#64748b;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px}.tab-btn.active{color:#315a8a;border-bottom-color:#315a8a;font-weight:700}.tab-btn .badge{background:#f1f5f9;color:#64748b;padding:2px 6px;font-size:11px;margin-left:6px;border-radius:5px;border:1px solid #e2e8f0}.tab-btn.active .badge{background:#eef3f8;color:#315a8a;border-color:#cbd8e5}.btn-action{background:#315a8a;color:#fff;border:none;padding:8px 14px;border-radius:7px;font-weight:600;cursor:pointer;font-size:12px}.btn-action:hover{background:#27496f}.btn-secondary{background:#fff;color:#475569;border:1px solid #cbd5e1;padding:6px 10px;border-radius:6px;font-weight:600;cursor:pointer;font-size:11px}.btn-secondary:hover{border-color:#94a3b8;background:#f8fafc}.btn-danger{background:#fff;color:#b91c1c;border:1px solid #fecaca;padding:4px 7px;border-radius:5px;font-weight:600;cursor:pointer;font-size:11px}.table-container{overflow-x:auto;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:10px;background:#fff}table{width:100%;border-collapse:collapse;text-align:left;font-size:13px}th{background:#f8fafc;color:#64748b;font-weight:600;padding:11px 12px;border-bottom:1px solid #e2e8f0;white-space:nowrap}td{padding:11px 12px;border-bottom:1px solid #f1f5f9;color:#1e293b;vertical-align:middle}.clickable-row{cursor:pointer}.clickable-row:hover{background:#f8fafc}.status-badge{display:inline-block;padding:4px 8px;border-radius:5px;font-size:11px;font-weight:700}.status-in-progress{background:#eef3f8;color:#315a8a;border:1px solid #d5e0eb}.status-partial{background:#f7f4e8;color:#8a6d1d;border:1px solid #e9dfba}.status-completed{background:#eef6f1;color:#397052;border:1px solid #d2e6da}.status-danger{background:#fdf0f0;color:#a33a3a;border:1px solid #f1cccc}.detail-view{display:none}.detail-header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 15px;border-bottom:2px solid #315a8a;margin-bottom:18px}.section-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:18px;margin-bottom:16px;box-shadow:0 1px 4px rgba(15,23,42,.03)}.section-title{font-size:14px;font-weight:700;color:#1e293b;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #edf1f5;padding-bottom:9px}.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.info-item label{display:block;font-size:11px;color:#94a3b8;margin-bottom:4px;font-weight:600}.info-item span{font-weight:700;color:#1e293b;font-size:13px}.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,.42);justify-content:center;align-items:center;z-index:1000}.modal-content{background:#fff;padding:22px;border-radius:12px;width:100%;max-width:560px;border:1px solid #e2e8f0;box-shadow:0 16px 40px rgba(15,23,42,.16)}.modal-header{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;justify-content:space-between;color:#1e293b;border-bottom:1px solid #e2e8f0;padding-bottom:10px}.form-group{margin-bottom:12px}.form-group label{display:block;font-size:11px;font-weight:700;margin-bottom:5px;color:#475569}.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 10px;border:1px solid #cbd5e1;border-radius:7px;font-size:13px;outline:none;background:#fff}.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#315a8a;box-shadow:0 0 0 3px rgba(49,90,138,.08)}.modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;border-top:1px solid #e2e8f0;padding-top:12px}.shipment-item{display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border:1px solid #e2e8f0;padding:6px 9px;margin-bottom:5px;border-radius:6px}@media(max-width:900px){body{padding:10px}.grid-4{grid-template-columns:repeat(2,1fr)}header{padding:16px;gap:12px}.nav-tabs{overflow-x:auto}.tab-btn{white-space:nowrap}}@media(max-width:600px){.grid-4{grid-template-columns:1fr}.detail-header{align-items:flex-start;gap:10px}.detail-header>div:last-child{display:none}}
+        /* =========================================================
+           JPROJECT SCM — DESIGN SYSTEM
+           이후 수정 시 이 영역부터 확인
+           ========================================================= */
+        :root {
+            --bg:#f4f7fa; --card:#ffffff; --navy:#17324a; --blue:#315f86;
+            --blue-soft:#edf4f9; --line:#d9e2ea; --line-soft:#e9eef3;
+            --text:#17212b; --muted:#718096; --green:#46705c; --green-soft:#eff6f1;
+            --amber:#916f32; --amber-soft:#fbf7ed; --red:#a84c4c; --red-soft:#fff3f3;
+            --shadow:0 8px 24px rgba(24,50,75,.06);
+        }
+        *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",Arial,sans-serif}
+        body{background:var(--bg);color:var(--text);line-height:1.5;padding:22px;font-size:13px}
+        .container{max-width:1500px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:var(--shadow)}
+        header{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:18px;gap:16px}
+        .logo{font-size:21px;font-weight:850;color:var(--navy);letter-spacing:-.6px}.logo span{color:var(--blue);font-weight:500;margin-left:5px}
+        .brand-select{padding:9px 12px;border:1px solid #b9c7d4;border-radius:8px;background:#fff;color:var(--navy);font-weight:700;outline:none}
+        .alert-bar{background:#fff8f8;border:1px solid #e8caca;border-radius:9px;padding:11px 15px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:.15s}.alert-bar:hover{background:var(--red-soft)}
+        .alert-title{color:var(--red);font-weight:750;display:flex;align-items:center;gap:8px}.alert-badge{background:var(--red);color:#fff;padding:3px 7px;border-radius:999px;font-size:10px}
+        .nav-tabs{display:flex;gap:6px;margin-bottom:18px;border-bottom:1px solid var(--line);align-items:flex-end}.tab-btn{padding:10px 15px;border:1px solid transparent;border-bottom:none;background:transparent;color:var(--muted);cursor:pointer;font-weight:700;border-radius:8px 8px 0 0}.tab-btn.active{color:var(--navy);background:var(--blue-soft);border-color:var(--line);border-bottom-color:var(--blue-soft)}.tab-btn .badge{background:#f2f5f8;color:var(--muted);padding:2px 7px;border-radius:999px;font-size:10px;margin-left:5px}.tab-btn.active .badge{background:var(--navy);color:#fff}
+        .btn-action,.btn-secondary,.btn-danger{border-radius:7px;font-weight:750;cursor:pointer;transition:.15s}.btn-action{background:var(--navy);color:#fff;border:1px solid var(--navy);padding:8px 12px;font-size:12px}.btn-action:hover{background:#24465f}.btn-secondary{background:#fff;color:var(--navy);border:1px solid #bdcad6;padding:6px 10px;font-size:11px}.btn-secondary:hover{background:var(--blue-soft);border-color:#91acc1}.btn-danger{background:#fff;color:var(--red);border:1px solid #d8a9a9;padding:5px 9px;font-size:11px}.btn-danger:hover{background:var(--red-soft)}
+        .table-container{overflow-x:auto;border:1px solid var(--line);border-radius:9px;margin-bottom:10px}table{width:100%;border-collapse:collapse;text-align:left;font-size:13px}th{background:#f8fafc;color:#607184;font-weight:750;padding:11px 12px;border-bottom:1px solid var(--line);white-space:nowrap;font-size:11px;letter-spacing:.2px}td{padding:11px 12px;border-bottom:1px solid var(--line-soft);color:#263746;vertical-align:middle}.clickable-row{cursor:pointer}.clickable-row:hover{background:#f7fafc}
+        .status-badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap}.status-in-progress{background:var(--blue-soft);color:var(--blue);border:1px solid #bfd2e1}.status-partial{background:var(--amber-soft);color:var(--amber);border:1px solid #dfcda6}.status-completed{background:var(--green-soft);color:var(--green);border:1px solid #bdd2c3}.status-danger{background:var(--red-soft);color:var(--red);border:1px solid #e4bcbc}
+        .detail-view{display:none}.detail-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:18px;gap:12px}.detail-header h2{letter-spacing:-.4px}.section-card{background:#fff;border:1px solid var(--line);border-radius:11px;padding:18px;margin-bottom:15px;box-shadow:0 3px 12px rgba(24,50,75,.035)}.section-title{font-size:12px;font-weight:850;color:var(--navy);margin-bottom:13px;display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line-soft);padding-bottom:9px;letter-spacing:.25px}.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.info-item label{display:block;font-size:10px;color:var(--muted);margin-bottom:4px;font-weight:750}.info-item span{font-weight:800;color:var(--navy);font-size:13px}
+        .action-group{display:flex;gap:5px;align-items:center;justify-content:flex-start;flex-wrap:wrap}.action-label{font-size:10px;color:var(--muted);font-weight:800;margin-right:2px}.action-divider{width:1px;height:20px;background:var(--line);margin:0 2px}
+        .shipment-item{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#fbfcfd;border:1px solid var(--line-soft);padding:7px 9px;margin-bottom:5px;border-radius:7px}.shipment-actions{display:flex;gap:4px;white-space:nowrap}.issue-item{font-size:11px;color:var(--red);margin-top:5px;display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--red-soft);padding:6px 8px;border-radius:6px;border:1px solid #f0d6d6}
+        .modal-overlay{display:none;position:fixed;inset:0;background:rgba(16,31,45,.48);justify-content:center;align-items:center;z-index:1000;padding:18px}.modal-content{background:#fff;padding:21px;border-radius:12px;width:100%;max-width:580px;border:1px solid var(--line);box-shadow:0 18px 45px rgba(0,0,0,.18)}.modal-header{font-size:15px;font-weight:850;margin-bottom:15px;display:flex;justify-content:space-between;color:var(--navy);border-bottom:1px solid var(--line);padding-bottom:10px}.form-group{margin-bottom:12px}.form-group label{display:block;font-size:11px;font-weight:800;margin-bottom:5px;color:#425466}.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 10px;border:1px solid #c3d0dc;border-radius:7px;font-size:13px;outline:none;background:#fff}.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(49,95,134,.08)}.modal-footer{display:flex;justify-content:flex-end;gap:7px;margin-top:16px;border-top:1px solid var(--line);padding-top:13px}
+        .mini-note{font-size:10px;color:var(--muted);margin-top:4px}.management-cell{min-width:245px}.management-box{background:#fafcff;border:1px solid var(--line-soft);border-radius:8px;padding:7px}.management-box+.management-box{margin-top:6px}.management-title{font-size:10px;font-weight:850;color:var(--navy);margin-bottom:5px}
+        @media(max-width:900px){body{padding:10px}.container{padding:15px}.grid-4{grid-template-columns:repeat(2,1fr)}header{align-items:flex-start;flex-direction:column}.nav-tabs{flex-wrap:wrap}.nav-tabs>div{margin-left:0!important;width:100%}.detail-header{align-items:flex-start;flex-direction:column}}
+        @media(max-width:600px){.grid-4{grid-template-columns:1fr}.action-group{align-items:flex-start}.table-container{border-radius:7px}}
     </style>
 </head>
 <body>
@@ -166,8 +195,8 @@
 
 <div class="modal-overlay" id="partialInModal">
     <div class="modal-content">
-        <div class="modal-header">자재 부분 입고 등록 및 수정</div>
-        <div class="form-group"><label>누적 입고 수량 직접 입력 (수정)</label><input type="number" id="partialInQty" placeholder="예: 2000"></div>
+        <div class="modal-header">누적 입고 수량 관리</div>
+        <div class="form-group"><label>현재까지 실제 입고된 누적 수량</label><input type="number" id="partialInQty" placeholder="예: 2000"></div>
         <div class="modal-footer">
             <button class="btn-secondary" onclick="closeModal('partialInModal')">취소</button>
             <button class="btn-action" onclick="savePartialIn()">저장</button>
@@ -203,7 +232,7 @@
 
 <div class="modal-overlay" id="shipmentModal">
     <div class="modal-content">
-        <div class="modal-header" id="shipmentModalHeader">완제품 분할 출고 등록</div>
+        <div class="modal-header" id="shipmentModalHeader">완제품 출고 등록</div>
         <div class="form-group"><label>출고 일자</label><input type="date" id="shipmentDate"></div>
         <div class="form-group"><label>출고 수량</label><input type="number" id="shipmentQty" placeholder="예: 2000"></div>
         <div class="form-group"><label>비고/차수</label><input type="text" id="shipmentNote" placeholder="예: 1차 선출고"></div>
@@ -256,6 +285,9 @@
 </div>
 
 <script>
+    /* =========================================================
+       DATA / STATE
+       ========================================================= */
     let currentTab = 'ACTIVE';
     let currentDetailId = 1;
     let selectedMaterialId = null;
@@ -263,6 +295,20 @@
     let selectedFactoryId = null;
     let editingShipmentIndex = null;
     let editingItemId = null;
+
+    const STORAGE_KEY = 'JPROJECT_SCM_DATA_V3';
+
+    function saveData(){
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(stylesData));
+    }
+
+    function loadData(){
+        try{
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if(saved){ const parsed = JSON.parse(saved); if(Array.isArray(parsed)) return parsed; }
+        }catch(e){}
+        return null;
+    }
 
     let stylesData = [
         { 
@@ -282,6 +328,12 @@
             qcCompany: 'KATRI', qcDate: '2026-08-22', qcRate: '0.8%', qcStatus: 'WAITING'
         }
     ];
+
+    /* =========================================================
+       MAIN LIST / FILTER / TAB
+       ========================================================= */
+    const savedData = loadData();
+    if(savedData) stylesData = savedData;
 
     function renderMainList() {
         const brandFilter = document.getElementById('brandFilter').value;
@@ -339,6 +391,9 @@
         renderMainList();
     }
 
+    /* =========================================================
+       STYLE DETAIL VIEW
+       ========================================================= */
     function openDetailView(id) {
         currentDetailId = id;
         const item = stylesData.find(s => s.id === id);
@@ -384,9 +439,14 @@
                     <td style="font-weight:700;">${i.currentQty.toLocaleString()}</td>
                     <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
                     <td>
-                        <button class="btn-secondary" onclick="openPartialInModal('${type}', ${i.id})">수량 수정</button>
-                        <button class="btn-secondary" onclick="openItemEditModal('${type}', ${i.id})">수정</button>
-                        <button class="btn-danger" onclick="deleteItem('${type}', ${i.id})">삭제</button>
+                        <div class="action-group">
+                            <span class="action-label">입고</span>
+                            <button class="btn-secondary" onclick="openPartialInModal('${type}', ${i.id})">입고수량</button>
+                            <span class="action-divider"></span>
+                            <span class="action-label">정보</span>
+                            <button class="btn-secondary" onclick="openItemEditModal('${type}', ${i.id})">수정</button>
+                            <button class="btn-danger" onclick="deleteItem('${type}', ${i.id})">삭제</button>
+                        </div>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -411,8 +471,8 @@
                 <div class="shipment-item">
                     <span>• ${s.date} : <b>${s.qty.toLocaleString()}개</b> (${s.note})</span>
                     <span>
-                        <button class="btn-secondary" style="font-size:10px; padding:1px 4px;" onclick="openEditShipmentModal(${fac.id}, ${idx})">수정</button>
-                        <button class="btn-danger" style="font-size:10px; padding:1px 4px;" onclick="deleteShipment(${fac.id}, ${idx})">삭제</button>
+                        <button class="btn-secondary" style="font-size:10px;padding:4px 7px" onclick="openEditShipmentModal(${fac.id}, ${idx})">출고수정</button>
+                        <button class="btn-danger" style="font-size:10px;padding:4px 7px" onclick="deleteShipment(${fac.id}, ${idx})">출고삭제</button>
                     </span>
                 </div>
             `).join('');
@@ -421,7 +481,7 @@
             const issueHistory = (fac.issues || []).map((is, idx) => `
                 <div style="font-size:11px; color:#dc2626; margin-top:4px; display:flex; justify-content:space-between; align-items:center; background:#fef2f2; padding:3px 6px;">
                     <span>⚠️ ${is}</span>
-                    <button class="btn-danger" style="font-size:10px; padding:1px 4px;" onclick="deleteIssue(${fac.id}, ${idx})">x</button>
+                    <button class="btn-danger" style="font-size:10px; padding:1px 4px;" onclick="deleteIssue(${fac.id}, ${idx})">이슈삭제</button>
                 </div>
             `).join('');
 
@@ -431,13 +491,18 @@
                 <td>${fac.totalTarget.toLocaleString()} pcs</td>
                 <td style="font-weight:700; color:#2563eb;">${totalShipped.toLocaleString()} pcs</td>
                 <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
-                <td>
-                    ${shipmentHistory || '<div style="color:#94a3b8; font-size:11px;">출고 내역 없음</div>'}
-                    ${issueHistory}
+                <td class="management-cell">
+                    <div class="management-box"><div class="management-title">출고 이력</div>${shipmentHistory || '<div class="mini-note">출고 내역 없음</div>'}</div>
+                    <div class="management-box"><div class="management-title">생산 이슈</div>${issueHistory || '<div class="mini-note">등록된 이슈 없음</div>'}</div>
                 </td>
                 <td>
-                    <button class="btn-action" style="font-size:11px; padding:3px 6px;" onclick="openShipmentModal(${fac.id})">+ 분할 출고</button>
-                    <button class="btn-secondary" style="font-size:11px; padding:3px 6px; margin-top:2px;" onclick="openIssueModal(${fac.id})">+ 이슈 등록</button>
+                    <div class="action-group">
+                        <span class="action-label">출고</span>
+                        <button class="btn-action" style="font-size:11px;padding:6px 9px;" onclick="openShipmentModal(${fac.id})">+ 출고 등록</button>
+                        <span class="action-divider"></span>
+                        <span class="action-label">이슈</span>
+                        <button class="btn-secondary" onclick="openIssueModal(${fac.id})">+ 이슈</button>
+                    </div>
                 </td>
             `;
             factoryTbody.appendChild(tr);
@@ -454,6 +519,9 @@
         document.getElementById('qcStatusBadge').innerHTML = qcBadge;
     }
 
+    /* =========================================================
+       MODAL / FORM HANDLERS
+       ========================================================= */
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
 
@@ -472,11 +540,14 @@
             fabrics: [], trims: [], factories: [], qcStatus: 'WAITING'
         });
 
+        saveData();
         closeModal('styleModal');
         renderMainList();
     }
 
-    /* 자재 누적 수량 수정 */
+    /* =========================================================
+       MATERIAL: PARTIAL RECEIVING / EDIT / DELETE
+       ========================================================= */
     function openPartialInModal(type, id) {
         selectedMaterialType = type;
         selectedMaterialId = id;
@@ -490,11 +561,12 @@
         const item = stylesData.find(s => s.id === currentDetailId);
         const mat = item[`${selectedMaterialType}s`].find(m => m.id === selectedMaterialId);
         mat.currentQty = qty;
+        saveData();
         closeModal('partialInModal');
         renderSubTables(item);
     }
 
-    /* 자재 항목 추가 및 수정 */
+    /* MATERIAL: ADD / EDIT */
     function openItemModal(type) {
         editingItemId = null;
         selectedMaterialType = type;
@@ -534,7 +606,9 @@
         } else {
             list.push({ id: Date.now(), name, supplier, totalQty, currentQty: 0 });
         }
+        saveData();
         closeModal('itemModal');
+        saveData();
         renderSubTables(item);
     }
 
@@ -542,9 +616,13 @@
         if(!confirm('이 자재 항목을 삭제하시겠습니까?')) return;
         const item = stylesData.find(s => s.id === currentDetailId);
         item[`${type}s`] = item[`${type}s`].filter(m => m.id !== id);
+        saveData();
         renderSubTables(item);
     }
 
+    /* =========================================================
+       SEWING FACTORY / SHIPMENT / ISSUE
+       ========================================================= */
     function openSewingFactoryModal() { openModal('sewingModal'); }
     function saveNewSewingFactory() {
         const country = document.getElementById('newFacCountry').value;
@@ -553,15 +631,16 @@
 
         const item = stylesData.find(s => s.id === currentDetailId);
         item.factories.push({ id: Date.now(), country, name, totalTarget, shipments: [], issues: [] });
+        saveData();
         closeModal('sewingModal');
         renderSubTables(item);
     }
 
-    /* 분할 출고 등록 및 수정 */
+    /* SHIPMENT: ADD / EDIT / DELETE */
     function openShipmentModal(facId) {
         editingShipmentIndex = null;
         selectedFactoryId = facId;
-        document.getElementById('shipmentModalHeader').innerText = '완제품 분할 출고 등록';
+        document.getElementById('shipmentModalHeader').innerText = '완제품 출고 등록';
         document.getElementById('shipmentDate').value = new Date().toISOString().split('T')[0];
         document.getElementById('shipmentQty').value = '';
         document.getElementById('shipmentNote').value = '';
@@ -575,7 +654,7 @@
         const fac = item.factories.find(f => f.id === facId);
         const ship = fac.shipments[idx];
 
-        document.getElementById('shipmentModalHeader').innerText = '완제품 분할 출고 수정';
+        document.getElementById('shipmentModalHeader').innerText = '완제품 출고 수정';
         document.getElementById('shipmentDate').value = ship.date;
         document.getElementById('shipmentQty').value = ship.qty;
         document.getElementById('shipmentNote').value = ship.note;
@@ -595,6 +674,7 @@
         } else {
             fac.shipments.push({ date, qty, note });
         }
+        saveData();
         closeModal('shipmentModal');
         renderSubTables(item);
     }
@@ -604,6 +684,7 @@
         const item = stylesData.find(s => s.id === currentDetailId);
         const fac = item.factories.find(f => f.id === facId);
         fac.shipments.splice(idx, 1);
+        saveData();
         renderSubTables(item);
     }
 
@@ -619,6 +700,7 @@
         const fac = item.factories.find(f => f.id === selectedFactoryId);
         if(!fac.issues) fac.issues = [];
         fac.issues.push(issue);
+        saveData();
         closeModal('issueModal');
         renderSubTables(item);
     }
@@ -627,9 +709,13 @@
         const item = stylesData.find(s => s.id === currentDetailId);
         const fac = item.factories.find(f => f.id === facId);
         fac.issues.splice(idx, 1);
+        saveData();
         renderSubTables(item);
     }
 
+    /* =========================================================
+       QC / ALERT / COMPLETION
+       ========================================================= */
     function openQcModal() { openModal('qcModal'); }
     function saveQc() {
         const item = stylesData.find(s => s.id === currentDetailId);
@@ -637,6 +723,7 @@
         item.qcDate = document.getElementById('qcInputDate').value;
         item.qcRate = document.getElementById('qcInputRate').value;
         item.qcStatus = document.getElementById('qcInputStatus').value;
+        saveData();
         closeModal('qcModal');
         renderSubTables(item);
     }
@@ -680,6 +767,7 @@
             alert(`[완료 전환 불가]\n아래 항목들의 입/출고 수량이 미달되어 완료할 수 없습니다:\n\n${errors.join('\n')}`);
         } else {
             item.status = 'COMPLETED';
+            saveData();
             alert('모든 자재 및 출고가 100% 완료되었습니다. 완료 보관함으로 이동합니다.');
             closeDetailView();
         }
