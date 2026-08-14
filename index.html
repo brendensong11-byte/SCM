@@ -30,12 +30,13 @@
         .detail-view{display:none}.detail-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:18px;gap:12px}.detail-header h2{letter-spacing:-.4px}.section-card{background:#fff;border:1px solid var(--line);border-radius:11px;padding:18px;margin-bottom:15px;box-shadow:0 3px 12px rgba(24,50,75,.035)}.section-title{font-size:12px;font-weight:850;color:var(--navy);margin-bottom:13px;display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line-soft);padding-bottom:9px;letter-spacing:.25px}.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.info-item label{display:block;font-size:10px;color:var(--muted);margin-bottom:4px;font-weight:750}.info-item span{font-weight:800;color:var(--navy);font-size:13px}
         .action-group{display:flex;gap:5px;align-items:center;justify-content:flex-start;flex-wrap:wrap}.action-label{font-size:10px;color:var(--muted);font-weight:800;margin-right:2px}.action-divider{width:1px;height:20px;background:var(--line);margin:0 2px}
         .shipment-item{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#fbfcfd;border:1px solid var(--line-soft);padding:7px 9px;margin-bottom:5px;border-radius:7px}.shipment-actions{display:flex;gap:4px;white-space:nowrap}.issue-item{font-size:11px;color:var(--red);margin-top:5px;display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--red-soft);padding:6px 8px;border-radius:6px;border:1px solid #f0d6d6}
-        .modal-overlay{display:none;position:fixed;inset:0;background:rgba(16,31,45,.48);justify-content:center;align-items:center;z-index:1000;padding:18px}.modal-content{background:#fff;padding:21px;border-radius:12px;width:100%;max-width:580px;border:1px solid var(--line);box-shadow:0 18px 45px rgba(0,0,0,.18)}.modal-header{font-size:15px;font-weight:850;margin-bottom:15px;display:flex;justify-content:space-between;color:var(--navy);border-bottom:1px solid var(--line);padding-bottom:10px}.form-group{margin-bottom:12px}.form-group label{display:block;font-size:11px;font-weight:800;margin-bottom:5px;color:#425466}.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 10px;border:1px solid #c3d0dc;border-radius:7px;font-size:13px;outline:none;background:#fff}.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(49,95,134,.08)}.modal-footer{display:flex;justify-content:flex-end;gap:7px;margin-top:16px;border-top:1px solid var(--line);padding-top:13px}
+        .modal-overlay{display:none;position fixed;inset:0;background:rgba(16,31,45,.48);justify-content:center;align-items:center;z-index:1000;padding:18px}.modal-content{background:#fff;padding:21px;border-radius:12px;width:100%;max-width:580px;border:1px solid var(--line);box-shadow:0 18px 45px rgba(0,0,0,.18)}.modal-header{font-size:15px;font-weight:850;margin-bottom:15px;display:flex;justify-content:space-between;color:var(--navy);border-bottom:1px solid var(--line);padding-bottom:10px}.form-group{margin-bottom:12px}.form-group label{display:block;font-size:11px;font-weight:800;margin-bottom:5px;color:#425466}.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 10px;border:1px solid #c3d0dc;border-radius:7px;font-size:13px;outline:none;background:#fff}.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(49,95,134,.08)}.modal-footer{display:flex;justify-content:flex-end;gap:7px;margin-top:16px;border-top:1px solid var(--line);padding-top:13px}
         .step-flow{display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin-top:4px;font-size:10px;color:var(--muted)}
         .step-pill{padding:2px 6px;border-radius:4px;background:#f0f4f8;border:1px solid var(--line-soft)}
         .step-pill.current{background:var(--navy);color:#fff;font-weight:bold}
         .type-radio-group{display:flex;gap:12px;margin-bottom:10px;background:var(--blue-soft);padding:8px 12px;border-radius:8px;border:1px solid var(--line)}
         .type-radio-group label{display:flex;align-items:center;gap:4px;font-weight:800;cursor:pointer;color:var(--navy);font-size:12px}
+        .clickable-name{color:var(--navy);font-weight:800;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.clickable-name:hover{color:var(--blue)}
         @media(max-width:900px){body{padding:10px}.container{padding:15px}.grid-4{grid-template-columns:repeat(2,1fr)}header{align-items:flex-start;flex-direction:column}.nav-tabs{flex-wrap:wrap}.nav-tabs>div{margin-left:0!important;width:100%}.detail-header{align-items:flex-start;flex-direction:column}}
         @media(max-width:600px){.grid-4{grid-template-columns:1fr}.action-group{align-items:flex-start}.table-container{border-radius:7px}}
     </style>
@@ -115,18 +116,18 @@
                 </div>
             </div>
 
-            <!-- 2. 자재 관리 (원사 / 원단 통합) -->
+            <!-- 2. 원사 및 원단 관리 -->
             <div class="section-card">
                 <div class="section-title">
                     원사 및 원단 관리 (YARN & FABRIC)
-                    <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openItemModal('fabric')">+ 자재 추가 (원사/원단)</button>
+                    <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openFabricYarnModal()">+ 자재 추가 (원사/원단)</button>
                 </div>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
                                 <th>구분</th>
-                                <th>자재/품목명</th>
+                                <th>자재/품목명 (상세 클릭)</th>
                                 <th>규격/혼용률</th>
                                 <th>업체명</th>
                                 <th>발주 수량</th>
@@ -145,14 +146,14 @@
             <div class="section-card">
                 <div class="section-title">
                     부자재 관리 (TRIMS)
-                    <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openItemModal('trim')">+ 부자재 추가</button>
+                    <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openTrimOnlyModal()">+ 부자재 추가</button>
                 </div>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
                                 <th>품목 구분</th>
-                                <th>부자재명</th>
+                                <th>부자재명 (상세 클릭)</th>
                                 <th>업체명</th>
                                 <th>발주 수량</th>
                                 <th>누적 입고량</th>
@@ -222,10 +223,10 @@
         </div>
     </div>
 
-    <!-- 입고량 관리 모달 -->
+    <!-- 입고/공정 기록 모달 -->
     <div class="modal-overlay" id="partialInModal">
         <div class="modal-content">
-            <div class="modal-header">누적 입고 수량 및 현재 공정 관리</div>
+            <div class="modal-header">누적 입고 수량 및 현재 공정 기록</div>
             <div class="form-group"><label>현재까지 실제 입고된 누적 수량</label><input type="number" id="partialInQty" placeholder="예: 2000"></div>
             <div class="form-group"><label>현재 진행 중인 공정 단계</label><select id="itemProcessStep"></select></div>
             <div class="modal-footer">
@@ -235,14 +236,14 @@
         </div>
     </div>
 
-    <!-- 자재(원사/원단/부자재) 모달 (동적 전환) -->
+    <!-- 자재(원사/원단/부자재) 모달 -->
     <div class="modal-overlay" id="itemModal">
         <div class="modal-content">
             <div class="modal-header" id="itemModalHeader">자재 정보 등록/수정</div>
             <div class="type-radio-group" id="materialTypeRadioGroup">
-                <label><input type="radio" name="materialType" value="YARN" onchange="toggleMaterialFormFields('YARN')"> 원사</label>
-                <label><input type="radio" name="materialType" value="FABRIC" onchange="toggleMaterialFormFields('FABRIC')"> 원단</label>
-                <label><input type="radio" name="materialType" value="TRIM" onchange="toggleMaterialFormFields('TRIM')"> 부자재</label>
+                <label id="lblOptYarn"><input type="radio" name="materialType" value="YARN" onchange="toggleMaterialFormFields('YARN')"> 원사</label>
+                <label id="lblOptFabric"><input type="radio" name="materialType" value="FABRIC" onchange="toggleMaterialFormFields('FABRIC')"> 원단</label>
+                <label id="lblOptTrim" style="display:none;"><input type="radio" name="materialType" value="TRIM" onchange="toggleMaterialFormFields('TRIM')"> 부자재</label>
             </div>
 
             <div class="form-group" id="fgName"><label id="lblItemName">품목/자재명</label><input type="text" id="newItemName" placeholder="예: 30수 면 원사"></div>
@@ -259,6 +260,23 @@
                 <button class="btn-secondary" onclick="closeModal('itemModal')">취소</button>
                 <button class="btn-danger" id="btnDeleteItem" style="display:none; margin-right:auto;" onclick="deleteCurrentItem()">삭제</button>
                 <button class="btn-action" onclick="saveNewItem()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 자재 세부 히스토리 모달 -->
+    <div class="modal-overlay" id="materialDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">자재 세부 정보 및 히스토리</div>
+            <div style="font-size:12px; line-height:1.7;">
+                <div class="form-group"><label>구분 / 자재명</label><div id="mdName" style="font-weight:bold; font-size:14px; color:var(--navy);">-</div></div>
+                <div class="form-group"><label>규격 및 혼용률</label><div id="mdSpec">-</div></div>
+                <div class="form-group"><label>공급 업체명</label><div id="mdSupplier">-</div></div>
+                <div class="form-group"><label>발주 수량 / 누적 입고량 (달성률)</label><div id="mdQtyInfo" style="font-weight:bold; color:var(--blue);">-</div></div>
+                <div class="form-group"><label>현재 세부 공정 단계</label><div id="mdStep" style="font-weight:bold; color:var(--amber);">-</div></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('materialDetailModal')">닫기</button>
             </div>
         </div>
     </div>
@@ -353,7 +371,7 @@
         let editingShipmentIndex = null;
         let editingItemId = null;
 
-        const STORAGE_KEY = 'JPROJECT_SCM_DATA_V4';
+        const STORAGE_KEY = 'JPROJECT_SCM_DATA_V5';
 
         function saveData() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(stylesData));
@@ -424,7 +442,6 @@
                 if (item.status === 'ACTIVE') activeCount++;
                 if (item.status === 'COMPLETED') completedCount++;
 
-                // 이슈 감지
                 let hasIssue = false;
                 if (item.factories) {
                     item.factories.forEach(f => { if(f.issues && f.issues.length > 0) hasIssue = true; });
@@ -435,7 +452,6 @@
                 if (item.status !== currentTab) return;
                 if (brandFilter !== 'ALL' && item.brand !== brandFilter) return;
 
-                // 진행 공정 계산
                 let currentStage = '자재 준비 중';
                 if (item.factories && item.factories.length > 0) {
                     const totalShip = item.factories.reduce((acc, f) => acc + (f.shipments ? f.shipments.reduce((sAcc, s) => sAcc + Number(s.qty), 0) : 0), 0);
@@ -526,7 +542,6 @@
                 if (pct >= 100) { badgeClass = 'status-completed'; statusText = '입고 완료'; }
                 else if (pct > 0) { badgeClass = 'status-partial'; statusText = `부분 입고 (${pct}%)`; }
 
-                // 공정 스텝 바 생성
                 const steps = PROCESS_STEPS[mat.subType] || [];
                 let stepHtml = '<div class="step-flow">';
                 steps.forEach(st => {
@@ -543,7 +558,7 @@
 
                     tr.innerHTML = `
                         <td>${subBadge}</td>
-                        <td><strong>${mat.name}</strong></td>
+                        <td><span class="clickable-name" onclick="openMaterialDetailModal(${mat.id})">${mat.name}</span></td>
                         <td>${mat.spec || '-'}</td>
                         <td>${mat.supplier || '-'}</td>
                         <td>${total.toLocaleString()} ${mat.unit || 'y'}</td>
@@ -552,8 +567,8 @@
                         <td>${stepHtml}</td>
                         <td>
                             <div class="action-group">
-                                <button class="btn-secondary" onclick="openPartialInModal(${mat.id})">입고/공정 수정</button>
-                                <button class="btn-secondary" onclick="openEditItemModal(${mat.id})">수정</button>
+                                <button class="btn-action" style="font-size:10px; padding:4px 8px; background:var(--blue); border-color:var(--blue);" onclick="openPartialInModal(${mat.id})">+ 입고/공정 기록</button>
+                                <button class="btn-secondary" style="font-size:10px; padding:4px 7px;" onclick="openEditItemModal(${mat.id})">자재정보 수정</button>
                             </div>
                         </td>
                     `;
@@ -561,7 +576,7 @@
                 } else {
                     tr.innerHTML = `
                         <td><span style="background:#f3e8ff; color:#6b21a8; padding:2px 6px; border-radius:4px; font-weight:bold; font-size:10px;">부자재</span></td>
-                        <td><strong>${mat.name}</strong></td>
+                        <td><span class="clickable-name" onclick="openMaterialDetailModal(${mat.id})">${mat.name}</span></td>
                         <td>${mat.supplier || '-'}</td>
                         <td>${total.toLocaleString()} ${mat.unit || '개'}</td>
                         <td><strong>${current.toLocaleString()}</strong> ${mat.unit || '개'}</td>
@@ -569,14 +584,34 @@
                         <td>${stepHtml}</td>
                         <td>
                             <div class="action-group">
-                                <button class="btn-secondary" onclick="openPartialInModal(${mat.id})">입고/공정 수정</button>
-                                <button class="btn-secondary" onclick="openEditItemModal(${mat.id})">수정</button>
+                                <button class="btn-action" style="font-size:10px; padding:4px 8px; background:var(--blue); border-color:var(--blue);" onclick="openPartialInModal(${mat.id})">+ 입고/공정 기록</button>
+                                <button class="btn-secondary" style="font-size:10px; padding:4px 7px;" onclick="openEditItemModal(${mat.id})">자재정보 수정</button>
                             </div>
                         </td>
                     `;
                     trimTbody.appendChild(tr);
                 }
             });
+        }
+
+        /* 자재 세부 정보 모달 연동 */
+        function openMaterialDetailModal(matId) {
+            const item = stylesData.find(s => s.id === currentDetailId);
+            const mat = item.materials.find(m => m.id === matId);
+            if (!mat) return;
+
+            const total = Number(mat.totalQty) || 1;
+            const current = Number(mat.currentQty) || 0;
+            const pct = Math.min(100, Math.round((current / total) * 100));
+
+            let typeTitle = mat.subType === 'YARN' ? '[원사]' : (mat.subType === 'FABRIC' ? '[원단]' : '[부자재]');
+            document.getElementById('mdName').innerText = `${typeTitle} ${mat.name}`;
+            document.getElementById('mdSpec').innerText = mat.spec || '등록된 규격 없음';
+            document.getElementById('mdSupplier').innerText = mat.supplier || '등록된 공급처 없음';
+            document.getElementById('mdQtyInfo').innerText = `${current.toLocaleString()} / ${total.toLocaleString()} ${mat.unit} (${pct}% 입고 달성)`;
+            document.getElementById('mdStep').innerText = mat.processStep || '진행 단계 정보 없음';
+
+            openModal('materialDetailModal');
         }
 
         /* Dynamic Material Form Toggle */
@@ -607,23 +642,41 @@
             }
         }
 
-        function openItemModal(category) {
+        function openFabricYarnModal() {
             editingItemId = null;
             document.getElementById('btnDeleteItem').style.display = 'none';
-            document.getElementById('itemModalHeader').innerText = '신규 자재 추가';
+            document.getElementById('itemModalHeader').innerText = '원사 및 원단 자재 추가';
             document.getElementById('newItemName').value = '';
             document.getElementById('newItemSpec').value = '';
             document.getElementById('newItemSupplier').value = '';
             document.getElementById('newItemTotalQty').value = '';
 
+            document.getElementById('lblOptYarn').style.display = 'flex';
+            document.getElementById('lblOptFabric').style.display = 'flex';
+            document.getElementById('lblOptTrim').style.display = 'none';
+
             const radios = document.getElementsByName('materialType');
-            if (category === 'trim') {
-                radios[2].checked = true;
-                toggleMaterialFormFields('TRIM');
-            } else {
-                radios[1].checked = true;
-                toggleMaterialFormFields('FABRIC');
-            }
+            radios[1].checked = true;
+            toggleMaterialFormFields('FABRIC');
+            openModal('itemModal');
+        }
+
+        function openTrimOnlyModal() {
+            editingItemId = null;
+            document.getElementById('btnDeleteItem').style.display = 'none';
+            document.getElementById('itemModalHeader').innerText = '부자재 추가';
+            document.getElementById('newItemName').value = '';
+            document.getElementById('newItemSpec').value = '';
+            document.getElementById('newItemSupplier').value = '';
+            document.getElementById('newItemTotalQty').value = '';
+
+            document.getElementById('lblOptYarn').style.display = 'none';
+            document.getElementById('lblOptFabric').style.display = 'none';
+            document.getElementById('lblOptTrim').style.display = 'flex';
+
+            const radios = document.getElementsByName('materialType');
+            radios[2].checked = true;
+            toggleMaterialFormFields('TRIM');
             openModal('itemModal');
         }
 
@@ -640,6 +693,10 @@
             document.getElementById('newItemSupplier').value = mat.supplier || '';
             document.getElementById('newItemUnit').value = mat.unit || 'y';
             document.getElementById('newItemTotalQty').value = mat.totalQty;
+
+            document.getElementById('lblOptYarn').style.display = 'flex';
+            document.getElementById('lblOptFabric').style.display = 'flex';
+            document.getElementById('lblOptTrim').style.display = 'flex';
 
             const radios = document.getElementsByName('materialType');
             if (mat.subType === 'YARN') radios[0].checked = true;
@@ -709,7 +766,6 @@
 
             document.getElementById('partialInQty').value = mat.currentQty;
 
-            // 공정 선택 드롭다운 생성
             const processSelect = document.getElementById('itemProcessStep');
             processSelect.innerHTML = '';
             const steps = PROCESS_STEPS[mat.subType] || [];
