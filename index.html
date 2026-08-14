@@ -6,7 +6,7 @@
     <title>JPROJECT SCM System</title>
     <style>
         /* =========================================================
-           JPROJECT SCM — DESIGN SYSTEM (디자인 100% 유지)
+           JPROJECT SCM — DESIGN SYSTEM
            ========================================================= */
         :root {
             --bg:#f4f7fa; --card:#ffffff; --navy:#17324a; --blue:#315f86; 
@@ -25,20 +25,25 @@
         .alert-title{color:var(--red);font-weight:750;display:flex;align-items:center;gap:8px}.alert-badge{background:var(--red);color:#fff;padding:3px 7px;border-radius:999px;font-size:10px}
         .nav-tabs{display:flex;gap:6px;margin-bottom:18px;border-bottom:1px solid var(--line);align-items:flex-end}.tab-btn{padding:10px 15px;border:1px solid transparent;border-bottom:none;background:transparent;color:var(--muted);cursor:pointer;font-weight:700;border-radius:8px 8px 0 0}.tab-btn.active{color:var(--navy);background:var(--blue-soft);border-color:var(--line);border-bottom-color:var(--blue-soft)}.tab-btn .badge{background:#f2f5f8;color:var(--muted);padding:2px 7px;border-radius:999px;font-size:10px;margin-left:5px}.tab-btn.active .badge{background:var(--navy);color:#fff}
         .btn-action,.btn-secondary,.btn-danger{border-radius:7px;font-weight:750;cursor:pointer;transition:.15s}.btn-action{background:var(--navy);color:#fff;border:1px solid var(--navy);padding:8px 12px;font-size:12px}.btn-action:hover{background:#24465f}.btn-secondary{background:#fff;color:var(--navy);border:1px solid #bdcad6;padding:6px 10px;font-size:11px}.btn-secondary:hover{background:var(--blue-soft);border-color:#91acc1}.btn-danger{background:#fff;color:var(--red);border:1px solid #d8a9a9;padding:5px 9px;font-size:11px}.btn-danger:hover{background:var(--red-soft)}
-        .table-container{overflow-x:auto;border:1px solid var(--line);border-radius:9px;margin-bottom:10px}table{width:100%;border-collapse:collapse;text-align:left;font-size:13px}th{background:#f8fafc;color:#607184;font-weight:750;padding:11px 12px;border-bottom:1px solid var(--line);white-space:nowrap;font-size:11px;letter-spacing:.2px}td{padding:11px 12px;border-bottom:1px solid var(--line-soft);color:#263746;vertical-align:middle}.clickable-row{cursor:pointer}.clickable-row:hover{background:#f7fafc}
+        .table-container{overflow-x:auto;border:1px solid var(--line);border-radius:9px;margin-bottom:10px}table{width:100%;border-collapse:collapse;text-align:left;font-size:13px}th{background:#f8fafc;color:#607184;font-weight:750;padding:11px 12px;border-bottom:1px solid var(--line);white-space:nowrap;font-size:11px;letter-spacing:.2px}td{padding:11px 12px;border-bottom:1px solid var(--line-soft);color:#263746;vertical-align:middle}
+        
+        /* 아코디언 행 스타일 */
+        .accordion-row{cursor:pointer;transition:background .15s}.accordion-row:hover{background:var(--blue-soft)}
+        .accordion-row.expanded{background:#edf4f9;font-weight:bold}
+        .accordion-content-td{padding:0!important;border-bottom:2px solid var(--blue)}
+        .accordion-box{background:#f8fafc;padding:18px;border-top:1px solid var(--line)}
+
         .status-badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap}.status-in-progress{background:var(--blue-soft);color:var(--blue);border:1px solid #bfd2e1}.status-partial{background:var(--amber-soft);color:var(--amber);border:1px solid #dfcda6}.status-completed{background:var(--green-soft);color:var(--green);border:1px solid #bdd2c3}.status-danger{background:var(--red-soft);color:var(--red);border:1px solid #e4bcbc}
-        .detail-view{display:none}.detail-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:18px;gap:12px}.detail-header h2{letter-spacing:-.4px}.section-card{background:#fff;border:1px solid var(--line);border-radius:11px;padding:18px;margin-bottom:15px;box-shadow:0 3px 12px rgba(24,50,75,.035)}.section-title{font-size:12px;font-weight:850;color:var(--navy);margin-bottom:13px;display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line-soft);padding-bottom:9px;letter-spacing:.25px}.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.info-item label{display:block;font-size:10px;color:var(--muted);margin-bottom:4px;font-weight:750}.info-item span{font-weight:800;color:var(--navy);font-size:13px}
-        .action-group{display:flex;gap:5px;align-items:center;justify-content:flex-start;flex-wrap:wrap}.action-label{font-size:10px;color:var(--muted);font-weight:800;margin-right:2px}.action-divider{width:1px;height:20px;background:var(--line);margin:0 2px}
-        .shipment-item{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#fbfcfd;border:1px solid var(--line-soft);padding:7px 9px;margin-bottom:5px;border-radius:7px}.shipment-actions{display:flex;gap:4px;white-space:nowrap}.issue-item{font-size:11px;color:var(--red);margin-top:5px;display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--red-soft);padding:6px 8px;border-radius:6px;border:1px solid #f0d6d6}
-        .modal-overlay{display:none;position fixed;inset:0;background:rgba(16,31,45,.48);justify-content:center;align-items:center;z-index:1000;padding:18px}.modal-content{background:#fff;padding:21px;border-radius:12px;width:100%;max-width:580px;border:1px solid var(--line);box-shadow:0 18px 45px rgba(0,0,0,.18)}.modal-header{font-size:15px;font-weight:850;margin-bottom:15px;display:flex;justify-content:space-between;color:var(--navy);border-bottom:1px solid var(--line);padding-bottom:10px}.form-group{margin-bottom:12px}.form-group label{display:block;font-size:11px;font-weight:800;margin-bottom:5px;color:#425466}.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 10px;border:1px solid #c3d0dc;border-radius:7px;font-size:13px;outline:none;background:#fff}.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(49,95,134,.08)}.modal-footer{display:flex;justify-content:flex-end;gap:7px;margin-top:16px;border-top:1px solid var(--line);padding-top:13px}
-        .step-flow{display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin-top:4px;font-size:10px;color:var(--muted)}
+        .section-card{background:#fff;border:1px solid var(--line);border-radius:11px;padding:16px;margin-bottom:12px;box-shadow:0 3px 10px rgba(24,50,75,.025)}.section-title{font-size:12px;font-weight:850;color:var(--navy);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line-soft);padding-bottom:8px}.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.info-item label{display:block;font-size:10px;color:var(--muted);margin-bottom:3px;font-weight:750}.info-item span{font-weight:800;color:var(--navy);font-size:13px}
+        .action-group{display:flex;gap:5px;align-items:center;justify-content:flex-start;flex-wrap:wrap}
+        .shipment-item{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#fbfcfd;border:1px solid var(--line-soft);padding:6px 8px;margin-bottom:4px;border-radius:6px}.shipment-actions{display:flex;gap:4px;white-space:nowrap}.issue-item{font-size:11px;color:var(--red);margin-top:4px;display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--red-soft);padding:5px 8px;border-radius:6px;border:1px solid #f0d6d6}
+        .modal-overlay{display:none;position:fixed;inset:0;background:rgba(16,31,45,.48);justify-content:center;align-items:center;z-index:1000;padding:18px}.modal-content{background:#fff;padding:21px;border-radius:12px;width:100%;max-width:580px;border:1px solid var(--line);box-shadow:0 18px 45px rgba(0,0,0,.18)}.modal-header{font-size:15px;font-weight:850;margin-bottom:15px;display:flex;justify-content:space-between;color:var(--navy);border-bottom:1px solid var(--line);padding-bottom:10px}.form-group{margin-bottom:12px}.form-group label{display:block;font-size:11px;font-weight:800;margin-bottom:5px;color:#425466}.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 10px;border:1px solid #c3d0dc;border-radius:7px;font-size:13px;outline:none;background:#fff}.modal-footer{display:flex;justify-content:flex-end;gap:7px;margin-top:16px;border-top:1px solid var(--line);padding-top:13px}
+        .step-flow{display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin-top:3px;font-size:10px;color:var(--muted)}
         .step-pill{padding:2px 6px;border-radius:4px;background:#f0f4f8;border:1px solid var(--line-soft)}
         .step-pill.current{background:var(--navy);color:#fff;font-weight:bold}
         .type-radio-group{display:flex;gap:12px;margin-bottom:10px;background:var(--blue-soft);padding:8px 12px;border-radius:8px;border:1px solid var(--line)}
         .type-radio-group label{display:flex;align-items:center;gap:4px;font-weight:800;cursor:pointer;color:var(--navy);font-size:12px}
         .clickable-name{color:var(--navy);font-weight:800;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.clickable-name:hover{color:var(--blue)}
-        @media(max-width:900px){body{padding:10px}.container{padding:15px}.grid-4{grid-template-columns:repeat(2,1fr)}header{align-items:flex-start;flex-direction:column}.nav-tabs{flex-wrap:wrap}.nav-tabs>div{margin-left:0!important;width:100%}.detail-header{align-items:flex-start;flex-direction:column}}
-        @media(max-width:600px){.grid-4{grid-template-columns:1fr}.action-group{align-items:flex-start}.table-container{border-radius:7px}}
     </style>
 </head>
 <body>
@@ -54,155 +59,41 @@
             </div>
         </header>
 
-        <!-- 메인 목록 화면 -->
-        <div id="mainListView">
-            <div class="alert-bar" onclick="openAlertModal()">
-                <div class="alert-title">
-                    <span class="alert-badge" id="alertCountBadge">0건</span> 지연 및 이슈 항목 확인 필요
-                </div>
-                <span style="font-size:12px; color:#7f1d1d; text-decoration: underline;">클릭하여 이슈 세부사항 확인 →</span>
+        <div class="alert-bar" onclick="openAlertModal()">
+            <div class="alert-title">
+                <span class="alert-badge" id="alertCountBadge">0건</span> 지연 및 이슈 항목 확인 필요
             </div>
+            <span style="font-size:12px; color:#7f1d1d; text-decoration: underline;">클릭하여 이슈 세부사항 확인 →</span>
+        </div>
 
-            <div class="nav-tabs">
-                <button class="tab-btn active" id="tabActive" onclick="switchMainTab('ACTIVE')">
-                    진행 중 <span class="badge" id="countActive">0</span>
-                </button>
-                <button class="tab-btn" id="tabCompleted" onclick="switchMainTab('COMPLETED')">
-                    완료 (보관함) <span class="badge" id="countCompleted">0</span>
-                </button>
-                <div style="margin-left: auto;">
-                    <button class="btn-action" onclick="openStyleModal()">+ 신규 STYLE 등록</button>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>브랜드</th>
-                            <th>시즌</th>
-                            <th>Style No.</th>
-                            <th>상품명</th>
-                            <th>진행 단계</th>
-                            <th>목표일</th>
-                            <th>상태</th>
-                        </tr>
-                    </thead>
-                    <tbody id="styleTableBody"></tbody>
-                </table>
+        <div class="nav-tabs">
+            <button class="tab-btn active" id="tabActive" onclick="switchMainTab('ACTIVE')">
+                진행 중 <span class="badge" id="countActive">0</span>
+            </button>
+            <button class="tab-btn" id="tabCompleted" onclick="switchMainTab('COMPLETED')">
+                완료 (보관함) <span class="badge" id="countCompleted">0</span>
+            </button>
+            <div style="margin-left: auto;">
+                <button class="btn-action" onclick="openStyleModal()">+ 신규 STYLE 등록</button>
             </div>
         </div>
 
-        <!-- 상세 보기 화면 -->
-        <div id="styleDetailView" class="detail-view">
-            <div class="detail-header">
-                <div>
-                    <button class="btn-secondary" onclick="closeDetailView()">← 메인 목록으로</button>
-                    <h2 style="display:inline-block; margin-left: 14px; font-size: 18px; color: #0f172a;" id="detailTitle">-</h2>
-                </div>
-                <div>
-                    <button class="btn-action" id="btnToggleStatus" style="background:#2563eb;" onclick="tryCompleteStyle()">완료 상태로 전환</button>
-                </div>
-            </div>
-
-            <!-- 1. 기본 정보 -->
-            <div class="section-card">
-                <div class="section-title">기본 정보 (STYLE INFO)</div>
-                <div class="grid-4">
-                    <div class="info-item"><label>브랜드 / 시즌</label><span id="infoBrandSeason">-</span></div>
-                    <div class="info-item"><label>Style No.</label><span id="infoStyleNo">-</span></div>
-                    <div class="info-item"><label>상품명</label><span id="infoStyleName">-</span></div>
-                    <div class="info-item"><label>목표 납기일</label><span id="infoTargetDate">-</span></div>
-                </div>
-            </div>
-
-            <!-- 2. 원사 및 원단 관리 -->
-            <div class="section-card">
-                <div class="section-title">
-                    원사 및 원단 관리 (YARN & FABRIC)
-                    <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openFabricYarnModal()">+ 자재 추가 (원사/원단)</button>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>구분</th>
-                                <th>자재/품목명 (상세 클릭)</th>
-                                <th>규격/혼용률</th>
-                                <th>업체명</th>
-                                <th>발주 수량</th>
-                                <th>누적 입고량</th>
-                                <th>입고 상태</th>
-                                <th>공정 현황</th>
-                                <th>관리</th>
-                            </tr>
-                        </thead>
-                        <tbody id="fabricTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- 3. 부자재 관리 -->
-            <div class="section-card">
-                <div class="section-title">
-                    부자재 관리 (TRIMS)
-                    <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openTrimOnlyModal()">+ 부자재 추가</button>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>품목 구분</th>
-                                <th>부자재명 (상세 클릭)</th>
-                                <th>업체명</th>
-                                <th>발주 수량</th>
-                                <th>누적 입고량</th>
-                                <th>입고 상태</th>
-                                <th>공정 현황</th>
-                                <th>관리</th>
-                            </tr>
-                        </thead>
-                        <tbody id="trimTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- 4. 봉제 공장 및 완제품 분할 출고 관리 -->
-            <div class="section-card">
-                <div class="section-title">
-                    봉제 공장 및 완제품 분할 출고 (SEWING & SHIPMENT)
-                    <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openSewingFactoryModal()">+ 봉제공장 추가</button>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width:16%;">국가/공장</th>
-                                <th style="width:12%;">총 생산 목표</th>
-                                <th style="width:12%;">누적 출고량</th>
-                                <th style="width:12%;">출고 상태</th>
-                                <th style="width:32%;">분할 출고 및 이슈 내역</th>
-                                <th style="width:16%;">출고/이슈 관리</th>
-                            </tr>
-                        </thead>
-                        <tbody id="sewingFactoryTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- 5. QC 검사 관리 -->
-            <div class="section-card">
-                <div class="section-title">
-                    QC (품질 검사) 관리
-                    <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openQcModal()">+ QC 설정</button>
-                </div>
-                <div class="grid-4">
-                    <div class="info-item"><label>QC 대행업체</label><span id="qcCompany">-</span></div>
-                    <div class="info-item"><label>검사 예정일</label><span id="qcTargetDate">-</span></div>
-                    <div class="info-item"><label>불량률 (%)</label><span id="qcDefectRate">-</span></div>
-                    <div class="info-item"><label>최종 QC 판정</label><span id="qcStatusBadge"><span class="status-badge status-in-progress">검사 대기</span></span></div>
-                </div>
-            </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:40px;"></th>
+                        <th>브랜드</th>
+                        <th>시즌</th>
+                        <th>Style No.</th>
+                        <th>상품명</th>
+                        <th>진행 단계</th>
+                        <th>목표일</th>
+                        <th>상태</th>
+                    </tr>
+                </thead>
+                <tbody id="styleTableBody"></tbody>
+            </table>
         </div>
     </div>
 
@@ -236,7 +127,7 @@
         </div>
     </div>
 
-    <!-- 자재(원사/원단/부자재) 모달 -->
+    <!-- 자재(원사/원단/부자재) 등록/수정 모달 -->
     <div class="modal-overlay" id="itemModal">
         <div class="modal-content">
             <div class="modal-header" id="itemModalHeader">자재 정보 등록/수정</div>
@@ -354,9 +245,6 @@
     </div>
 
     <script>
-        /* =========================================================
-           SCM PROCESS CONFIG & DATA STATE
-           ========================================================= */
         const PROCESS_STEPS = {
             YARN: ['발주', '입고', '편직', '염색', '가공', '검사완료'],
             FABRIC: ['원단발주', '염색/가공', '검단(QC)', '공장입고'],
@@ -364,39 +252,27 @@
         };
 
         let currentTab = 'ACTIVE';
-        let currentDetailId = null;
+        let expandedStyleId = null; // 아코디언이 펼쳐진 Style ID
         let selectedMaterialId = null;
         let selectedMaterialType = 'FABRIC';
         let selectedFactoryId = null;
         let editingShipmentIndex = null;
         let editingItemId = null;
 
-        const STORAGE_KEY = 'JPROJECT_SCM_DATA_V5';
+        const STORAGE_KEY = 'JPROJECT_SCM_DATA_V6';
 
-        function saveData() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(stylesData));
-        }
-
+        function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(stylesData)); }
         function loadData() {
             try {
                 const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-                }
+                if (saved) return JSON.parse(saved);
             } catch(e) {}
             return null;
         }
 
         let stylesData = [
             {
-                id: 1,
-                brand: '스노야',
-                season: '26SS',
-                styleNo: 'ST26001',
-                name: '쫀쫀슬림팬츠',
-                targetDate: '2026-08-25',
-                status: 'ACTIVE',
+                id: 1, brand: '스노야', season: '26SS', styleNo: 'ST26001', name: '쫀쫀슬림팬츠', targetDate: '2026-08-25', status: 'ACTIVE',
                 materials: [
                     { id: 101, subType: 'YARN', name: '30수 코튼 면사', spec: '면 100%', supplier: '중국 A 방적사', unit: 'kg', totalQty: 5000, currentQty: 5000, processStep: '가공' },
                     { id: 102, subType: 'FABRIC', name: '쫀쫀 스판 원단', spec: '면 95% 스판 5%', supplier: '중국 B 염색공장', unit: 'y', totalQty: 10000, currentQty: 7000, processStep: '검단(QC)' },
@@ -405,10 +281,7 @@
                 factories: [
                     {
                         id: 301, country: '베트남', name: 'ABCD 공장', totalTarget: 10000,
-                        shipments: [
-                            { date: '2026-08-10', qty: 2000, note: '1차 선출고' },
-                            { date: '2026-08-13', qty: 5000, note: '2차 출고' }
-                        ],
+                        shipments: [{ date: '2026-08-10', qty: 2000, note: '1차 선출고' }, { date: '2026-08-13', qty: 5000, note: '2차 출고' }],
                         issues: ['원단 입고 지연으로 라인 가동 2일 차질 발생']
                     }
                 ],
@@ -419,13 +292,15 @@
         const loaded = loadData();
         if (loaded) stylesData = loaded;
 
-        /* =========================================================
-           MAIN LIST & TAB & FILTER
-           ========================================================= */
         function switchMainTab(tab) {
             currentTab = tab;
             document.getElementById('tabActive').classList.toggle('active', tab === 'ACTIVE');
             document.getElementById('tabCompleted').classList.toggle('active', tab === 'COMPLETED');
+            renderMainList();
+        }
+
+        function toggleAccordion(id) {
+            expandedStyleId = (expandedStyleId === id) ? null : id;
             renderMainList();
         }
 
@@ -460,10 +335,14 @@
                     else currentStage = '봉제 투입 완료';
                 }
 
+                const isExpanded = (expandedStyleId === item.id);
+
+                // 메인 행 생성
                 const tr = document.createElement('tr');
-                tr.className = 'clickable-row';
-                tr.onclick = () => openDetailView(item.id);
+                tr.className = `accordion-row ${isExpanded ? 'expanded' : ''}`;
+                tr.onclick = () => toggleAccordion(item.id);
                 tr.innerHTML = `
+                    <td style="text-align:center; font-weight:bold; color:var(--blue);">${isExpanded ? '▲' : '▼'}</td>
                     <td><strong>${item.brand}</strong></td>
                     <td>${item.season}</td>
                     <td><span style="color:var(--blue); font-weight:700;">${item.styleNo}</span></td>
@@ -477,6 +356,115 @@
                     </td>
                 `;
                 tbody.appendChild(tr);
+
+                // 아코디언 펼침 세부 내용 행
+                if (isExpanded) {
+                    const detailTr = document.createElement('tr');
+                    detailTr.innerHTML = `
+                        <td colspan="8" class="accordion-content-td">
+                            <div class="accordion-box">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                                    <h3 style="font-size:15px; color:var(--navy);">${item.styleNo} - ${item.name} 상세 관리</h3>
+                                    <button class="btn-action" style="background:#2563eb;" onclick="tryCompleteStyle(${item.id})">
+                                        ${item.status === 'ACTIVE' ? '완료 상태로 전환' : '진행 중으로 복원'}
+                                    </button>
+                                </div>
+
+                                <!-- 원사 및 원단 -->
+                                <div class="section-card">
+                                    <div class="section-title">
+                                        원사 및 원단 관리 (YARN & FABRIC)
+                                        <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openFabricYarnModal(${item.id})">+ 자재 추가 (원사/원단)</button>
+                                    </div>
+                                    <div class="table-container">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>구분</th>
+                                                    <th>자재/품목명 (상세 클릭)</th>
+                                                    <th>규격/혼용률</th>
+                                                    <th>업체명</th>
+                                                    <th>발주 수량</th>
+                                                    <th>누적 입고량</th>
+                                                    <th>입고 상태</th>
+                                                    <th>공정 현황</th>
+                                                    <th>관리</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="fabricTbody_${item.id}"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- 부자재 -->
+                                <div class="section-card">
+                                    <div class="section-title">
+                                        부자재 관리 (TRIMS)
+                                        <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openTrimOnlyModal(${item.id})">+ 부자재 추가</button>
+                                    </div>
+                                    <div class="table-container">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>품목 구분</th>
+                                                    <th>부자재명 (상세 클릭)</th>
+                                                    <th>업체명</th>
+                                                    <th>발주 수량</th>
+                                                    <th>누적 입고량</th>
+                                                    <th>입고 상태</th>
+                                                    <th>공정 현황</th>
+                                                    <th>관리</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="trimTbody_${item.id}"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- 봉제/출고 -->
+                                <div class="section-card">
+                                    <div class="section-title">
+                                        봉제 공장 및 완제품 분할 출고 (SEWING & SHIPMENT)
+                                        <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openSewingFactoryModal(${item.id})">+ 봉제공장 추가</button>
+                                    </div>
+                                    <div class="table-container">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:16%;">국가/공장</th>
+                                                    <th style="width:12%;">총 생산 목표</th>
+                                                    <th style="width:12%;">누적 출고량</th>
+                                                    <th style="width:12%;">출고 상태</th>
+                                                    <th style="width:32%;">분할 출고 및 이슈 내역</th>
+                                                    <th style="width:16%;">출고/이슈 관리</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="sewingTbody_${item.id}"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- QC -->
+                                <div class="section-card">
+                                    <div class="section-title">
+                                        QC (품질 검사) 관리
+                                        <button class="btn-action" style="font-size:11px; padding:3px 8px;" onclick="openQcModal(${item.id})">+ QC 설정</button>
+                                    </div>
+                                    <div class="grid-4">
+                                        <div class="info-item"><label>QC 대행업체</label><span>${item.qcCompany || '-'}</span></div>
+                                        <div class="info-item"><label>검사 예정일</label><span>${item.qcDate || '-'}</span></div>
+                                        <div class="info-item"><label>불량률 (%)</label><span>${item.qcRate || '-'}</span></div>
+                                        <div class="info-item"><label>최종 QC 판정</label><span>${getQcBadgeHtml(item.qcStatus)}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(detailTr);
+
+                    // 펼쳐진 영역 동적 렌더링
+                    renderAccordionSubTables(item);
+                }
             });
 
             document.getElementById('countActive').innerText = activeCount;
@@ -484,55 +472,26 @@
             document.getElementById('alertCountBadge').innerText = totalAlerts + '건';
         }
 
-        /* =========================================================
-           DETAIL VIEW RENDER
-           ========================================================= */
-        function openDetailView(id) {
-            currentDetailId = id;
-            const item = stylesData.find(s => s.id === id);
-            if (!item) return;
-
-            document.getElementById('mainListView').style.display = 'none';
-            document.getElementById('styleDetailView').style.display = 'block';
-
-            document.getElementById('detailTitle').innerText = `${item.styleNo} - ${item.name}`;
-            document.getElementById('infoBrandSeason').innerText = `${item.brand} / ${item.season}`;
-            document.getElementById('infoStyleNo').innerText = item.styleNo;
-            document.getElementById('infoStyleName').innerText = item.name;
-            document.getElementById('infoTargetDate').innerText = item.targetDate;
-
-            const btnStatus = document.getElementById('btnToggleStatus');
-            if (item.status === 'ACTIVE') {
-                btnStatus.innerText = '완료 상태로 전환';
-                btnStatus.style.background = '#2563eb';
-            } else {
-                btnStatus.innerText = '진행 중 상태로 복원';
-                btnStatus.style.background = '#46705c';
-            }
-
-            renderMaterialTables(item);
-            renderSewingTable(item);
-            renderQcSection(item);
-        }
-
-        function closeDetailView() {
-            document.getElementById('styleDetailView').style.display = 'none';
-            document.getElementById('mainListView').style.display = 'block';
-            renderMainList();
+        function getQcBadgeHtml(status) {
+            if (status === 'PASSED') return '<span class="status-badge status-completed">합격 (PASSED)</span>';
+            if (status === 'FAILED') return '<span class="status-badge status-danger">불합격 (FAILED)</span>';
+            return '<span class="status-badge status-in-progress">검사 대기</span>';
         }
 
         /* =========================================================
-           MATERIAL (YARN / FABRIC / TRIM) RENDER & LOGIC
+           SUB TABLES RENDER (MATERIALS & SEWING)
            ========================================================= */
-        function renderMaterialTables(item) {
-            const fabricTbody = document.getElementById('fabricTableBody');
-            const trimTbody = document.getElementById('trimTableBody');
-            fabricTbody.innerHTML = '';
-            trimTbody.innerHTML = '';
+        function renderAccordionSubTables(item) {
+            const fabricTbody = document.getElementById(`fabricTbody_${item.id}`);
+            const trimTbody = document.getElementById(`trimTbody_${item.id}`);
+            const sewingTbody = document.getElementById(`sewingTbody_${item.id}`);
 
-            const materials = item.materials || [];
+            if (fabricTbody) fabricTbody.innerHTML = '';
+            if (trimTbody) trimTbody.innerHTML = '';
+            if (sewingTbody) sewingTbody.innerHTML = '';
 
-            materials.forEach(mat => {
+            // 1. 자재 렌더링
+            (item.materials || []).forEach(mat => {
                 const total = Number(mat.totalQty) || 1;
                 const current = Number(mat.currentQty) || 0;
                 const pct = Math.min(100, Math.round((current / total) * 100));
@@ -558,7 +517,7 @@
 
                     tr.innerHTML = `
                         <td>${subBadge}</td>
-                        <td><span class="clickable-name" onclick="openMaterialDetailModal(${mat.id})">${mat.name}</span></td>
+                        <td><span class="clickable-name" onclick="openMaterialDetailModal(${item.id}, ${mat.id})">${mat.name}</span></td>
                         <td>${mat.spec || '-'}</td>
                         <td>${mat.supplier || '-'}</td>
                         <td>${total.toLocaleString()} ${mat.unit || 'y'}</td>
@@ -567,16 +526,16 @@
                         <td>${stepHtml}</td>
                         <td>
                             <div class="action-group">
-                                <button class="btn-action" style="font-size:10px; padding:4px 8px; background:var(--blue); border-color:var(--blue);" onclick="openPartialInModal(${mat.id})">+ 입고/공정 기록</button>
-                                <button class="btn-secondary" style="font-size:10px; padding:4px 7px;" onclick="openEditItemModal(${mat.id})">자재정보 수정</button>
+                                <button class="btn-action" style="font-size:10px; padding:3px 7px; background:var(--blue);" onclick="openPartialInModal(${item.id}, ${mat.id})">+ 입고/공정 기록</button>
+                                <button class="btn-secondary" style="font-size:10px; padding:3px 6px;" onclick="openEditItemModal(${item.id}, ${mat.id})">자재정보 수정</button>
                             </div>
                         </td>
                     `;
-                    fabricTbody.appendChild(tr);
+                    if (fabricTbody) fabricTbody.appendChild(tr);
                 } else {
                     tr.innerHTML = `
                         <td><span style="background:#f3e8ff; color:#6b21a8; padding:2px 6px; border-radius:4px; font-weight:bold; font-size:10px;">부자재</span></td>
-                        <td><span class="clickable-name" onclick="openMaterialDetailModal(${mat.id})">${mat.name}</span></td>
+                        <td><span class="clickable-name" onclick="openMaterialDetailModal(${item.id}, ${mat.id})">${mat.name}</span></td>
                         <td>${mat.supplier || '-'}</td>
                         <td>${total.toLocaleString()} ${mat.unit || '개'}</td>
                         <td><strong>${current.toLocaleString()}</strong> ${mat.unit || '개'}</td>
@@ -584,65 +543,76 @@
                         <td>${stepHtml}</td>
                         <td>
                             <div class="action-group">
-                                <button class="btn-action" style="font-size:10px; padding:4px 8px; background:var(--blue); border-color:var(--blue);" onclick="openPartialInModal(${mat.id})">+ 입고/공정 기록</button>
-                                <button class="btn-secondary" style="font-size:10px; padding:4px 7px;" onclick="openEditItemModal(${mat.id})">자재정보 수정</button>
+                                <button class="btn-action" style="font-size:10px; padding:3px 7px; background:var(--blue);" onclick="openPartialInModal(${item.id}, ${mat.id})">+ 입고/공정 기록</button>
+                                <button class="btn-secondary" style="font-size:10px; padding:3px 6px;" onclick="openEditItemModal(${item.id}, ${mat.id})">자재정보 수정</button>
                             </div>
                         </td>
                     `;
-                    trimTbody.appendChild(tr);
+                    if (trimTbody) trimTbody.appendChild(tr);
                 }
+            });
+
+            // 2. 봉제/출고 렌더링
+            (item.factories || []).forEach(fac => {
+                const totalTarget = Number(fac.totalTarget) || 1;
+                const shipments = fac.shipments || [];
+                const totalShip = shipments.reduce((acc, s) => acc + Number(s.qty), 0);
+                const pct = Math.min(100, Math.round((totalShip / totalTarget) * 100));
+
+                let badgeClass = 'status-in-progress';
+                let statusText = '생산 준비';
+                if (pct >= 100) { badgeClass = 'status-completed'; statusText = '출고 완료'; }
+                else if (pct > 0) { badgeClass = 'status-partial'; statusText = `분할 출고 중 (${pct}%)`; }
+
+                let shipmentHtml = '';
+                shipments.forEach((s, idx) => {
+                    shipmentHtml += `
+                        <div class="shipment-item">
+                            <span><strong>${s.date}</strong> | ${Number(s.qty).toLocaleString()}개 (${s.note || '차수출고'})</span>
+                            <div class="shipment-actions">
+                                <button class="btn-secondary" style="padding:1px 4px; font-size:9px;" onclick="openEditShipmentModal(${item.id}, ${fac.id}, ${idx})">수정</button>
+                                <button class="btn-danger" style="padding:1px 4px; font-size:9px;" onclick="deleteShipment(${item.id}, ${fac.id}, ${idx})">삭제</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                if (fac.issues) {
+                    fac.issues.forEach((iss, iIdx) => {
+                        shipmentHtml += `
+                            <div class="issue-item">
+                                <span>🚨 ${iss}</span>
+                                <button class="btn-danger" style="padding:1px 4px; font-size:9px;" onclick="deleteIssue(${item.id}, ${fac.id}, ${iIdx})">삭제</button>
+                            </div>
+                        `;
+                    });
+                }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>[${fac.country}]</strong><br>${fac.name}</td>
+                    <td>${totalTarget.toLocaleString()}개</td>
+                    <td><strong>${totalShip.toLocaleString()}</strong>개</td>
+                    <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
+                    <td>${shipmentHtml || '<span style="color:var(--muted); font-size:11px;">출고 내역 없음</span>'}</td>
+                    <td>
+                        <div class="action-group">
+                            <button class="btn-secondary" style="font-size:10px;" onclick="openAddShipmentModal(${item.id}, ${fac.id})">+ 출고 추가</button>
+                            <button class="btn-danger" style="font-size:10px;" onclick="openAddIssueModal(${item.id}, ${fac.id})">+ 이슈 등록</button>
+                        </div>
+                    </td>
+                `;
+                if (sewingTbody) sewingTbody.appendChild(tr);
             });
         }
 
-        /* 자재 세부 정보 모달 연동 */
-        function openMaterialDetailModal(matId) {
-            const item = stylesData.find(s => s.id === currentDetailId);
-            const mat = item.materials.find(m => m.id === matId);
-            if (!mat) return;
+        /* =========================================================
+           MODAL LOGICS & HANDLERS
+           ========================================================= */
+        let activeStyleId = null;
 
-            const total = Number(mat.totalQty) || 1;
-            const current = Number(mat.currentQty) || 0;
-            const pct = Math.min(100, Math.round((current / total) * 100));
-
-            let typeTitle = mat.subType === 'YARN' ? '[원사]' : (mat.subType === 'FABRIC' ? '[원단]' : '[부자재]');
-            document.getElementById('mdName').innerText = `${typeTitle} ${mat.name}`;
-            document.getElementById('mdSpec').innerText = mat.spec || '등록된 규격 없음';
-            document.getElementById('mdSupplier').innerText = mat.supplier || '등록된 공급처 없음';
-            document.getElementById('mdQtyInfo').innerText = `${current.toLocaleString()} / ${total.toLocaleString()} ${mat.unit} (${pct}% 입고 달성)`;
-            document.getElementById('mdStep').innerText = mat.processStep || '진행 단계 정보 없음';
-
-            openModal('materialDetailModal');
-        }
-
-        /* Dynamic Material Form Toggle */
-        function toggleMaterialFormFields(type) {
-            selectedMaterialType = type;
-            const fgSpec = document.getElementById('fgSpec');
-            const lblName = document.getElementById('lblItemName');
-            const lblSupplier = document.getElementById('lblItemSupplier');
-            const unitInput = document.getElementById('newItemUnit');
-
-            if (type === 'YARN') {
-                lblName.innerText = '원사명';
-                lblSupplier.innerText = '방적사/원사 공급업체';
-                fgSpec.style.display = 'block';
-                document.getElementById('lblItemSpec').innerText = '원사 규격 / 혼용률';
-                if (!unitInput.value || unitInput.value === '개' || unitInput.value === 'y') unitInput.value = 'kg';
-            } else if (type === 'FABRIC') {
-                lblName.innerText = '원단명';
-                lblSupplier.innerText = '원단/염색 공장명';
-                fgSpec.style.display = 'block';
-                document.getElementById('lblItemSpec').innerText = '혼용률 / 원단 규격';
-                if (!unitInput.value || unitInput.value === '개' || unitInput.value === 'kg') unitInput.value = 'y';
-            } else { // TRIM
-                lblName.innerText = '부자재명 (라벨/지퍼/단추 등)';
-                lblSupplier.innerText = '부자재 공급업체';
-                fgSpec.style.display = 'none';
-                if (!unitInput.value || unitInput.value === 'kg' || unitInput.value === 'y') unitInput.value = '개';
-            }
-        }
-
-        function openFabricYarnModal() {
+        function openFabricYarnModal(styleId) {
+            activeStyleId = styleId;
             editingItemId = null;
             document.getElementById('btnDeleteItem').style.display = 'none';
             document.getElementById('itemModalHeader').innerText = '원사 및 원단 자재 추가';
@@ -661,7 +631,8 @@
             openModal('itemModal');
         }
 
-        function openTrimOnlyModal() {
+        function openTrimOnlyModal(styleId) {
+            activeStyleId = styleId;
             editingItemId = null;
             document.getElementById('btnDeleteItem').style.display = 'none';
             document.getElementById('itemModalHeader').innerText = '부자재 추가';
@@ -680,11 +651,11 @@
             openModal('itemModal');
         }
 
-        function openEditItemModal(matId) {
+        function openEditItemModal(styleId, matId) {
+            activeStyleId = styleId;
             editingItemId = matId;
-            const item = stylesData.find(s => s.id === currentDetailId);
+            const item = stylesData.find(s => s.id === styleId);
             const mat = item.materials.find(m => m.id === matId);
-            if (!mat) return;
 
             document.getElementById('btnDeleteItem').style.display = 'inline-block';
             document.getElementById('itemModalHeader').innerText = '자재 정보 수정';
@@ -707,16 +678,40 @@
             openModal('itemModal');
         }
 
+        function toggleMaterialFormFields(type) {
+            selectedMaterialType = type;
+            const fgSpec = document.getElementById('fgSpec');
+            const lblName = document.getElementById('lblItemName');
+            const lblSupplier = document.getElementById('lblItemSupplier');
+            const unitInput = document.getElementById('newItemUnit');
+
+            if (type === 'YARN') {
+                lblName.innerText = '원사명';
+                lblSupplier.innerText = '방적사/원사 공급업체';
+                fgSpec.style.display = 'block';
+                if (!unitInput.value || unitInput.value === '개' || unitInput.value === 'y') unitInput.value = 'kg';
+            } else if (type === 'FABRIC') {
+                lblName.innerText = '원단명';
+                lblSupplier.innerText = '원단/염색 공장명';
+                fgSpec.style.display = 'block';
+                if (!unitInput.value || unitInput.value === '개' || unitInput.value === 'kg') unitInput.value = 'y';
+            } else {
+                lblName.innerText = '부자재명 (라벨/지퍼/단추 등)';
+                lblSupplier.innerText = '부자재 공급업체';
+                fgSpec.style.display = 'none';
+                if (!unitInput.value || unitInput.value === 'kg' || unitInput.value === 'y') unitInput.value = '개';
+            }
+        }
+
         function saveNewItem() {
-            const item = stylesData.find(s => s.id === currentDetailId);
+            const item = stylesData.find(s => s.id === activeStyleId);
             const name = document.getElementById('newItemName').value.trim();
             const spec = document.getElementById('newItemSpec').value.trim();
             const supplier = document.getElementById('newItemSupplier').value.trim();
             const unit = document.getElementById('newItemUnit').value.trim() || 'y';
             const totalQty = Number(document.getElementById('newItemTotalQty').value) || 0;
 
-            if (!name) { alert('자재/품목명을 입력해 주세요.'); return; }
-
+            if (!name) { alert('자재명을 입력해 주세요.'); return; }
             if (!item.materials) item.materials = [];
 
             if (editingItemId) {
@@ -730,49 +725,38 @@
                     mat.totalQty = totalQty;
                 }
             } else {
-                const newMat = {
-                    id: Date.now(),
-                    subType: selectedMaterialType,
-                    name: name,
-                    spec: spec,
-                    supplier: supplier,
-                    unit: unit,
-                    totalQty: totalQty,
-                    currentQty: 0,
+                item.materials.push({
+                    id: Date.now(), subType: selectedMaterialType, name, spec, supplier, unit, totalQty, currentQty: 0,
                     processStep: PROCESS_STEPS[selectedMaterialType][0]
-                };
-                item.materials.push(newMat);
+                });
             }
 
             saveData();
             closeModal('itemModal');
-            renderMaterialTables(item);
+            renderMainList();
         }
 
         function deleteCurrentItem() {
             if (!editingItemId || !confirm('이 자재 항목을 삭제하시겠습니까?')) return;
-            const item = stylesData.find(s => s.id === currentDetailId);
+            const item = stylesData.find(s => s.id === activeStyleId);
             item.materials = item.materials.filter(m => m.id !== editingItemId);
             saveData();
             closeModal('itemModal');
-            renderMaterialTables(item);
+            renderMainList();
         }
 
-        function openPartialInModal(matId) {
+        function openPartialInModal(styleId, matId) {
+            activeStyleId = styleId;
             selectedMaterialId = matId;
-            const item = stylesData.find(s => s.id === currentDetailId);
+            const item = stylesData.find(s => s.id === styleId);
             const mat = item.materials.find(m => m.id === matId);
-            if (!mat) return;
 
             document.getElementById('partialInQty').value = mat.currentQty;
-
             const processSelect = document.getElementById('itemProcessStep');
             processSelect.innerHTML = '';
-            const steps = PROCESS_STEPS[mat.subType] || [];
-            steps.forEach(st => {
+            (PROCESS_STEPS[mat.subType] || []).forEach(st => {
                 const opt = document.createElement('option');
-                opt.value = st;
-                opt.innerText = st;
+                opt.value = st; opt.innerText = st;
                 if (mat.processStep === st) opt.selected = true;
                 processSelect.appendChild(opt);
             });
@@ -781,81 +765,37 @@
         }
 
         function savePartialIn() {
-            const item = stylesData.find(s => s.id === currentDetailId);
+            const item = stylesData.find(s => s.id === activeStyleId);
             const mat = item.materials.find(m => m.id === selectedMaterialId);
-            if (!mat) return;
-
             mat.currentQty = Number(document.getElementById('partialInQty').value) || 0;
             mat.processStep = document.getElementById('itemProcessStep').value;
 
             saveData();
             closeModal('partialInModal');
-            renderMaterialTables(item);
+            renderMainList();
         }
 
-        /* =========================================================
-           SEWING FACTORY & SHIPMENT RENDER & LOGIC
-           ========================================================= */
-        function renderSewingTable(item) {
-            const tbody = document.getElementById('sewingFactoryTableBody');
-            tbody.innerHTML = '';
+        function openMaterialDetailModal(styleId, matId) {
+            const item = stylesData.find(s => s.id === styleId);
+            const mat = item.materials.find(m => m.id === matId);
 
-            const factories = item.factories || [];
+            const total = Number(mat.totalQty) || 1;
+            const current = Number(mat.currentQty) || 0;
+            const pct = Math.min(100, Math.round((current / total) * 100));
 
-            factories.forEach(fac => {
-                const totalTarget = Number(fac.totalTarget) || 1;
-                const shipments = fac.shipments || [];
-                const totalShip = shipments.reduce((acc, s) => acc + Number(s.qty), 0);
-                const pct = Math.min(100, Math.round((totalShip / totalTarget) * 100));
+            let typeTitle = mat.subType === 'YARN' ? '[원사]' : (mat.subType === 'FABRIC' ? '[원단]' : '[부자재]');
+            document.getElementById('mdName').innerText = `${typeTitle} ${mat.name}`;
+            document.getElementById('mdSpec').innerText = mat.spec || '규격 정보 없음';
+            document.getElementById('mdSupplier').innerText = mat.supplier || '공급처 정보 없음';
+            document.getElementById('mdQtyInfo').innerText = `${current.toLocaleString()} / ${total.toLocaleString()} ${mat.unit} (${pct}% 입고 달성)`;
+            document.getElementById('mdStep').innerText = mat.processStep || '진행 정보 없음';
 
-                let badgeClass = 'status-in-progress';
-                let statusText = '생산 준비';
-                if (pct >= 100) { badgeClass = 'status-completed'; statusText = '출고 완료'; }
-                else if (pct > 0) { badgeClass = 'status-partial'; statusText = `분할 출고 중 (${pct}%)`; }
-
-                let shipmentHtml = '';
-                shipments.forEach((s, idx) => {
-                    shipmentHtml += `
-                        <div class="shipment-item">
-                            <span><strong>${s.date}</strong> | ${Number(s.qty).toLocaleString()}개 (${s.note || '차수출고'})</span>
-                            <div class="shipment-actions">
-                                <button class="btn-secondary" style="padding:2px 5px;" onclick="openEditShipmentModal(${fac.id}, ${idx})">수정</button>
-                                <button class="btn-danger" style="padding:2px 5px;" onclick="deleteShipment(${fac.id}, ${idx})">삭제</button>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                if (fac.issues) {
-                    fac.issues.forEach((iss, iIdx) => {
-                        shipmentHtml += `
-                            <div class="issue-item">
-                                <span>🚨 ${iss}</span>
-                                <button class="btn-danger" style="padding:1px 4px; font-size:9px;" onclick="deleteIssue(${fac.id}, ${iIdx})">삭제</button>
-                            </div>
-                        `;
-                    });
-                }
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>[${fac.country}]</strong><br>${fac.name}</td>
-                    <td>${totalTarget.toLocaleString()}개</td>
-                    <td><strong>${totalShip.toLocaleString()}</strong>개</td>
-                    <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
-                    <td>${shipmentHtml || '<span style="color:var(--muted); font-size:11px;">출고 및 이슈 내역 없음</span>'}</td>
-                    <td>
-                        <div class="action-group">
-                            <button class="btn-secondary" onclick="openAddShipmentModal(${fac.id})">+ 출고 추가</button>
-                            <button class="btn-danger" onclick="openAddIssueModal(${fac.id})">+ 이슈 등록</button>
-                        </div>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+            openModal('materialDetailModal');
         }
 
-        function openSewingFactoryModal() {
+        /* 봉제 공장 및 출고/이슈 핸들러 */
+        function openSewingFactoryModal(styleId) {
+            activeStyleId = styleId;
             document.getElementById('newFacCountry').value = '';
             document.getElementById('newFacName').value = '';
             document.getElementById('newFacTarget').value = '';
@@ -863,29 +803,22 @@
         }
 
         function saveNewSewingFactory() {
-            const item = stylesData.find(s => s.id === currentDetailId);
+            const item = stylesData.find(s => s.id === activeStyleId);
             const country = document.getElementById('newFacCountry').value.trim();
             const name = document.getElementById('newFacName').value.trim();
             const target = Number(document.getElementById('newFacTarget').value) || 0;
 
-            if (!name) { alert('공장명을 입력해 주세요.'); return; }
+            if (!name) return;
             if (!item.factories) item.factories = [];
 
-            item.factories.push({
-                id: Date.now(),
-                country: country || '국내',
-                name: name,
-                totalTarget: target,
-                shipments: [],
-                issues: []
-            });
-
+            item.factories.push({ id: Date.now(), country: country || '국내', name, totalTarget: target, shipments: [], issues: [] });
             saveData();
             closeModal('sewingModal');
-            renderSewingTable(item);
+            renderMainList();
         }
 
-        function openAddShipmentModal(facId) {
+        function openAddShipmentModal(styleId, facId) {
+            activeStyleId = styleId;
             selectedFactoryId = facId;
             editingShipmentIndex = null;
             document.getElementById('shipmentModalHeader').innerText = '완제품 출고 등록';
@@ -895,14 +828,15 @@
             openModal('shipmentModal');
         }
 
-        function openEditShipmentModal(facId, idx) {
+        function openEditShipmentModal(styleId, facId, idx) {
+            activeStyleId = styleId;
             selectedFactoryId = facId;
             editingShipmentIndex = idx;
-            const item = stylesData.find(s => s.id === currentDetailId);
+            const item = stylesData.find(s => s.id === styleId);
             const fac = item.factories.find(f => f.id === facId);
             const ship = fac.shipments[idx];
 
-            document.getElementById('shipmentModalHeader').innerText = '완제품 출고 내역 수정';
+            document.getElementById('shipmentModalHeader').innerText = '완제품 출고 수정';
             document.getElementById('shipmentDate').value = ship.date;
             document.getElementById('shipmentQty').value = ship.qty;
             document.getElementById('shipmentNote').value = ship.note;
@@ -910,83 +844,63 @@
         }
 
         function saveShipment() {
-            const item = stylesData.find(s => s.id === currentDetailId);
+            const item = stylesData.find(s => s.id === activeStyleId);
             const fac = item.factories.find(f => f.id === selectedFactoryId);
             const date = document.getElementById('shipmentDate').value;
             const qty = Number(document.getElementById('shipmentQty').value) || 0;
             const note = document.getElementById('shipmentNote').value.trim();
 
-            if (!date || qty <= 0) { alert('올바른 출고 일자와 수량을 입력해 주세요.'); return; }
+            if (!date || qty <= 0) return;
 
-            if (editingShipmentIndex !== null) {
-                fac.shipments[editingShipmentIndex] = { date, qty, note };
-            } else {
-                if (!fac.shipments) fac.shipments = [];
-                fac.shipments.push({ date, qty, note });
-            }
+            if (editingShipmentIndex !== null) fac.shipments[editingShipmentIndex] = { date, qty, note };
+            else { if (!fac.shipments) fac.shipments = []; fac.shipments.push({ date, qty, note }); }
 
             saveData();
             closeModal('shipmentModal');
-            renderSewingTable(item);
+            renderMainList();
         }
 
-        function deleteShipment(facId, idx) {
-            if (!confirm('이 출고 기록을 삭제하시겠습니까?')) return;
-            const item = stylesData.find(s => s.id === currentDetailId);
+        function deleteShipment(styleId, facId, idx) {
+            if (!confirm('출고 기록을 삭제하시겠습니까?')) return;
+            const item = stylesData.find(s => s.id === styleId);
             const fac = item.factories.find(f => f.id === facId);
             fac.shipments.splice(idx, 1);
             saveData();
-            renderSewingTable(item);
+            renderMainList();
         }
 
-        function openAddIssueModal(facId) {
+        function openAddIssueModal(styleId, facId) {
+            activeStyleId = styleId;
             selectedFactoryId = facId;
             document.getElementById('issueText').value = '';
             openModal('issueModal');
         }
 
         function saveIssue() {
-            const item = stylesData.find(s => s.id === currentDetailId);
+            const item = stylesData.find(s => s.id === activeStyleId);
             const fac = item.factories.find(f => f.id === selectedFactoryId);
             const text = document.getElementById('issueText').value.trim();
             if (!text) return;
 
             if (!fac.issues) fac.issues = [];
             fac.issues.push(text);
-
             saveData();
             closeModal('issueModal');
-            renderSewingTable(item);
+            renderMainList();
         }
 
-        function deleteIssue(facId, idx) {
-            const item = stylesData.find(s => s.id === currentDetailId);
+        function deleteIssue(styleId, facId, idx) {
+            const item = stylesData.find(s => s.id === styleId);
             const fac = item.factories.find(f => f.id === facId);
             fac.issues.splice(idx, 1);
             saveData();
-            renderSewingTable(item);
+            renderMainList();
         }
 
-        /* =========================================================
-           QC SECTION LOGIC
-           ========================================================= */
-        function renderQcSection(item) {
-            document.getElementById('qcCompany').innerText = item.qcCompany || '-';
-            document.getElementById('qcTargetDate').innerText = item.qcDate || '-';
-            document.getElementById('qcDefectRate').innerText = item.qcRate || '-';
-
-            const badgeSpan = document.getElementById('qcStatusBadge');
-            if (item.qcStatus === 'PASSED') {
-                badgeSpan.innerHTML = '<span class="status-badge status-completed">합격 (PASSED)</span>';
-            } else if (item.qcStatus === 'FAILED') {
-                badgeSpan.innerHTML = '<span class="status-badge status-danger">불합격 (FAILED)</span>';
-            } else {
-                badgeSpan.innerHTML = '<span class="status-badge status-in-progress">검사 대기</span>';
-            }
-        }
-
-        function openQcModal() {
-            const item = stylesData.find(s => s.id === currentDetailId);
+        /* QC 및 Style 제어 */
+        function openQcModal(styleId) {
+            activeStyleId = styleId;
+            const item = stylesData.find(s => s.id === styleId);
             document.getElementById('qcInputCompany').value = item.qcCompany || '';
             document.getElementById('qcInputDate').value = item.qcDate || '';
             document.getElementById('qcInputRate').value = item.qcRate || '';
@@ -995,7 +909,7 @@
         }
 
         function saveQc() {
-            const item = stylesData.find(s => s.id === currentDetailId);
+            const item = stylesData.find(s => s.id === activeStyleId);
             item.qcCompany = document.getElementById('qcInputCompany').value.trim();
             item.qcDate = document.getElementById('qcInputDate').value;
             item.qcRate = document.getElementById('qcInputRate').value.trim();
@@ -1003,12 +917,9 @@
 
             saveData();
             closeModal('qcModal');
-            renderQcSection(item);
+            renderMainList();
         }
 
-        /* =========================================================
-           STYLE CREATE & STATUS TOGGLE
-           ========================================================= */
         function openStyleModal() {
             document.getElementById('newStyleNo').value = '';
             document.getElementById('newStyleName').value = '';
@@ -1023,44 +934,25 @@
             const name = document.getElementById('newStyleName').value.trim();
             const targetDate = document.getElementById('newTargetDate').value;
 
-            if (!styleNo || !name) { alert('Style No.와 상품명을 입력해 주세요.'); return; }
+            if (!styleNo || !name) return;
 
-            const newObj = {
-                id: Date.now(),
-                brand, season, styleNo, name, targetDate,
-                status: 'ACTIVE',
-                materials: [],
-                factories: [],
-                qcCompany: '', qcDate: '', qcRate: '', qcStatus: 'WAITING'
-            };
+            stylesData.push({
+                id: Date.now(), brand, season, styleNo, name, targetDate, status: 'ACTIVE',
+                materials: [], factories: [], qcCompany: '', qcDate: '', qcRate: '', qcStatus: 'WAITING'
+            });
 
-            stylesData.push(newObj);
             saveData();
             closeModal('styleModal');
             renderMainList();
         }
 
-        function tryCompleteStyle() {
-            const item = stylesData.find(s => s.id === currentDetailId);
-            if (!item) return;
-
-            if (item.status === 'ACTIVE') {
-                if (confirm('이 Style을 [완료 (보관함)] 상태로 전환하시겠습니까?')) {
-                    item.status = 'COMPLETED';
-                }
-            } else {
-                if (confirm('이 Style을 다시 [진행 중] 상태로 복원하시겠습니까?')) {
-                    item.status = 'ACTIVE';
-                }
-            }
-
+        function tryCompleteStyle(id) {
+            const item = stylesData.find(s => s.id === id);
+            item.status = (item.status === 'ACTIVE') ? 'COMPLETED' : 'ACTIVE';
             saveData();
-            openDetailView(item.id);
+            renderMainList();
         }
 
-        /* =========================================================
-           GLOBAL ALERT MODAL
-           ========================================================= */
         function openAlertModal() {
             const container = document.getElementById('alertListContainer');
             container.innerHTML = '';
@@ -1068,51 +960,35 @@
 
             stylesData.forEach(s => {
                 if (s.status !== 'ACTIVE') return;
-
-                let hasIssue = false;
                 let issuesList = [];
-
                 if (s.factories) {
                     s.factories.forEach(f => {
-                        if (f.issues && f.issues.length > 0) {
-                            hasIssue = true;
-                            f.issues.forEach(i => issuesList.push(`[${f.name}] ${i}`));
-                        }
+                        if (f.issues) f.issues.forEach(i => issuesList.push(`[${f.name}] ${i}`));
                     });
                 }
+                if (s.qcStatus === 'FAILED') issuesList.push(`[QC] 불합격 (FAILED)`);
 
-                if (s.qcStatus === 'FAILED') {
-                    hasIssue = true;
-                    issuesList.push(`[QC] 품질 검사 불합격 (FAILED)`);
-                }
-
-                if (hasIssue) {
+                if (issuesList.length > 0) {
                     count++;
                     const div = document.createElement('div');
-                    div.style.cssText = 'background:#fff3f3; border:1px solid #f87171; padding:10px; border-radius:8px; margin-bottom:8px; cursor:pointer;';
-                    div.onclick = () => { closeModal('alertModal'); openDetailView(s.id); };
+                    div.style.cssText = 'background:#fff3f3; border:1px solid #f87171; padding:8px 10px; border-radius:8px; margin-bottom:6px; cursor:pointer;';
+                    div.onclick = () => { closeModal('alertModal'); expandedStyleId = s.id; renderMainList(); };
                     div.innerHTML = `
-                        <div style="font-weight:bold; color:#991b1b; margin-bottom:4px;">${s.brand} | ${s.styleNo} - ${s.name}</div>
+                        <div style="font-weight:bold; color:#991b1b; margin-bottom:2px;">${s.brand} | ${s.styleNo} - ${s.name}</div>
                         ${issuesList.map(i => `<div style="color:#b91c1c; font-size:11px;">• ${i}</div>`).join('')}
                     `;
                     container.appendChild(div);
                 }
             });
 
-            if (count === 0) {
-                container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--muted);">현재 지연 및 이슈 항목이 없습니다.</div>';
-            }
-
+            if (count === 0) container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--muted);">현재 지연 및 이슈 항목이 없습니다.</div>';
             openModal('alertModal');
         }
 
-        /* =========================================================
-           MODAL HELPER
-           ========================================================= */
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        // INIT RENDER
+        // INIT
         renderMainList();
     </script>
 </body>
