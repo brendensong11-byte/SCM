@@ -13,131 +13,102 @@
             --border-color: #e2e8f0;
             --text-main: #0f172a;
             --text-muted: #64748b;
-            --tag-yarn: #0284c7;
-            --tag-fabric: #d97706;
-            --tag-trim: #9333ea;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); padding: 24px; }
-        
         .container { max-width: 1400px; margin: 0 auto; }
-        
-        /* Header & Nav */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-        .logo { font-size: 24px; font-weight: 800; color: var(--primary-color); }
+
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .logo { font-size: 22px; font-weight: 800; color: var(--primary-color); }
+        .header-actions { display: flex; gap: 10px; }
+
         .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
         .tab-btn { padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border-color); background: #fff; cursor: pointer; font-weight: 600; }
-        .tab-btn.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+        .tab-btn.active { background: var(--primary-color); color: #fff; }
 
-        /* Card Section */
-        .card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
-        .card-title { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        /* Cards & Tables */
+        .card { background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 20px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .card-title { font-size: 16px; font-weight: 700; }
 
-        /* Button UI */
-        .btn { padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; }
-        .btn-primary { background: var(--primary-color); color: #fff; }
-        .btn-primary:hover { background: #334155; }
-        .btn-outline { background: #fff; border: 1px solid var(--border-color); color: var(--text-main); }
-        .btn-outline:hover { background: #f1f5f9; }
-        .btn-sm { padding: 4px 8px; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+        th { background: #f8fafc; padding: 10px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
+        td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
 
-        /* Custom Badges & Tags */
         .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; color: #fff; }
-        .badge-yarn { background: var(--tag-yarn); }
-        .badge-fabric { background: var(--tag-fabric); }
-        .badge-trim { background: var(--tag-trim); }
-        .chip { display: inline-flex; align-items: center; background: #f1f5f9; color: var(--text-muted); padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-right: 4px; border: 1px solid #e2e8f0; }
+        .chip { display: inline-flex; background: #f1f5f9; color: var(--text-muted); padding: 2px 8px; border-radius: 12px; font-size: 11px; margin-right: 4px; }
 
-        /* Tables */
-        table { width: 100%; border-collapse: collapse; font-size: 13.5px; text-align: left; }
-        th { background: #f8fafc; padding: 12px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
-        td { padding: 14px 12px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
-        tr:last-child td { border-bottom: none; }
+        .btn { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: #fff; }
+        .btn-primary { background: var(--primary-color); color: #fff; border: none; }
+        .btn-accent { background: var(--accent-color); color: #fff; border: none; }
 
-        /* Spec Subtext */
-        .item-spec { font-size: 12px; color: #64748b; margin-top: 4px; display: flex; gap: 6px; flex-wrap: wrap; }
-        .spec-tag { background: #eff6ff; color: #1e40af; padding: 1px 6px; border-radius: 4px; font-weight: 500; }
+        /* Detail Matrix Table */
+        .matrix-table { margin-top: 10px; background: #fafafa; border: 1px solid #e2e8f0; }
+        .matrix-table th, .matrix-table td { text-align: center; }
 
-        /* Matrix Table (Style Order Detail) */
-        .matrix-table { margin-top: 12px; background: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
-        .matrix-table th { background: #f1f5f9; text-align: center; }
-        .matrix-table td { text-align: center; font-size: 13px; }
-
-        /* Step Progress Bar */
-        .step-bar { display: flex; align-items: center; gap: 4px; }
-        .step-item { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; background: #e2e8f0; color: #94a3b8; }
-        .step-item.active { background: #dbeafe; color: #1d4ed8; }
-        .step-item.completed { background: #0f172a; color: #ffffff; }
-
-        /* Modal Overlay */
+        /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .modal-overlay.active { display: flex; }
-        .modal { background: #fff; border-radius: 12px; width: 550px; max-width: 90%; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-weight: 700; font-size: 18px; }
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
-        .form-control { width: 100%; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; }
-        .form-row { display: flex; gap: 12px; }
+        .modal { background: #fff; border-radius: 10px; width: 500px; max-width: 90%; padding: 20px; }
+        .modal-header { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 15px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: var(--text-muted); }
+        .form-control { width: 100%; padding: 7px 10px; border: 1px solid var(--border-color); border-radius: 5px; font-size: 13px; }
+        .form-row { display: flex; gap: 10px; }
         .form-row .form-group { flex: 1; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Header -->
     <div class="header">
         <div class="logo">JPROJECT SCM</div>
-        <div>
-            <select class="form-control" style="width: auto;">
-                <option>전체 브랜드</option>
-                <option selected>스노야</option>
-            </select>
+        <div class="header-actions">
+            <select class="form-control" style="width: auto;"><option>스노야</option></select>
+            <button class="btn btn-accent" onclick="openModal('styleModal')">+ 신규 Style 등록</button>
         </div>
     </div>
 
-    <!-- Status Tabs -->
     <div class="tabs">
-        <button class="tab-btn active">진행 중 <span style="font-size:11px; background:#e2e8f0; padding:2px 6px; border-radius:10px; margin-left:4px;">1</span></button>
-        <button class="tab-btn">완료 (보관함) <span style="font-size:11px; background:#e2e8f0; padding:2px 6px; border-radius:10px; margin-left:4px;">0</span></button>
+        <button class="tab-btn active">진행 중 1</button>
+        <button class="tab-btn">완료 0</button>
     </div>
 
-    <!-- Style Info Card -->
+    <!-- Style Card -->
     <div class="card">
         <table>
             <thead>
                 <tr>
-                    <th width="40"></th>
+                    <th width="30"></th>
                     <th>브랜드</th>
                     <th>시즌</th>
                     <th>Style No.</th>
                     <th>상품명</th>
-                    <th>주문 정보 (발주일자 / 총수량)</th>
                     <th>목표일 (D-Day)</th>
                     <th>상태</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td style="cursor:pointer; text-align:center;" onclick="toggleStyleDetail()">▲</td>
+                    <td style="cursor:pointer;" onclick="toggleStyleDetail()">▲</td>
                     <td><strong>스노야</strong></td>
                     <td>26SS</td>
                     <td><strong style="color:var(--accent-color);">ST26001</strong></td>
                     <td><strong>쫀득슬림팬츠</strong></td>
-                    <td>
-                        <span class="chip">📅 주문일: 2026-07-01</span>
-                        <span class="chip" style="background:#eff6ff; color:#1e40af; font-weight:bold;">📦 총 3,000 개</span>
-                    </td>
-                    <td>2026-08-25 <strong>(D-11)</strong></td>
+                    <td>2026-08-25 (D-11)</td>
                     <td><span class="badge" style="background:#22c55e;">진행 중</span></td>
                 </tr>
             </tbody>
         </table>
 
-        <!-- Accordion Detail (Completed Goods Size/Color Order & Production Status) -->
-        <div id="styleDetail" style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border-color);">
-            <div style="font-weight: 700; font-size: 14px; margin-bottom: 8px;">📊 완제품 컬러 / 사이즈별 세부 주문 & 생산 현황</div>
+        <!-- 펼쳐지는 상세 내역 영역 (주문일자 및 완제품 컬러/사이즈 수량 배치) -->
+        <div id="styleDetail" style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+                <span style="font-weight: 700;">📌 완제품 상세 내역</span>
+                <span class="chip">📅 주문일자: 2026-07-01</span>
+            </div>
             <table class="matrix-table">
                 <thead>
                     <tr>
@@ -150,25 +121,25 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>블랙 (BLACK)</strong></td>
+                        <td><strong>블랙</strong></td>
                         <td>500개 <span style="font-size:11px; color:#16a34a;">(입고: 500)</span></td>
                         <td>1,000개 <span style="font-size:11px; color:#16a34a;">(입고: 1,000)</span></td>
                         <td>500개 <span style="font-size:11px; color:#eab308;">(입고: 200)</span></td>
-                        <td><strong>2,000 개</strong></td>
+                        <td>2,000 개</td>
                     </tr>
                     <tr>
-                        <td><strong>화이트 (WHITE)</strong></td>
+                        <td><strong>화이트</strong></td>
                         <td>300개 <span style="font-size:11px; color:#dc2626;">(입고: 0)</span></td>
                         <td>500개 <span style="font-size:11px; color:#dc2626;">(입고: 0)</span></td>
                         <td>200개 <span style="font-size:11px; color:#dc2626;">(입고: 0)</span></td>
-                        <td><strong>1,000 개</strong></td>
+                        <td>1,000 개</td>
                     </tr>
                     <tr style="background:#f8fafc; font-weight:bold;">
-                        <td>사이즈별 총합계</td>
+                        <td>총합계</td>
                         <td>800 개</td>
                         <td>1,500 개</td>
                         <td>700 개</td>
-                        <td style="color:var(--accent-color);">3,000 개 (진행률 56.6%)</td>
+                        <td style="color:var(--accent-color);">총 3,000 개</td>
                     </tr>
                 </tbody>
             </table>
@@ -178,75 +149,32 @@
     <!-- Yarn & Fabric Card -->
     <div class="card">
         <div class="card-header">
-            <div class="card-title">🧵 원사 및 원단 관리 (YARN & FABRIC)</div>
-            <button class="btn btn-primary btn-sm" onclick="openModal('materialModal')">+ 원단/원사 자재 추가</button>
+            <div class="card-title">🧵 원사 및 원단 관리</div>
+            <button class="btn btn-primary" onclick="openModal('materialModal')">+ 자재 추가</button>
         </div>
         <table>
             <thead>
                 <tr>
-                    <th width="70">구분</th>
-                    <th width="220">자재/품목명 (스펙)</th>
-                    <th>공급 업체</th>
-                    <th>약속 납기일</th>
-                    <th>발주 / 누적 입고 수량</th>
-                    <th width="320">공정 현황</th>
+                    <th>구분</th>
+                    <th>자재/품목명</th>
+                    <th>자재 컬러/규격</th>
+                    <th>공급업체</th>
+                    <th>약속납기일</th>
+                    <th>발주/입고 수량</th>
                     <th>상태</th>
-                    <th width="120" style="text-align:right;">관리</th>
+                    <th style="text-align:right;">관리</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><span class="badge badge-yarn">원사</span></td>
-                    <td>
-                        <strong>30수 코튼 면사</strong>
-                        <div class="item-spec">
-                            <span class="spec-tag">컬러: 백아이</span>
-                            <span class="spec-tag">규격: 30s</span>
-                        </div>
-                    </td>
+                    <td><span class="badge" style="background:#0284c7;">원사</span></td>
+                    <td><strong>30수 코튼 면사</strong></td>
+                    <td>컬러: 백아이 / 규격: 30s</td>
                     <td>중국 A 방적사</td>
                     <td>2026-07-20</td>
-                    <td><strong>5,000</strong> / 5,000 kg <span style="color:#16a34a; font-size:11px;">(100%)</span></td>
-                    <td>
-                        <div class="step-bar">
-                            <span class="step-item completed">발주</span>
-                            <span class="step-item completed">입고</span>
-                            <span class="step-item completed">편직</span>
-                            <span class="step-item completed">염색가공</span>
-                            <span class="step-item completed">검사완료</span>
-                        </div>
-                    </td>
-                    <td><span class="chip" style="background:#dcfce7; color:#15803d; font-weight:bold;">입고 완료</span></td>
-                    <td style="text-align:right;">
-                        <button class="btn btn-primary btn-sm">+ 기록</button>
-                        <button class="btn btn-outline btn-sm">수정</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="badge badge-fabric">원단</span></td>
-                    <td>
-                        <strong>쫀쫀 스판 원단</strong>
-                        <div class="item-spec">
-                            <span class="spec-tag">컬러: 블랙, 화이트</span>
-                            <span class="spec-tag">규격: 58/60" (야드)</span>
-                        </div>
-                    </td>
-                    <td>중국 B 염색공장</td>
-                    <td>2026-08-05</td>
-                    <td><strong>10,000</strong> / 10,000 y <span style="color:#16a34a; font-size:11px;">(100%)</span></td>
-                    <td>
-                        <div class="step-bar">
-                            <span class="step-item completed">원단발주</span>
-                            <span class="step-item completed">염색/가공</span>
-                            <span class="step-item completed">검단(QC)</span>
-                            <span class="step-item completed">공장입고</span>
-                        </div>
-                    </td>
-                    <td><span class="chip" style="background:#dcfce7; color:#15803d; font-weight:bold;">입고 완료</span></td>
-                    <td style="text-align:right;">
-                        <button class="btn btn-primary btn-sm">+ 기록</button>
-                        <button class="btn btn-outline btn-sm">수정</button>
-                    </td>
+                    <td>5,000 / 5,000 kg</td>
+                    <td><span class="chip" style="background:#dcfce7; color:#15803d;">입고완료</span></td>
+                    <td style="text-align:right;"><button class="btn">수정</button></td>
                 </tr>
             </tbody>
         </table>
@@ -255,170 +183,97 @@
     <!-- Trims Card -->
     <div class="card">
         <div class="card-header">
-            <div class="card-title">✂️ 부자재 관리 (TRIMS)</div>
-            <button class="btn btn-primary btn-sm" onclick="openModal('trimModal')">+ 부자재 추가</button>
+            <div class="card-title">✂️ 부자재 관리</div>
+            <button class="btn btn-primary" onclick="openModal('trimModal')">+ 부자재 추가</button>
         </div>
         <table>
             <thead>
                 <tr>
-                    <th width="70">구분</th>
-                    <th width="220">부자재명 (스펙)</th>
-                    <th>공급 업체</th>
-                    <th>약속 납기일</th>
-                    <th>발주 / 누적 입고 수량</th>
-                    <th width="320">공정 현황</th>
+                    <th>구분</th>
+                    <th>부자재명</th>
+                    <th>부자재 컬러/사이즈(규격)</th>
+                    <th>공급업체</th>
+                    <th>약속납기일</th>
+                    <th>발주/입고 수량</th>
                     <th>상태</th>
-                    <th width="120" style="text-align:right;">관리</th>
+                    <th style="text-align:right;">관리</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><span class="badge badge-trim">부자재</span></td>
-                    <td>
-                        <strong>YKK 지퍼 5호</strong>
-                        <div class="item-spec">
-                            <span class="spec-tag">컬러: 블랙, 실버</span>
-                            <span class="spec-tag">규격/사이즈: 15cm, 20cm</span>
-                        </div>
-                    </td>
-                    <td>중국 C 라벨/지퍼사</td>
+                    <td><span class="badge" style="background:#9333ea;">부자재</span></td>
+                    <td><strong>YKK 지퍼 5호</strong></td>
+                    <td>컬러: 블랙, 실버 / 규격: 15cm, 20cm</td>
+                    <td>중국 C 지퍼사</td>
                     <td>2026-08-10</td>
-                    <td><strong>10,000</strong> / 10,000 개 <span style="color:#16a34a; font-size:11px;">(100%)</span></td>
-                    <td>
-                        <div class="step-bar">
-                            <span class="step-item completed">발주</span>
-                            <span class="step-item completed">샘플승인</span>
-                            <span class="step-item completed">본발주</span>
-                            <span class="step-item completed">공장입고</span>
-                        </div>
-                    </td>
-                    <td><span class="chip" style="background:#dcfce7; color:#15803d; font-weight:bold;">입고 완료</span></td>
-                    <td style="text-align:right;">
-                        <button class="btn btn-primary btn-sm">+ 기록</button>
-                        <button class="btn btn-outline btn-sm">수정</button>
-                    </td>
+                    <td>10,000 / 10,000 개</td>
+                    <td><span class="chip" style="background:#dcfce7; color:#15803d;">입고완료</span></td>
+                    <td style="text-align:right;"><button class="btn">수정</button></td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
 
-<!-- Modal: Custom Material Registration -->
-<div class="modal-overlay" id="materialModal">
+<!-- Modal 1: Style Registration -->
+<div class="modal-overlay" id="styleModal">
     <div class="modal">
         <div class="modal-header">
-            <div>원사/원단 자재 등록</div>
-            <span style="cursor:pointer;" onclick="closeModal('materialModal')">✕</span>
-        </div>
-        <div class="form-group">
-            <label>자재 구분</label>
-            <select class="form-control">
-                <option>원단</option>
-                <option>원사</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>자재/품목명</label>
-            <input type="text" class="form-control" placeholder="예: 30수 코튼 면사 / 쫀쫀 스판 원단">
+            <div>Style (완제품) 등록</div>
+            <span style="cursor:pointer;" onclick="closeModal('styleModal')">✕</span>
         </div>
         <div class="form-row">
-            <div class="form-group">
-                <label>자재 고유 컬러 (직접 입력)</label>
-                <input type="text" class="form-control" placeholder="예: 백아이, 블랙, 멜란지 (쉼표 구분)">
-            </div>
-            <div class="form-group">
-                <label>자재 규격/폭/수 (직접 입력)</label>
-                <input type="text" class="form-control" placeholder="예: 30s, 58/60인치, 40D">
-            </div>
+            <div class="form-group"><label>브랜드</label><input type="text" class="form-control" value="스노야"></div>
+            <div class="form-group"><label>시즌</label><input type="text" class="form-control" placeholder="26SS"></div>
         </div>
         <div class="form-row">
-            <div class="form-group">
-                <label>공급 업체</label>
-                <input type="text" class="form-control" placeholder="업체명">
-            </div>
-            <div class="form-group">
-                <label>약속 납기일</label>
-                <input type="date" class="form-control">
-            </div>
+            <div class="form-group"><label>Style No.</label><input type="text" class="form-control" placeholder="ST26002"></div>
+            <div class="form-group"><label>상품명</label><input type="text" class="form-control" placeholder="상품명"></div>
         </div>
-        <div class="form-group">
-            <label>발주 수량 및 단위</label>
-            <div style="display:flex; gap:8px;">
-                <input type="number" class="form-control" placeholder="수량 입력">
-                <select class="form-control" style="width:100px;">
-                    <option>y (야드)</option>
-                    <option>kg</option>
-                    <option>개</option>
-                </select>
-            </div>
+        <div class="form-row">
+            <div class="form-group"><label>주문일자</label><input type="date" class="form-control"></div>
+            <div class="form-group"><label>목표 납기일</label><input type="date" class="form-control"></div>
         </div>
-        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
-            <button class="btn btn-outline" onclick="closeModal('materialModal')">취소</button>
-            <button class="btn btn-primary" onclick="closeModal('materialModal')">자재 저장</button>
+        <div class="form-group"><label>완제품 컬러 (쉼표 구분)</label><input type="text" class="form-control" placeholder="블랙, 화이트"></div>
+        <div class="form-group"><label>완제품 사이즈 (쉼표 구분)</label><input type="text" class="form-control" placeholder="55, 66, 77"></div>
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:15px;">
+            <button class="btn" onclick="closeModal('styleModal')">취소</button>
+            <button class="btn btn-accent" onclick="closeModal('styleModal')">저장</button>
         </div>
     </div>
 </div>
 
-<!-- Modal: Custom Trim Registration -->
+<!-- Modal 2: Custom Trim Registration (자재별 개별 컬러/사이즈 입력) -->
 <div class="modal-overlay" id="trimModal">
     <div class="modal">
         <div class="modal-header">
-            <div>부자재 등록 (독립 규격/컬러)</div>
+            <div>부자재 등록 (개별 컬러/사이즈 입력)</div>
             <span style="cursor:pointer;" onclick="closeModal('trimModal')">✕</span>
         </div>
-        <div class="form-group">
-            <label>부자재 품목명</label>
-            <input type="text" class="form-control" placeholder="예: YKK 지퍼 5호, 메인 케어라벨, 18mm 단추">
+        <div class="form-group"><label>부자재명</label><input type="text" class="form-control" placeholder="YKK 지퍼 / 단추 등"></div>
+        <div class="form-row">
+            <div class="form-group"><label>부자재 컬러 (직접 입력)</label><input type="text" class="form-control" placeholder="블랙, 실버"></div>
+            <div class="form-group"><label>부자재 규격/사이즈 (직접 입력)</label><input type="text" class="form-control" placeholder="15cm, 20cm, 18mm"></div>
         </div>
         <div class="form-row">
-            <div class="form-group">
-                <label>부자재 전용 컬러 (직접 입력)</label>
-                <input type="text" class="form-control" placeholder="예: 블랙, 실버, 골드 (자유 입력)">
-            </div>
-            <div class="form-group">
-                <label>부자재 전용 규격/사이즈 (직접 입력)</label>
-                <input type="text" class="form-control" placeholder="예: 15cm, 20cm, 18mm, FREE">
-            </div>
+            <div class="form-group"><label>공급업체</label><input type="text" class="form-control"></div>
+            <div class="form-group"><label>약속납기일</label><input type="date" class="form-control"></div>
         </div>
-        <div class="form-row">
-            <div class="form-group">
-                <label>공급 업체</label>
-                <input type="text" class="form-control" placeholder="업체명">
-            </div>
-            <div class="form-group">
-                <label>약속 납기일</label>
-                <input type="date" class="form-control">
-            </div>
-        </div>
-        <div class="form-group">
-            <label>총 발주 수량</label>
-            <input type="number" class="form-control" placeholder="총 부자재 수량 입력">
-        </div>
-        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
-            <button class="btn btn-outline" onclick="closeModal('trimModal')">취소</button>
-            <button class="btn btn-primary" onclick="closeModal('trimModal')">부자재 저장</button>
+        <div class="form-group"><label>발주 수량</label><input type="number" class="form-control"></div>
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:15px;">
+            <button class="btn" onclick="closeModal('trimModal')">취소</button>
+            <button class="btn btn-primary" onclick="closeModal('trimModal')">저장</button>
         </div>
     </div>
 </div>
 
 <script>
-    // Style Accordion Toggle
     function toggleStyleDetail() {
         const detail = document.getElementById('styleDetail');
-        if (detail.style.display === 'none') {
-            detail.style.display = 'block';
-        } else {
-            detail.style.display = 'none';
-        }
+        detail.style.display = (detail.style.display === 'none') ? 'block' : 'none';
     }
-
-    // Modal Handlers
-    function openModal(id) {
-        document.getElementById(id).classList.add('active');
-    }
-    function closeModal(id) {
-        document.getElementById(id).classList.remove('active');
-    }
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 </script>
 
 </body>
