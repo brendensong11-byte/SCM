@@ -9,7 +9,6 @@
   <style>
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
     body { font-family: 'Pretendard', sans-serif; background-color: #f8fafc; color: #1e293b; }
-    .accordion-content { transition: all 0.3s ease-in-out; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
@@ -91,7 +90,6 @@
   </div>
 
   <script>
-    // 기본 샘플 데이터
     let stylesData = [
       {
         id: "ST260024",
@@ -99,8 +97,8 @@
         season: "26FW",
         name: "더블레이어드양말",
         dueDate: "2026-10-22",
-        status: "active", // active | completed
-        sizeType: "NUM", // NUM (55~99) | ALPHA (S,M,L) | FREE
+        status: "active",
+        sizeType: "NUM",
         sizes: ["55", "66", "77", "88"],
         colors: ["핑크/옐로우", "블루/네이비", "퍼플/브라운"],
         matrix: {
@@ -111,22 +109,18 @@
         steps: {
           design: { fileUploaded: false },
           sample: { proto: false, fit: false, cf: false },
-          materials: { fabricIn: 0, subIn: 0 },
+          materials: { target: 100, current: 0 },
+          prep: { ready: false },
           sewing: { output: 0 },
-          qc: { passed: false },
+          qc: { passed: false, defectQty: 0 },
           shipping: { shipped: 0 }
-        },
-        fabrics: [
-          { name: "면100%", type: "원단", process: "나염 수축가공", vendor: "중국 A 원단공장", order: 5000 }
-        ],
-        subs: []
+        }
       }
     ];
 
     let currentTab = 'active';
-    let openStyleId = null;
+    let openStyleId = 'ST260024';
 
-    // 초기화
     function render() {
       const listContainer = document.getElementById('style-list');
       listContainer.innerHTML = '';
@@ -150,7 +144,6 @@
         card.className = "bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden transition-all";
 
         card.innerHTML = `
-          <!-- 아코디언 헤더 (터치/클릭 시 열림/닫힘) -->
           <div onclick="toggleAccordion('${style.id}')" class="p-5 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition-colors">
             <div class="flex items-center space-x-4">
               <span class="px-3 py-1 text-xs font-bold rounded-full ${style.brand === '스노야' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}">${style.brand}</span>
@@ -181,7 +174,6 @@
             </div>
           </div>
 
-          <!-- 아코디언 상세 내역 (펼쳐짐) -->
           ${isOpen ? renderDetailView(style) : ''}
         `;
 
@@ -189,13 +181,11 @@
       });
     }
 
-    // 아코디언 토글
     function toggleAccordion(id) {
       openStyleId = openStyleId === id ? null : id;
       render();
     }
 
-    // 탭 전환
     function switchTab(tab) {
       currentTab = tab;
       document.getElementById('tab-active').className = tab === 'active' 
@@ -207,78 +197,74 @@
       render();
     }
 
-    // 상세 내역 UI 생성
     function renderDetailView(style) {
       const totalQty = calculateTotalQty(style);
+      const matProgress = style.steps.materials.target > 0 ? Math.round((style.steps.materials.current / style.steps.materials.target) * 100) : 0;
+      const sewingProgress = totalQty > 0 ? Math.round((style.steps.sewing.output / totalQty) * 100) : 0;
+      const shipProgress = totalQty > 0 ? Math.round((style.steps.shipping.shipped / totalQty) * 100) : 0;
+
       return `
         <div class="border-t border-slate-100 bg-slate-50/50 p-6 space-y-6">
           
-          <!-- 7단계 진행 카드 -->
+          <!-- 7단계 진행 카드 요약 -->
           <div class="grid grid-cols-7 gap-2 text-center text-xs">
             <div class="bg-white p-3 rounded-lg border shadow-sm">
               <div class="text-slate-400 font-semibold mb-1">디자인</div>
               <div class="font-bold text-indigo-600 text-sm">${style.steps.design.fileUploaded ? '100%' : '0%'}</div>
-              <div class="text-[10px] text-slate-400 mt-1">${style.steps.design.fileUploaded ? '작지등록' : '미등록'}</div>
             </div>
             <div class="bg-white p-3 rounded-lg border shadow-sm">
               <div class="text-slate-400 font-semibold mb-1">샘플</div>
               <div class="font-bold text-indigo-600 text-sm">${style.steps.sample.cf ? '100%' : style.steps.sample.fit ? '66%' : style.steps.sample.proto ? '33%' : '0%'}</div>
-              <div class="text-[10px] text-slate-400 mt-1">${style.steps.sample.cf ? 'CF승인' : '진행중'}</div>
             </div>
             <div class="bg-white p-3 rounded-lg border shadow-sm">
               <div class="text-slate-400 font-semibold mb-1">자재 준비</div>
-              <div class="font-bold text-indigo-600 text-sm">0%</div>
-              <div class="text-[10px] text-slate-400 mt-1">자재 관리</div>
+              <div class="font-bold text-indigo-600 text-sm">${matProgress}%</div>
             </div>
             <div class="bg-white p-3 rounded-lg border shadow-sm">
               <div class="text-slate-400 font-semibold mb-1">생산 준비</div>
-              <div class="font-bold text-indigo-600 text-sm">0%</div>
-              <div class="text-[10px] text-slate-400 mt-1">투입 대기</div>
+              <div class="font-bold text-indigo-600 text-sm">${style.steps.prep.ready ? '100%' : '0%'}</div>
             </div>
             <div class="bg-white p-3 rounded-lg border shadow-sm">
               <div class="text-slate-400 font-semibold mb-1">봉제</div>
-              <div class="font-bold text-indigo-600 text-sm">0%</div>
+              <div class="font-bold text-indigo-600 text-sm">${sewingProgress}%</div>
               <div class="text-[10px] text-slate-400 mt-1">${style.steps.sewing.output} / ${totalQty}</div>
             </div>
             <div class="bg-white p-3 rounded-lg border shadow-sm">
               <div class="text-slate-400 font-semibold mb-1">QC/검품</div>
-              <div class="font-bold text-indigo-600 text-sm">${style.steps.qc.passed ? '100%' : '0%'}</div>
-              <div class="text-[10px] text-slate-400 mt-1">${style.steps.qc.passed ? '합격' : '대기'}</div>
+              <div class="font-bold text-indigo-600 text-sm">${style.steps.qc.passed ? '합격' : '대기'}</div>
             </div>
             <div class="bg-white p-3 rounded-lg border shadow-sm">
               <div class="text-slate-400 font-semibold mb-1">포장/출고</div>
-              <div class="font-bold text-indigo-600 text-sm">${Math.round((style.steps.shipping.shipped/totalQty)*100 || 0)}%</div>
+              <div class="font-bold text-indigo-600 text-sm">${shipProgress}%</div>
               <div class="text-[10px] text-slate-400 mt-1">${style.steps.shipping.shipped} / ${totalQty}</div>
             </div>
           </div>
 
-          <!-- 상세 섹션 GRID -->
+          <!-- 상단 GRID (1~2번) -->
           <div class="grid grid-cols-2 gap-6">
             <!-- 1. 디자인/샘플 -->
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
               <h4 class="font-bold text-sm text-slate-800 border-b pb-2"><i class="fa-solid fa-pencil text-indigo-500 mr-2"></i>1. 디자인 & 샘플 관리</h4>
               <div>
                 <label class="block text-xs font-semibold text-slate-600 mb-1">작업지시서 (작지)</label>
-                <input type="file" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"/>
+                <input type="file" onchange="updateStep('${style.id}', 'design', 'fileUploaded', true)" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"/>
               </div>
               <div class="space-y-2 pt-2">
                 <label class="flex items-center gap-2 text-xs font-medium text-slate-700">
-                  <input type="checkbox" ${style.steps.sample.proto ? 'checked' : ''} onchange="updateSample('${style.id}', 'proto', this.checked)" class="rounded text-indigo-600"> 1차 샘플 (Proto) 제작 완료
+                  <input type="checkbox" ${style.steps.sample.proto ? 'checked' : ''} onchange="updateStep('${style.id}', 'sample', 'proto', this.checked)" class="rounded text-indigo-600"> 1차 샘플 (Proto) 제작 완료
                 </label>
                 <label class="flex items-center gap-2 text-xs font-medium text-slate-700">
-                  <input type="checkbox" ${style.steps.sample.fit ? 'checked' : ''} onchange="updateSample('${style.id}', 'fit', this.checked)" class="rounded text-indigo-600"> 2차 샘플 (Fit) 수정 완료
+                  <input type="checkbox" ${style.steps.sample.fit ? 'checked' : ''} onchange="updateStep('${style.id}', 'sample', 'fit', this.checked)" class="rounded text-indigo-600"> 2차 샘플 (Fit) 수정 완료
                 </label>
                 <label class="flex items-center gap-2 text-xs font-medium text-slate-700">
-                  <input type="checkbox" ${style.steps.sample.cf ? 'checked' : ''} onchange="updateSample('${style.id}', 'cf', this.checked)" class="rounded text-indigo-600"> 최종 메인 샘플 (CF) 승인 완료
+                  <input type="checkbox" ${style.steps.sample.cf ? 'checked' : ''} onchange="updateStep('${style.id}', 'sample', 'cf', this.checked)" class="rounded text-indigo-600"> 최종 메인 샘플 (CF) 승인 완료
                 </label>
               </div>
             </div>
 
-            <!-- 2. 완제품 컬러/사이즈별 목표 수량 매트릭스 -->
+            <!-- 2. 목표 수량 매트릭스 -->
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-              <div class="flex justify-between items-center border-b pb-2 mb-3">
-                <h4 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-layer-group text-indigo-500 mr-2"></i>2. 완제품 컬러 / 사이즈별 목표 수량</h4>
-              </div>
+              <h4 class="font-bold text-sm text-slate-800 border-b pb-2 mb-3"><i class="fa-solid fa-layer-group text-indigo-500 mr-2"></i>2. 완제품 컬러 / 사이즈별 목표 수량</h4>
               <div class="overflow-x-auto">
                 <table class="w-full text-xs text-center border-collapse">
                   <thead>
@@ -310,7 +296,54 @@
             </div>
           </div>
 
-          <!-- 하단 동작 버튼 (완료 / 리오더) -->
+          <!-- 하단 GRID (3~6번 입력 섹션) -->
+          <div class="grid grid-cols-2 gap-6">
+            <!-- 3. 자재 준비 & 생산 준비 -->
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+              <h4 class="font-bold text-sm text-slate-800 border-b pb-2"><i class="fa-solid fa-boxes-packing text-indigo-500 mr-2"></i>3. 자재 & 생산 준비</h4>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">소요 자재 필요량 (%)</label>
+                  <input type="number" value="${style.steps.materials.target}" onchange="updateStep('${style.id}', 'materials', 'target', this.value)" class="w-full border rounded-lg p-2 text-xs font-mono">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">입고 완료 자재량 (%)</label>
+                  <input type="number" value="${style.steps.materials.current}" onchange="updateStep('${style.id}', 'materials', 'current', this.value)" class="w-full border rounded-lg p-2 text-xs font-mono">
+                </div>
+              </div>
+              <div class="pt-2">
+                <label class="flex items-center gap-2 text-xs font-medium text-slate-700">
+                  <input type="checkbox" ${style.steps.prep.ready ? 'checked' : ''} onchange="updateStep('${style.id}', 'prep', 'ready', this.checked)" class="rounded text-indigo-600"> 재단 및 생산 투입 준비 완료 (재단 완료)
+                </label>
+              </div>
+            </div>
+
+            <!-- 4. 봉제, QC & 포장/출고 입력 -->
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+              <h4 class="font-bold text-sm text-slate-800 border-b pb-2"><i class="fa-solid fa-industry text-indigo-500 mr-2"></i>4. 봉제, QC & 출고 실적 입력</h4>
+              <div class="grid grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">봉제 완료 수량</label>
+                  <input type="number" value="${style.steps.sewing.output}" onchange="updateStep('${style.id}', 'sewing', 'output', this.value)" class="w-full border rounded-lg p-2 text-xs font-mono">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">불량 수량(EA)</label>
+                  <input type="number" value="${style.steps.qc.defectQty}" onchange="updateStep('${style.id}', 'qc', 'defectQty', this.value)" class="w-full border rounded-lg p-2 text-xs font-mono">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">최종 출고 수량</label>
+                  <input type="number" value="${style.steps.shipping.shipped}" onchange="updateStep('${style.id}', 'shipping', 'shipped', this.value)" class="w-full border rounded-lg p-2 text-xs font-mono">
+                </div>
+              </div>
+              <div class="pt-2">
+                <label class="flex items-center gap-2 text-xs font-medium text-slate-700">
+                  <input type="checkbox" ${style.steps.qc.passed ? 'checked' : ''} onchange="updateStep('${style.id}', 'qc', 'passed', this.checked)" class="rounded text-indigo-600"> QC Final 검품 합격 처리
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 완료 / 리오더 버튼 -->
           <div class="flex justify-end gap-3 pt-4 border-t">
             ${style.status === 'active' ? `
               <button onclick="changeStatus('${style.id}', 'completed')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow">
@@ -327,7 +360,6 @@
       `;
     }
 
-    // 계산 및 업데이트 로직들
     function calculateTotalQty(style) {
       let total = 0;
       style.colors.forEach(col => {
@@ -340,11 +372,15 @@
 
     function calculateProgress(style) {
       let p = 0;
-      if (style.steps.sample.cf) p += 30;
-      else if (style.steps.sample.fit) p += 20;
-      else if (style.steps.sample.proto) p += 10;
+      const totalQty = calculateTotalQty(style);
+      if (style.steps.sample.cf) p += 20;
+      if (style.steps.materials.target > 0 && style.steps.materials.current >= style.steps.materials.target) p += 20;
+      if (style.steps.prep.ready) p += 10;
+      if (totalQty > 0 && style.steps.sewing.output >= totalQty) p += 30;
+      if (style.steps.qc.passed) p += 10;
+      if (totalQty > 0 && style.steps.shipping.shipped >= totalQty) p += 10;
       if (style.status === 'completed') return 100;
-      return p;
+      return Math.min(p, 100);
     }
 
     function updateMatrix(id, col, sz, val) {
@@ -356,10 +392,10 @@
       }
     }
 
-    function updateSample(id, type, checked) {
+    function updateStep(id, step, field, value) {
       const s = stylesData.find(x => x.id === id);
-      if (s) {
-        s.steps.sample[type] = checked;
+      if (s && s.steps[step]) {
+        s.steps[step][field] = typeof value === 'boolean' ? value : Number(value);
         render();
       }
     }
@@ -388,7 +424,6 @@
       }
     }
 
-    // 모달 제어
     function openModal() { document.getElementById('modal-new').classList.remove('hidden'); document.getElementById('modal-new').classList.add('flex'); }
     function closeModal() { document.getElementById('modal-new').classList.add('hidden'); document.getElementById('modal-new').classList.remove('flex'); }
 
@@ -423,13 +458,12 @@
         steps: {
           design: { fileUploaded: false },
           sample: { proto: false, fit: false, cf: false },
-          materials: { fabricIn: 0, subIn: 0 },
+          materials: { target: 100, current: 0 },
+          prep: { ready: false },
           sewing: { output: 0 },
-          qc: { passed: false },
+          qc: { passed: false, defectQty: 0 },
           shipping: { shipped: 0 }
-        },
-        fabrics: [],
-        subs: []
+        }
       });
 
       closeModal();
@@ -437,7 +471,6 @@
       render();
     }
 
-    // 실행
     render();
   </script>
 </body>
