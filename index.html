@@ -1,280 +1,284 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JPROJECT SCM System</title>
-    <style>
-        :root {
-            --primary-color: #1e293b;
-            --accent-color: #2563eb;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --border-color: #e2e8f0;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JPROJECT SCM System</title>
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --border-color: #e5e7eb;
+      --bg-light: #f9fafb;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 20px; background: #f3f4f6; color: #1f2937; }
+    .container { max-width: 1200px; margin: 0 auto; background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    
+    /* Header & Controls */
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .header h1 { font-size: 1.5rem; font-weight: bold; margin: 0; }
+    .controls { display: flex; gap: 10px; }
+    select, button, input { padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 14px; }
+    .btn-primary { background: var(--primary-color); color: white; border: none; cursor: pointer; font-weight: 600; }
+    .btn-primary:hover { background: #1d4ed8; }
+    
+    /* Main Table */
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; }
+    th { background: #f8fafc; text-align: left; padding: 12px; font-size: 13px; color: #64748b; border-bottom: 2px solid var(--border-color); }
+    td { padding: 14px 12px; border-bottom: 1px solid var(--border-color); font-size: 14px; }
+    
+    /* Accordion Row Styles */
+    .summary-row { cursor: pointer; transition: background 0.2s; }
+    .summary-row:hover { background: #f1f5f9; }
+    .arrow-icon { display: inline-block; transition: transform 0.2s; margin-right: 8px; font-size: 10px; }
+    .summary-row.open .arrow-icon { transform: rotate(180deg); }
+    
+    /* Detail Expansion Area */
+    .detail-row { display: none; background: #f8fafc; }
+    .detail-row.open { display: table-row; }
+    .detail-container { padding: 20px; border-bottom: 2px solid #cbd5e1; }
+    
+    .section-title { font-weight: bold; font-size: 15px; margin: 16px 0 8px 0; display: flex; justify-content: space-between; align-items: center; }
+    .sub-table { margin-bottom: 20px; }
+    .sub-table th { background: #edf2f7; }
+    .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    .badge-ongoing { background: #dcfce7; color: #166534; }
+    .badge-type { background: #e0f2fe; color: #0369a1; }
+    .badge-sub { background: #f3e8ff; color: #6b21a8; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); padding: 24px; }
-        .container { max-width: 1400px; margin: 0 auto; }
-
-        /* Header */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .logo { font-size: 22px; font-weight: 800; color: var(--primary-color); }
-        .header-actions { display: flex; gap: 10px; }
-
-        .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-        .tab-btn { padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border-color); background: #fff; cursor: pointer; font-weight: 600; }
-        .tab-btn.active { background: var(--primary-color); color: #fff; }
-
-        /* Cards & Tables */
-        .card { background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 20px; }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .card-title { font-size: 16px; font-weight: 700; }
-
-        table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
-        th { background: #f8fafc; padding: 10px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
-        td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
-
-        .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; color: #fff; }
-        .chip { display: inline-flex; background: #f1f5f9; color: var(--text-muted); padding: 2px 8px; border-radius: 12px; font-size: 11px; margin-right: 4px; }
-
-        .btn { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: #fff; }
-        .btn-primary { background: var(--primary-color); color: #fff; border: none; }
-        .btn-accent { background: var(--accent-color); color: #fff; border: none; }
-
-        /* Detail Matrix Table */
-        .matrix-table { margin-top: 10px; background: #fafafa; border: 1px solid #e2e8f0; }
-        .matrix-table th, .matrix-table td { text-align: center; }
-
-        /* Modal */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-overlay.active { display: flex; }
-        .modal { background: #fff; border-radius: 10px; width: 500px; max-width: 90%; padding: 20px; }
-        .modal-header { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 15px; }
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: var(--text-muted); }
-        .form-control { width: 100%; padding: 7px 10px; border: 1px solid var(--border-color); border-radius: 5px; font-size: 13px; }
-        .form-row { display: flex; gap: 10px; }
-        .form-row .form-group { flex: 1; }
-    </style>
+    /* Modal */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
+    .modal.active { display: flex; }
+    .modal-content { background: white; padding: 24px; border-radius: 8px; width: 400px; display: flex; flex-direction: column; gap: 12px; }
+  </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
-        <div class="logo">JPROJECT SCM</div>
-        <div class="header-actions">
-            <select class="form-control" style="width: auto;"><option>스노야</option></select>
-            <button class="btn btn-accent" onclick="openModal('styleModal')">+ 신규 Style 등록</button>
-        </div>
+  <div class="header">
+    <h1>JPROJECT SCM</h1>
+    <div class="controls">
+      <!-- 브랜드 필터링 드롭다운 -->
+      <select id="brandFilter" onchange="filterByBrand()">
+        <option value="ALL">전체 브랜드</option>
+        <option value="스노야">스노야</option>
+        <option value="모브온">모브온</option>
+      </select>
+      <button class="btn-primary" onclick="openModal()">+ 신규 Style 등록</button>
     </div>
+  </div>
 
-    <div class="tabs">
-        <button class="tab-btn active">진행 중 1</button>
-        <button class="tab-btn">완료 0</button>
-    </div>
-
-    <!-- Style Card -->
-    <div class="card">
-        <table>
-            <thead>
-                <tr>
-                    <th width="30"></th>
-                    <th>브랜드</th>
-                    <th>시즌</th>
-                    <th>Style No.</th>
-                    <th>상품명</th>
-                    <th>목표일 (D-Day)</th>
-                    <th>상태</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="cursor:pointer;" onclick="toggleStyleDetail()">▲</td>
-                    <td><strong>스노야</strong></td>
-                    <td>26SS</td>
-                    <td><strong style="color:var(--accent-color);">ST26001</strong></td>
-                    <td><strong>쫀득슬림팬츠</strong></td>
-                    <td>2026-08-25 (D-11)</td>
-                    <td><span class="badge" style="background:#22c55e;">진행 중</span></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- 펼쳐지는 상세 내역 영역 (주문일자 및 완제품 컬러/사이즈 수량 배치) -->
-        <div id="styleDetail" style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color);">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
-                <span style="font-weight: 700;">📌 완제품 상세 내역</span>
-                <span class="chip">📅 주문일자: 2026-07-01</span>
-            </div>
-            <table class="matrix-table">
-                <thead>
-                    <tr>
-                        <th>컬러 \ 사이즈</th>
-                        <th>55 (S)</th>
-                        <th>66 (M)</th>
-                        <th>77 (L)</th>
-                        <th>컬러별 합계</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>블랙</strong></td>
-                        <td>500개 <span style="font-size:11px; color:#16a34a;">(입고: 500)</span></td>
-                        <td>1,000개 <span style="font-size:11px; color:#16a34a;">(입고: 1,000)</span></td>
-                        <td>500개 <span style="font-size:11px; color:#eab308;">(입고: 200)</span></td>
-                        <td>2,000 개</td>
-                    </tr>
-                    <tr>
-                        <td><strong>화이트</strong></td>
-                        <td>300개 <span style="font-size:11px; color:#dc2626;">(입고: 0)</span></td>
-                        <td>500개 <span style="font-size:11px; color:#dc2626;">(입고: 0)</span></td>
-                        <td>200개 <span style="font-size:11px; color:#dc2626;">(입고: 0)</span></td>
-                        <td>1,000 개</td>
-                    </tr>
-                    <tr style="background:#f8fafc; font-weight:bold;">
-                        <td>총합계</td>
-                        <td>800 개</td>
-                        <td>1,500 개</td>
-                        <td>700 개</td>
-                        <td style="color:var(--accent-color);">총 3,000 개</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Yarn & Fabric Card -->
-    <div class="card">
-        <div class="card-header">
-            <div class="card-title">🧵 원사 및 원단 관리</div>
-            <button class="btn btn-primary" onclick="openModal('materialModal')">+ 자재 추가</button>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>구분</th>
-                    <th>자재/품목명</th>
-                    <th>자재 컬러/규격</th>
-                    <th>공급업체</th>
-                    <th>약속납기일</th>
-                    <th>발주/입고 수량</th>
-                    <th>상태</th>
-                    <th style="text-align:right;">관리</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><span class="badge" style="background:#0284c7;">원사</span></td>
-                    <td><strong>30수 코튼 면사</strong></td>
-                    <td>컬러: 백아이 / 규격: 30s</td>
-                    <td>중국 A 방적사</td>
-                    <td>2026-07-20</td>
-                    <td>5,000 / 5,000 kg</td>
-                    <td><span class="chip" style="background:#dcfce7; color:#15803d;">입고완료</span></td>
-                    <td style="text-align:right;"><button class="btn">수정</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Trims Card -->
-    <div class="card">
-        <div class="card-header">
-            <div class="card-title">✂️ 부자재 관리</div>
-            <button class="btn btn-primary" onclick="openModal('trimModal')">+ 부자재 추가</button>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>구분</th>
-                    <th>부자재명</th>
-                    <th>부자재 컬러/사이즈(규격)</th>
-                    <th>공급업체</th>
-                    <th>약속납기일</th>
-                    <th>발주/입고 수량</th>
-                    <th>상태</th>
-                    <th style="text-align:right;">관리</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><span class="badge" style="background:#9333ea;">부자재</span></td>
-                    <td><strong>YKK 지퍼 5호</strong></td>
-                    <td>컬러: 블랙, 실버 / 규격: 15cm, 20cm</td>
-                    <td>중국 C 지퍼사</td>
-                    <td>2026-08-10</td>
-                    <td>10,000 / 10,000 개</td>
-                    <td><span class="chip" style="background:#dcfce7; color:#15803d;">입고완료</span></td>
-                    <td style="text-align:right;"><button class="btn">수정</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+  <!-- 메인 요약 테이블 -->
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 40px;"></th>
+        <th>브랜드</th>
+        <th>시즌</th>
+        <th>Style No.</th>
+        <th>상품명</th>
+        <th>목표일</th>
+        <th>상태</th>
+      </tr>
+    </thead>
+    <tbody id="styleList">
+      <!-- JavaScript 동적 생성 위치 -->
+    </tbody>
+  </table>
 </div>
 
-<!-- Modal 1: Style Registration -->
-<div class="modal-overlay" id="styleModal">
-    <div class="modal">
-        <div class="modal-header">
-            <div>Style (완제품) 등록</div>
-            <span style="cursor:pointer;" onclick="closeModal('styleModal')">✕</span>
-        </div>
-        <div class="form-row">
-            <div class="form-group"><label>브랜드</label><input type="text" class="form-control" value="스노야"></div>
-            <div class="form-group"><label>시즌</label><input type="text" class="form-control" placeholder="26SS"></div>
-        </div>
-        <div class="form-row">
-            <div class="form-group"><label>Style No.</label><input type="text" class="form-control" placeholder="ST26002"></div>
-            <div class="form-group"><label>상품명</label><input type="text" class="form-control" placeholder="상품명"></div>
-        </div>
-        <div class="form-row">
-            <div class="form-group"><label>주문일자</label><input type="date" class="form-control"></div>
-            <div class="form-group"><label>목표 납기일</label><input type="date" class="form-control"></div>
-        </div>
-        <div class="form-group"><label>완제품 컬러 (쉼표 구분)</label><input type="text" class="form-control" placeholder="블랙, 화이트"></div>
-        <div class="form-group"><label>완제품 사이즈 (쉼표 구분)</label><input type="text" class="form-control" placeholder="55, 66, 77"></div>
-        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:15px;">
-            <button class="btn" onclick="closeModal('styleModal')">취소</button>
-            <button class="btn btn-accent" onclick="closeModal('styleModal')">저장</button>
-        </div>
+<!-- 신규 등록 모달 -->
+<div class="modal" id="registerModal">
+  <div class="modal-content">
+    <h3>신규 Style 등록</h3>
+    <label>브랜드 선택</label>
+    <select id="newBrand">
+      <option value="스노야">스노야</option>
+      <option value="모브온">모브온</option>
+    </select>
+    <input type="text" id="newSeason" placeholder="시즌 (예: 26SS)" value="26SS">
+    <input type="text" id="newStyleNo" placeholder="Style No. (예: ST26002)">
+    <input type="text" id="newTitle" placeholder="상품명 (예: 쫀득슬림팬츠)">
+    <input type="date" id="newTargetDate">
+    <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:10px;">
+      <button onclick="closeModal()">취소</button>
+      <button class="btn-primary" onclick="addStyle()">등록하기</button>
     </div>
-</div>
-
-<!-- Modal 2: Custom Trim Registration (자재별 개별 컬러/사이즈 입력) -->
-<div class="modal-overlay" id="trimModal">
-    <div class="modal">
-        <div class="modal-header">
-            <div>부자재 등록 (개별 컬러/사이즈 입력)</div>
-            <span style="cursor:pointer;" onclick="closeModal('trimModal')">✕</span>
-        </div>
-        <div class="form-group"><label>부자재명</label><input type="text" class="form-control" placeholder="YKK 지퍼 / 단추 등"></div>
-        <div class="form-row">
-            <div class="form-group"><label>부자재 컬러 (직접 입력)</label><input type="text" class="form-control" placeholder="블랙, 실버"></div>
-            <div class="form-group"><label>부자재 규격/사이즈 (직접 입력)</label><input type="text" class="form-control" placeholder="15cm, 20cm, 18mm"></div>
-        </div>
-        <div class="form-row">
-            <div class="form-group"><label>공급업체</label><input type="text" class="form-control"></div>
-            <div class="form-group"><label>약속납기일</label><input type="date" class="form-control"></div>
-        </div>
-        <div class="form-group"><label>발주 수량</label><input type="number" class="form-control"></div>
-        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:15px;">
-            <button class="btn" onclick="closeModal('trimModal')">취소</button>
-            <button class="btn btn-primary" onclick="closeModal('trimModal')">저장</button>
-        </div>
-    </div>
+  </div>
 </div>
 
 <script>
-    function toggleStyleDetail() {
-        const detail = document.getElementById('styleDetail');
-        detail.style.display = (detail.style.display === 'none') ? 'block' : 'none';
+  // 초기 데이터베이스 (40~50개 확장 가능 구조)
+  let stylesData = [
+    {
+      id: 1,
+      brand: "스노야",
+      season: "26SS",
+      styleNo: "ST26001",
+      title: "쫀득슬림팬츠",
+      targetDate: "2026-08-25",
+      status: "진행 중",
+      fabrics: [
+        { type: "원사", name: "30수 코튼 면사", spec: "컬러: 백아이 / 규격: 30s", vendor: "중국 A 방적사", date: "2026-07-20", qty: "5,000 / 5,000 kg", status: "입고완료" }
+      ],
+      subs: [
+        { name: "YKK 지퍼 5호", spec: "컬러: 블랙, 실버 / 규격: 15cm, 20cm", vendor: "중국 C 지퍼사", date: "2026-08-10", qty: "10,000 / 10,000 개", status: "입고완료" }
+      ]
     }
-    function openModal(id) { document.getElementById(id).classList.add('active'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-</script>
+  ];
 
+  // DOM 로드 완료 후 초기 렌더링
+  document.addEventListener('DOMContentLoaded', () => {
+    renderStyles();
+  });
+
+  // 브랜드 필터 및 목록 렌더링
+  function renderStyles() {
+    const filterValue = document.getElementById('brandFilter').value;
+    const tbody = document.getElementById('styleList');
+    tbody.innerHTML = '';
+
+    const filteredData = filterValue === 'ALL' 
+      ? stylesData 
+      : stylesData.filter(item => item.brand === filterValue);
+
+    filteredData.forEach(item => {
+      // 1. 요약 행 (Summary Row)
+      const summaryTr = document.createElement('tr');
+      summaryTr.className = 'summary-row';
+      summaryTr.onclick = () => toggleAccordion(item.id);
+      summaryTr.innerHTML = `
+        <td style="text-align:center;"><span class="arrow-icon" id="arrow-${item.id}">▲</span></td>
+        <td><b>${item.brand}</b></td>
+        <td>${item.season}</td>
+        <td><span style="color:var(--primary-color); font-weight:bold;">${item.styleNo}</span></td>
+        <td><b>${item.title}</b></td>
+        <td>${item.targetDate}</td>
+        <td><span class="badge badge-ongoing">${item.status}</span></td>
+      `;
+
+      // 2. 펼침 상세 행 (Detail Row)
+      const detailTr = document.createElement('tr');
+      detailTr.className = 'detail-row';
+      detailTr.id = `detail-${item.id}`;
+      
+      let fabricsHtml = item.fabrics.map(f => `
+        <tr>
+          <td><span class="badge badge-type">${f.type}</span></td>
+          <td><b>${f.name}</b></td>
+          <td>${f.spec}</td>
+          <td>${f.vendor}</td>
+          <td>${f.date}</td>
+          <td>${f.qty}</td>
+          <td><span class="badge badge-ongoing">${f.status}</span></td>
+        </tr>
+      `).join('');
+
+      let subsHtml = item.subs.map(s => `
+        <tr>
+          <td><span class="badge badge-sub">부자재</span></td>
+          <td><b>${s.name}</b></td>
+          <td>${s.spec}</td>
+          <td>${s.vendor}</td>
+          <td>${s.date}</td>
+          <td>${s.qty}</td>
+          <td><span class="badge badge-ongoing">${s.status}</span></td>
+        </tr>
+      `).join('');
+
+      detailTr.innerHTML = `
+        <td colspan="7" style="padding:0;">
+          <div class="detail-container">
+            <!-- 완제품 상세 영역 -->
+            <div class="section-title">📦 완제품 상세내역</div>
+            <p style="font-size:13px; color:#666; margin-top:0;">스타일 번호: ${item.styleNo} | 생산 수량 및 포장 스펙 관리 영역</p>
+
+            <!-- 원사 및 원단 관리 -->
+            <div class="section-title">🧵 원사 및 원단 관리</div>
+            <table class="sub-table">
+              <thead>
+                <tr><th>구분</th><th>자재/품목명</th><th>자재 컬러/규격</th><th>공급업체</th><th>약속납기일</th><th>발주/입고 수량</th><th>상태</th></tr>
+              </thead>
+              <tbody>${fabricsHtml || '<tr><td colspan="7" style="text-align:center; color:#999;">등록된 원단 자재가 없습니다.</td></tr>'}</tbody>
+            </table>
+
+            <!-- 부자재 관리 -->
+            <div class="section-title">✂️ 부자재 관리</div>
+            <table class="sub-table">
+              <thead>
+                <tr><th>구분</th><th>부자재명</th><th>부자재 컬러/사이즈(규격)</th><th>공급업체</th><th>약속납기일</th><th>발주/입고 수량</th><th>상태</th></tr>
+              </thead>
+              <tbody>${subsHtml || '<tr><td colspan="7" style="text-align:center; color:#999;">등록된 부자재가 없습니다.</td></tr>'}</tbody>
+            </table>
+          </div>
+        </td>
+      `;
+
+      tbody.appendChild(summaryTr);
+      tbody.appendChild(detailTr);
+    });
+  }
+
+  // 아코디언 토글 제어 (가로 전체 터치 시 동작)
+  function toggleAccordion(id) {
+    const detailRow = document.getElementById(`detail-${id}`);
+    const arrowIcon = document.getElementById(`arrow-${id}`);
+    const summaryRow = arrowIcon.closest('tr');
+
+    const isOpen = detailRow.classList.contains('open');
+
+    if (isOpen) {
+      detailRow.classList.remove('open');
+      summaryRow.classList.remove('open');
+      arrowIcon.textContent = '▲';
+    } else {
+      detailRow.classList.add('open');
+      summaryRow.classList.add('open');
+      arrowIcon.textContent = '▼';
+    }
+  }
+
+  // 브랜드 필터 변경 시
+  function filterByBrand() {
+    renderStyles();
+  }
+
+  // 모달 제어
+  function openModal() { document.getElementById('registerModal').classList.add('active'); }
+  function closeModal() { document.getElementById('registerModal').classList.remove('active'); }
+
+  // 신규 Style 동적 추가 (데이터 Push)
+  function addStyle() {
+    const brand = document.getElementById('newBrand').value;
+    const season = document.getElementById('newSeason').value;
+    const styleNo = document.getElementById('newStyleNo').value;
+    const title = document.getElementById('newTitle').value;
+    const targetDate = document.getElementById('newTargetDate').value;
+
+    if (!styleNo || !title) {
+      alert('Style No와 상품명을 입력해주세요.');
+      return;
+    }
+
+    const newEntry = {
+      id: Date.now(),
+      brand,
+      season,
+      styleNo,
+      title,
+      targetDate: targetDate || '2026-09-01',
+      status: '진행 중',
+      fabrics: [],
+      subs: []
+    };
+
+    stylesData.unshift(newEntry); // 상단에 새 스타일 추가
+    renderStyles();
+    closeModal();
+
+    // 입력 필드 초기화
+    document.getElementById('newStyleNo').value = '';
+    document.getElementById('newTitle').value = '';
+  }
+</script>
 </body>
 </html>
