@@ -4,474 +4,1151 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JPROJECT | Multi-Brand SCM</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-    body { font-family: 'Pretendard', sans-serif; background-color: #f8fafc; color: #1e293b; }
+    :root {
+      --navy: #0f172a;
+      --blue: #2563eb;
+      --blue-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+      --soft-bg: #f1f5f9;
+      --ok: #10b981;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* 상단 헤더 */
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* 버튼 스타일 */
+    .btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-weight: 600;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: var(--soft-bg);
+    }
+
+    .btn.primary {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+
+    .btn.primary:hover {
+      background: var(--blue-hover);
+    }
+
+    .btn.small {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    /* 필터 및 탭 */
+    .filters {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .filters select {
+      min-width: 140px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .tab {
+      border: 0;
+      background: transparent;
+      padding: 8px 16px;
+      border-radius: 6px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .tab.active {
+      background: var(--navy);
+      color: #fff;
+    }
+
+    /* 카드 및 테이블 */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .card-head h2 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--navy);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    th {
+      font-size: 12px;
+      color: var(--muted);
+      background: #f8fafc;
+      font-weight: 600;
+    }
+
+    tr.clickable {
+      cursor: pointer;
+    }
+
+    tr.clickable:hover {
+      background: #f1f5f9;
+    }
+
+    /* 뱃지 및 프로그레스 바 */
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--soft-bg);
+      color: var(--muted);
+    }
+
+    .badge.ok {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge.warn {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge.issue {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .progress {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+      min-width: 100px;
+    }
+
+    .progress i {
+      display: block;
+      height: 100%;
+      background: var(--blue);
+      border-radius: 10px;
+    }
+
+    /* 상세 화면 및 레이아웃 */
+    .detail {
+      display: none;
+    }
+
+    .detail.show {
+      display: block;
+    }
+
+    .detail-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* 공정 파이프라인 (7단계) */
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .step {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 8px;
+      text-align: center;
+      background: #fff;
+    }
+
+    .step strong {
+      display: block;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .step .pct {
+      display: block;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--blue);
+      margin: 2px 0;
+    }
+
+    .step .dday {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .step.done {
+      border-color: #a7f3d0;
+      background: #ecfdf5;
+    }
+
+    .step.done strong, .step.done .pct {
+      color: #065f46;
+    }
+
+    /* 하단 자재 및 항목 카드 */
+    .material {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #fafafa;
+    }
+
+    .material-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .material h4 {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .material p {
+      margin: 4px 0 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .material-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .row:last-child {
+      border-bottom: 0;
+    }
+
+    .row .label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* 모달 팝업 */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 12px;
+      width: min(600px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .modal-head h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .x {
+      border: 0;
+      background: none;
+      font-size: 20px;
+      color: var(--muted);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .modal-foot {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .section-grid {
+        grid-template-columns: 1fr;
+      }
+      .pipeline {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
+<body>
 
-  <!-- GNB -->
-  <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <span class="text-xl font-bold tracking-tight text-indigo-400">JPROJECT</span>
-        <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-slate-700">Multi-Brand SCM</span>
-      </div>
-      <button onclick="openModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow transition-all flex items-center gap-2">
-        <i class="fa-solid fa-plus"></i> 신규 스타일 등록
-      </button>
+<div class="wrap">
+  <!-- 최상단 헤더 -->
+  <header class="top">
+    <div class="brand">
+      <h1>JPROJECT</h1>
+      <p>Multi-Brand Fashion SCM Engine</p>
+    </div>
+    <div class="actions">
+      <button class="btn primary" onclick="openModal('style')">+ 신규 Style 등록</button>
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-4 py-6">
-    <!-- 탭 메뉴 -->
-    <div class="flex border-b border-slate-200 mb-6 bg-white rounded-t-lg px-4 pt-2 shadow-sm">
-      <button id="tab-active" onclick="switchTab('active')" class="px-6 py-3 font-bold text-indigo-600 border-b-2 border-indigo-600 flex items-center gap-2">
-        <i class="fa-solid fa-spinner"></i> 진행 중 스타일 (<span id="count-active">0</span>)
-      </button>
-      <button id="tab-completed" onclick="switchTab('completed')" class="px-6 py-3 font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent flex items-center gap-2">
-        <i class="fa-solid fa-box-archive"></i> 완료된 스타일 (영구보관) (<span id="count-completed">0</span>)
-      </button>
-    </div>
+  <div id="app">
+    <!-- 메인 목록 화면 -->
+    <section id="listView">
+      <div class="filters">
+        <select id="brandFilter" onchange="render()">
+          <option value="ALL">전체 브랜드</option>
+          <option>스노야</option>
+          <option>모브온</option>
+        </select>
+        <select id="seasonFilter" onchange="render()">
+          <option value="ALL">전체 시즌</option>
+        </select>
+        <select id="sortFilter" onchange="render()">
+          <option value="progress">진행률 순</option>
+          <option value="recent">최근 등록 순</option>
+          <option value="style">Style No. 순</option>
+        </select>
+      </div>
 
-    <!-- 스타일 목록 (아코디언 구조) -->
-    <div id="style-list" class="space-y-4">
-      <!-- JavaScript로 동적 생성 -->
-    </div>
-  </main>
+      <div class="tabs">
+        <button class="tab active" data-status="ACTIVE" onclick="setStatus('ACTIVE')">진행 중 Style</button>
+        <button class="tab" data-status="DONE" onclick="setStatus('DONE')">완료 / 영구 보관함</button>
+      </div>
 
-  <!-- 신규 등록 모달 -->
-  <div id="modal-new" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl">
-      <h3 class="text-lg font-bold text-slate-900 mb-4">신규 생산 스타일 등록</h3>
-      <form onsubmit="handleCreateStyle(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">브랜드</label>
-          <select id="new-brand" class="w-full border rounded-lg p-2.5 text-sm bg-slate-50">
-            <option value="스노야">스노야</option>
-            <option value="모브온">모브온</option>
-          </select>
+      <!-- 바로 나타나는 생산 진행 현황 카드 -->
+      <div class="card">
+        <div class="card-head">
+          <h2>생산 진행 현황 목록</h2>
         </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">시즌</label>
-            <input type="text" id="new-season" value="26FW" class="w-full border rounded-lg p-2.5 text-sm" required>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">스타일 코드</label>
-            <input type="text" id="new-code" placeholder="ST260025" class="w-full border rounded-lg p-2.5 text-sm" required>
-          </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>브랜드 / Style No.</th>
+                <th>시즌</th>
+                <th>상품명</th>
+                <th>진행률</th>
+                <th>현재 단계</th>
+                <th>납기일</th>
+                <th>이슈</th>
+              </tr>
+            </thead>
+            <tbody id="styleList"></tbody>
+          </table>
         </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">스타일명</label>
-          <input type="text" id="new-name" placeholder="상품명 입력" class="w-full border rounded-lg p-2.5 text-sm" required>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">사이즈 체계 선택</label>
-          <select id="new-sizetype" class="w-full border rounded-lg p-2.5 text-sm bg-slate-50">
-            <option value="NUM">숫자 사이즈 (55, 66, 77, 88, 99)</option>
-            <option value="ALPHA">영문 사이즈 (S, M, L)</option>
-            <option value="FREE">프리 사이즈 (FREE)</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">납기일</label>
-          <input type="date" id="new-date" class="w-full border rounded-lg p-2.5 text-sm" required>
-        </div>
-        <div class="flex justify-end gap-2 pt-4">
-          <button type="button" onclick="closeModal()" class="px-4 py-2 border rounded-lg text-sm font-semibold text-slate-600">취소</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold">등록하기</button>
-        </div>
-      </form>
-    </div>
+      </div>
+    </section>
+
+    <!-- 상세 보기 화면 -->
+    <section id="detailView" class="detail"></section>
   </div>
+</div>
 
-  <script>
-    let stylesData = [
-      {
-        id: "ST260024",
-        brand: "스노야",
-        season: "26FW",
-        name: "더블레이어드양말",
-        dueDate: "2026-10-22",
-        status: "active",
-        sizeType: "NUM",
-        sizes: ["55", "66", "77", "88"],
-        colors: ["핑크/옐로우", "블루/네이비", "퍼플/브라운"],
-        matrix: {
-          "핑크/옐로우": { "55": 1500, "66": 1500, "77": 1000, "88": 1000 },
-          "블루/네이비": { "55": 1500, "66": 1500, "77": 1000, "88": 1000 },
-          "퍼플/브라운": { "55": 1500, "66": 1500, "77": 1000, "88": 1000 }
-        },
-        steps: {
-          design: { fileUploaded: false },
-          sample: { proto: false, fit: false, cf: false },
-          materials: { target: 100, current: 0 },
-          prep: { ready: false },
-          sewing: { output: 0 },
-          qc: { passed: false, defectQty: 0 },
-          shipping: { shipped: 0 }
-        }
-      }
+<!-- 공통 모달 팝업 -->
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="modalTitle"></h3>
+      <button class="x" onclick="closeModal()">×</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  // 로컬 스토리지 데이터 관리
+  const KEY = 'JPROJECT_SCM_V3';
+  let db = JSON.parse(localStorage.getItem(KEY) || 'null') || { styles: [] };
+  let statusTab = 'ACTIVE';
+  let currentId = null;
+
+  const stageNames = ['디자인', '샘플', '자재 준비', '생산 준비', '봉제', 'QC/검품', '포장/입고'];
+
+  function save() {
+    localStorage.setItem(KEY, JSON.stringify(db));
+  }
+
+  function uid() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+
+  function esc(v = '') {
+    return String(v).replace(/[&<>'"]/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+    }[c]));
+  }
+
+  function dateDiff(d) {
+    if (!d) return null;
+    return Math.ceil((new Date(d) - new Date(new Date().toDateString())) / 86400000);
+  }
+
+  /* -------------------------------------------------------------
+     하단 등록 데이터 기반 7단계 자동 진행률/상태 계산 로직
+  ------------------------------------------------------------- */
+  function getStageMetrics(s) {
+    // 1. 디자인 (기본 100%)
+    const designPct = 100;
+
+    // 2. 샘플 (기본 100%)
+    const samplePct = 100;
+
+    // 3. 자재 준비 (원단/원사 + 부자재 입고 수량 비율)
+    const allMaterials = [...(s.materials || []), ...(s.trims || [])];
+    let matPct = 0;
+    if (allMaterials.length > 0) {
+      const totalOrder = allMaterials.reduce((sum, m) => sum + (Number(m.orderQty) || 0), 0);
+      const totalRecv = allMaterials.reduce((sum, m) => sum + (Number(m.receivedQty) || 0), 0);
+      matPct = totalOrder > 0 ? Math.min(100, Math.round((totalRecv / totalOrder) * 100)) : 0;
+    }
+
+    // 4. 생산 준비 (자재 준비 100% 완료 시 100%, 미완료 시 자재 준비와 동동)
+    const prodReadyPct = matPct === 100 ? 100 : Math.round(matPct * 0.8);
+
+    // 5. 봉제 (목표 수량 대비 누적 출고 수량 비율)
+    const targetQty = Number(s.qty) || 0;
+    const shippedQty = (s.shipments || []).reduce((sum, x) => sum + (Number(x.qty) || 0), 0);
+    const sewingPct = targetQty > 0 ? Math.min(100, Math.round((shippedQty / targetQty) * 100)) : 0;
+
+    // 6. QC/검품 (미해결 이슈가 없으면 100%, 미해결 이슈 존재 시 50%)
+    const openIssues = (s.issues || []).filter(x => !x.done).length;
+    const qcPct = openIssues === 0 ? 100 : 50;
+
+    // 7. 포장/입고 (봉제 100% 및 QC 100% 달성 시 100%)
+    const packPct = (sewingPct === 100 && qcPct === 100) ? 100 : 0;
+
+    const stages = [
+      { name: '디자인', pct: designPct, dday: s.deadline },
+      { name: '샘플', pct: samplePct, dday: s.deadline },
+      { name: '자재 준비', pct: matPct, dday: getMinDueDate(allMaterials) || s.deadline },
+      { name: '생산 준비', pct: prodReadyPct, dday: s.deadline },
+      { name: '봉제', pct: sewingPct, dday: s.deadline },
+      { name: 'QC/검품', pct: qcPct, dday: s.deadline },
+      { name: '포장/입고', pct: packPct, dday: s.deadline }
     ];
 
-    let currentTab = 'active';
-    let openStyleId = 'ST260024';
+    const overallPct = Math.round(stages.reduce((sum, st) => sum + st.pct, 0) / 7);
 
-    function render() {
-      const listContainer = document.getElementById('style-list');
-      listContainer.innerHTML = '';
+    return { stages, overallPct };
+  }
 
-      const filtered = stylesData.filter(s => s.status === currentTab);
+  function getMinDueDate(items) {
+    const dates = items.map(i => i.dueDate).filter(Boolean);
+    if (!dates.length) return null;
+    return dates.sort()[0];
+  }
 
-      document.getElementById('count-active').innerText = stylesData.filter(s => s.status === 'active').length;
-      document.getElementById('count-completed').innerText = stylesData.filter(s => s.status === 'completed').length;
+  function issueCount(s) {
+    return (s.issues || []).filter(x => !x.done).length;
+  }
 
-      if (filtered.length === 0) {
-        listContainer.innerHTML = `<div class="bg-white p-12 text-center rounded-xl border text-slate-400 font-medium">등록된 스타일이 없습니다.</div>`;
-        return;
-      }
+  function seasons() {
+    return [...new Set(db.styles.map(s => s.season).filter(Boolean))].sort().reverse();
+  }
 
-      filtered.forEach(style => {
-        const totalQty = calculateTotalQty(style);
-        const progress = calculateProgress(style);
-        const isOpen = openStyleId === style.id;
+  function refreshSeasonFilter() {
+    const el = document.getElementById('seasonFilter');
+    const v = el.value || 'ALL';
+    el.innerHTML = '<option value="ALL">전체 시즌</option>' + seasons().map(x => `<option>${esc(x)}</option>`).join('');
+    if (seasons().includes(v)) el.value = v;
+  }
 
-        const card = document.createElement('div');
-        card.className = "bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden transition-all";
-
-        card.innerHTML = `
-          <div onclick="toggleAccordion('${style.id}')" class="p-5 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition-colors">
-            <div class="flex items-center space-x-4">
-              <span class="px-3 py-1 text-xs font-bold rounded-full ${style.brand === '스노야' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}">${style.brand}</span>
-              <div>
-                <div class="flex items-center gap-2">
-                  <span class="font-mono text-sm text-slate-500 font-bold">${style.id}</span>
-                  <span class="font-bold text-slate-900 text-base">${style.name}</span>
-                  <span class="text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-500 font-semibold">${style.season}</span>
-                </div>
-                <div class="text-xs text-slate-500 mt-1 flex gap-4">
-                  <span>목표 수량: <strong>${totalQty.toLocaleString()} 장</strong></span>
-                  <span>납기일: <strong>${style.dueDate}</strong></span>
-                </div>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-6">
-              <div class="text-right">
-                <div class="text-xs font-semibold text-slate-500 mb-1">전체 진행률</div>
-                <div class="flex items-center gap-2">
-                  <div class="w-24 bg-slate-200 h-2 rounded-full overflow-hidden">
-                    <div class="bg-indigo-600 h-full" style="width: ${progress}%"></div>
-                  </div>
-                  <span class="text-xs font-bold text-indigo-600">${progress}%</span>
-                </div>
-              </div>
-              <i class="fa-solid fa-chevron-down text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}"></i>
-            </div>
-          </div>
-
-          ${isOpen ? renderDetailView(style) : ''}
-        `;
-
-        listContainer.appendChild(card);
-      });
-    }
-
-    function toggleAccordion(id) {
-      openStyleId = openStyleId === id ? null : id;
-      render();
-    }
-
-    function switchTab(tab) {
-      currentTab = tab;
-      document.getElementById('tab-active').className = tab === 'active' 
-        ? "px-6 py-3 font-bold text-indigo-600 border-b-2 border-indigo-600 flex items-center gap-2"
-        : "px-6 py-3 font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent flex items-center gap-2";
-      document.getElementById('tab-completed').className = tab === 'completed'
-        ? "px-6 py-3 font-bold text-indigo-600 border-b-2 border-indigo-600 flex items-center gap-2"
-        : "px-6 py-3 font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent flex items-center gap-2";
-      render();
-    }
-
-    function renderDetailView(style) {
-      const totalQty = calculateTotalQty(style);
-      const matProgress = style.steps.materials.target > 0 ? Math.round((style.steps.materials.current / style.steps.materials.target) * 100) : 0;
-      const sewingProgress = totalQty > 0 ? Math.round((style.steps.sewing.output / totalQty) * 100) : 0;
-      const shipProgress = totalQty > 0 ? Math.round((style.steps.shipping.shipped / totalQty) * 100) : 0;
-
-      return `
-        <div class="border-t border-slate-100 bg-slate-50/50 p-6 space-y-6">
-          
-          <!-- 7단계 진행 카드 요약 -->
-          <div class="grid grid-cols-7 gap-2 text-center text-xs">
-            <div class="bg-white p-3 rounded-lg border shadow-sm">
-              <div class="text-slate-400 font-semibold mb-1">디자인</div>
-              <div class="font-bold text-indigo-600 text-sm">${style.steps.design.fileUploaded ? '100%' : '0%'}</div>
-            </div>
-            <div class="bg-white p-3 rounded-lg border shadow-sm">
-              <div class="text-slate-400 font-semibold mb-1">샘플</div>
-              <div class="font-bold text-indigo-600 text-sm">${style.steps.sample.cf ? '100%' : style.steps.sample.fit ? '66%' : style.steps.sample.proto ? '33%' : '0%'}</div>
-            </div>
-            <div class="bg-white p-3 rounded-lg border shadow-sm">
-              <div class="text-slate-400 font-semibold mb-1">자재 준비</div>
-              <div class="font-bold text-indigo-600 text-sm">${matProgress}%</div>
-            </div>
-            <div class="bg-white p-3 rounded-lg border shadow-sm">
-              <div class="text-slate-400 font-semibold mb-1">생산 준비</div>
-              <div class="font-bold text-indigo-600 text-sm">${style.steps.prep.ready ? '100%' : '0%'}</div>
-            </div>
-            <div class="bg-white p-3 rounded-lg border shadow-sm">
-              <div class="text-slate-400 font-semibold mb-1">봉제</div>
-              <div class="font-bold text-indigo-600 text-sm">${sewingProgress}%</div>
-              <div class="text-[10px] text-slate-400 mt-1">${style.steps.sewing.output} / ${totalQty}</div>
-            </div>
-            <div class="bg-white p-3 rounded-lg border shadow-sm">
-              <div class="text-slate-400 font-semibold mb-1">QC/검품</div>
-              <div class="font-bold text-indigo-600 text-sm">${style.steps.qc.passed ? '합격' : '대기'}</div>
-            </div>
-            <div class="bg-white p-3 rounded-lg border shadow-sm">
-              <div class="text-slate-400 font-semibold mb-1">포장/출고</div>
-              <div class="font-bold text-indigo-600 text-sm">${shipProgress}%</div>
-              <div class="text-[10px] text-slate-400 mt-1">${style.steps.shipping.shipped} / ${totalQty}</div>
-            </div>
-          </div>
-
-          <!-- 상단 GRID (1~2번) -->
-          <div class="grid grid-cols-2 gap-6">
-            <!-- 1. 디자인/샘플 -->
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
-              <h4 class="font-bold text-sm text-slate-800 border-b pb-2"><i class="fa-solid fa-pencil text-indigo-500 mr-2"></i>1. 디자인 & 샘플 관리</h4>
-              <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">작업지시서 (작지)</label>
-                <input type="file" onchange="updateStep('${style.id}', 'design', 'fileUploaded', true)" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"/>
-              </div>
-              <div class="space-y-2 pt-2">
-                <label class="flex items-center gap-2 text-xs font-medium text-slate-700">
-                  <input type="checkbox" ${style.steps.sample.proto ? 'checked' : ''} onchange="updateStep('${style.id}', 'sample', 'proto', this.checked)" class="rounded text-indigo-600"> 1차 샘플 (Proto) 제작 완료
-                </label>
-                <label class="flex items-center gap-2 text-xs font-medium text-slate-700">
-                  <input type="checkbox" ${style.steps.sample.fit ? 'checked' : ''} onchange="updateStep('${style.id}', 'sample', 'fit', this.checked)" class="rounded text-indigo-600"> 2차 샘플 (Fit) 수정 완료
-                </label>
-                <label class="flex items-center gap-2 text-xs font-medium text-slate-700">
-                  <input type="checkbox" ${style.steps.sample.cf ? 'checked' : ''} onchange="updateStep('${style.id}', 'sample', 'cf', this.checked)" class="rounded text-indigo-600"> 최종 메인 샘플 (CF) 승인 완료
-                </label>
-              </div>
-            </div>
-
-            <!-- 2. 목표 수량 매트릭스 -->
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-              <h4 class="font-bold text-sm text-slate-800 border-b pb-2 mb-3"><i class="fa-solid fa-layer-group text-indigo-500 mr-2"></i>2. 완제품 컬러 / 사이즈별 목표 수량</h4>
-              <div class="overflow-x-auto">
-                <table class="w-full text-xs text-center border-collapse">
-                  <thead>
-                    <tr class="bg-slate-50 text-slate-600 border-b">
-                      <th class="p-2 text-left">컬러 / 사이즈</th>
-                      ${style.sizes.map(sz => `<th class="p-2">${sz}</th>`).join('')}
-                      <th class="p-2 font-bold text-indigo-600">컬러별 합계</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${style.colors.map(col => {
-                      let rowSum = 0;
-                      const cells = style.sizes.map(sz => {
-                        const val = style.matrix[col]?.[sz] || 0;
-                        rowSum += val;
-                        return `<td class="p-2"><input type="number" value="${val}" onchange="updateMatrix('${style.id}', '${col}', '${sz}', this.value)" class="w-16 border rounded text-center p-1 font-mono"></td>`;
-                      }).join('');
-                      return `
-                        <tr class="border-b">
-                          <td class="p-2 text-left font-semibold text-slate-700">${col}</td>
-                          ${cells}
-                          <td class="p-2 font-bold font-mono text-indigo-600">${rowSum.toLocaleString()}</td>
-                        </tr>
-                      `;
-                    }).join('')}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <!-- 하단 GRID (3~6번 입력 섹션) -->
-          <div class="grid grid-cols-2 gap-6">
-            <!-- 3. 자재 준비 & 생산 준비 -->
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
-              <h4 class="font-bold text-sm text-slate-800 border-b pb-2"><i class="fa-solid fa-boxes-packing text-indigo-500 mr-2"></i>3. 자재 & 생산 준비</h4>
-              <div class="grid grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-semibold text-slate-600 mb-1">소요 자재 필요량 (%)</label>
-                  <input type="number" value="${style.steps.materials.target}" onchange="updateStep('${style.id}', 'materials', 'target', this.value)" class="w-full border rounded-lg p-2 text-xs font-mono">
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-600 mb-1">입고 완료 자재량 (%)</label>
-                  <input type="number" value="${style.steps.materials.current}" onchange="updateStep('${style.id}', 'materials', 'current', this.value)" class="w-full border rounded-lg p-2 text-xs font-mono">
-                </div>
-              </div>
-              <div class="pt-2">
-                <label class="flex items-center gap-2 text-xs font-medium text-slate-700">
-                  <input type="checkbox" ${style.steps.prep.ready ? 'checked' : ''} onchange="updateStep('${style.id}', 'prep', 'ready', this.checked)" class="rounded text-indigo-600"> 재단 및 생산 투입 준비 완료 (재단 완료)
-                </label>
-              </div>
-            </div>
-
-            <!-- 4. 봉제, QC & 포장/출고 입력 -->
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
-              <h4 class="font-bold text-sm text-slate-800 border-b pb-2"><i class="fa-solid fa-industry text-indigo-500 mr-2"></i>4. 봉제, QC & 출고 실적 입력</h4>
-              <div class="grid grid-cols-3 gap-3">
-                <div>
-                  <label class="block text-xs font-semibold text-slate-600 mb-1">봉제 완료 수량</label>
-                  <input type="number" value="${style.steps.sewing.output}" onchange="updateStep('${style.id}', 'sewing', 'output', this.value)" class="w-full border rounded-lg p-2 text-xs font-mono">
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-600 mb-1">불량 수량(EA)</label>
-                  <input type="number" value="${style.steps.qc.defectQty}" onchange="updateStep('${style.id}', 'qc', 'defectQty', this.value)" class="w-full border rounded-lg p-2 text-xs font-mono">
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-600 mb-1">최종 출고 수량</label>
-                  <input type="number" value="${style.steps.shipping.shipped}" onchange="updateStep('${style.id}', 'shipping', 'shipped', this.value)" class="w-full border rounded-lg p-2 text-xs font-mono">
-                </div>
-              </div>
-              <div class="pt-2">
-                <label class="flex items-center gap-2 text-xs font-medium text-slate-700">
-                  <input type="checkbox" ${style.steps.qc.passed ? 'checked' : ''} onchange="updateStep('${style.id}', 'qc', 'passed', this.checked)" class="rounded text-indigo-600"> QC Final 검품 합격 처리
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <!-- 완료 / 리오더 버튼 -->
-          <div class="flex justify-end gap-3 pt-4 border-t">
-            ${style.status === 'active' ? `
-              <button onclick="changeStatus('${style.id}', 'completed')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow">
-                <i class="fa-solid fa-check"></i> 최종 완료 처리 (완료 탭 이동)
-              </button>
-            ` : `
-              <button onclick="reorderStyle('${style.id}')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow">
-                <i class="fa-solid fa-repeat"></i> 리오더(재생산) 생성
-              </button>
-            `}
-          </div>
-
-        </div>
-      `;
-    }
-
-    function calculateTotalQty(style) {
-      let total = 0;
-      style.colors.forEach(col => {
-        style.sizes.forEach(sz => {
-          total += Number(style.matrix[col]?.[sz] || 0);
-        });
-      });
-      return total;
-    }
-
-    function calculateProgress(style) {
-      let p = 0;
-      const totalQty = calculateTotalQty(style);
-      if (style.steps.sample.cf) p += 20;
-      if (style.steps.materials.target > 0 && style.steps.materials.current >= style.steps.materials.target) p += 20;
-      if (style.steps.prep.ready) p += 10;
-      if (totalQty > 0 && style.steps.sewing.output >= totalQty) p += 30;
-      if (style.steps.qc.passed) p += 10;
-      if (totalQty > 0 && style.steps.shipping.shipped >= totalQty) p += 10;
-      if (style.status === 'completed') return 100;
-      return Math.min(p, 100);
-    }
-
-    function updateMatrix(id, col, sz, val) {
-      const s = stylesData.find(x => x.id === id);
-      if (s) {
-        if (!s.matrix[col]) s.matrix[col] = {};
-        s.matrix[col][sz] = Number(val);
-        render();
-      }
-    }
-
-    function updateStep(id, step, field, value) {
-      const s = stylesData.find(x => x.id === id);
-      if (s && s.steps[step]) {
-        s.steps[step][field] = typeof value === 'boolean' ? value : Number(value);
-        render();
-      }
-    }
-
-    function changeStatus(id, newStatus) {
-      const s = stylesData.find(x => x.id === id);
-      if (s) {
-        s.status = newStatus;
-        openStyleId = null;
-        render();
-      }
-    }
-
-    function reorderStyle(id) {
-      const orig = stylesData.find(x => x.id === id);
-      if (orig) {
-        const newId = orig.id + "-RE";
-        const copy = JSON.parse(JSON.stringify(orig));
-        copy.id = newId;
-        copy.name = orig.name + " (리오더)";
-        copy.status = 'active';
-        stylesData.unshift(copy);
-        currentTab = 'active';
-        openStyleId = newId;
-        render();
-      }
-    }
-
-    function openModal() { document.getElementById('modal-new').classList.remove('hidden'); document.getElementById('modal-new').classList.add('flex'); }
-    function closeModal() { document.getElementById('modal-new').classList.add('hidden'); document.getElementById('modal-new').classList.remove('flex'); }
-
-    function handleCreateStyle(e) {
-      e.preventDefault();
-      const brand = document.getElementById('new-brand').value;
-      const season = document.getElementById('new-season').value;
-      const code = document.getElementById('new-code').value;
-      const name = document.getElementById('new-name').value;
-      const sizeType = document.getElementById('new-sizetype').value;
-      const dueDate = document.getElementById('new-date').value;
-
-      let sizes = ["55", "66", "77", "88"];
-      if (sizeType === 'ALPHA') sizes = ["S", "M", "L"];
-      if (sizeType === 'FREE') sizes = ["FREE"];
-
-      const colors = ["기본컬러"];
-      const matrix = { "기본컬러": {} };
-      sizes.forEach(sz => matrix["기본컬러"][sz] = 1000);
-
-      stylesData.unshift({
-        id: code,
-        brand: brand,
-        season: season,
-        name: name,
-        dueDate: dueDate,
-        status: "active",
-        sizeType: sizeType,
-        sizes: sizes,
-        colors: colors,
-        matrix: matrix,
-        steps: {
-          design: { fileUploaded: false },
-          sample: { proto: false, fit: false, cf: false },
-          materials: { target: 100, current: 0 },
-          prep: { ready: false },
-          sewing: { output: 0 },
-          qc: { passed: false, defectQty: 0 },
-          shipping: { shipped: 0 }
-        }
-      });
-
-      closeModal();
-      openStyleId = code;
-      render();
-    }
-
+  function setStatus(x) {
+    statusTab = x;
+    document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.status === x));
     render();
-  </script>
+  }
+
+  /* 메인 렌더링 함수 */
+  function render() {
+    refreshSeasonFilter();
+    const brand = document.getElementById('brandFilter').value;
+    const season = document.getElementById('seasonFilter').value;
+    const sort = document.getElementById('sortFilter').value;
+
+    let arr = db.styles.filter(s => 
+      (statusTab === 'DONE' ? s.done : !s.done) && 
+      (brand === 'ALL' || s.brand === brand) && 
+      (season === 'ALL' || s.season === season)
+    );
+
+    if (sort === 'progress') arr.sort((a, b) => getStageMetrics(a).overallPct - getStageMetrics(b).overallPct);
+    if (sort === 'recent') arr.sort((a, b) => b.created - a.created);
+    if (sort === 'style') arr.sort((a, b) => a.styleNo.localeCompare(b.styleNo));
+
+    const listEl = document.getElementById('styleList');
+    if (arr.length) {
+      listEl.innerHTML = arr.map(styleRow).join('');
+    } else {
+      listEl.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:40px; color:var(--muted)">등록된 Style이 없습니다.</td></tr>`;
+    }
+  }
+
+  function styleRow(s) {
+    const d = dateDiff(s.deadline);
+    const { overallPct, stages } = getStageMetrics(s);
+    
+    // 현재 진행 중인 단계 계산
+    let currentStageName = '완료';
+    for (let st of stages) {
+      if (st.pct < 100) {
+        currentStageName = st.name;
+        break;
+      }
+    }
+
+    return `
+      <tr class="clickable" onclick="openDetail('${s.id}')">
+        <td>
+          <b style="color:var(--navy);">${esc(s.styleNo)}</b><br>
+          <small style="color:var(--muted)">${esc(s.brand)}</small>
+        </td>
+        <td>${esc(s.season)}</td>
+        <td>${esc(s.name)}</td>
+        <td>
+          <div style="display:flex; gap:8px; align-items:center">
+            <div class="progress"><i style="width:${overallPct}%"></i></div>
+            <b>${overallPct}%</b>
+          </div>
+        </td>
+        <td><span class="badge">${currentStageName}</span></td>
+        <td>
+          ${s.deadline ? esc(s.deadline) + ' ' + (
+            d < 0 ? '<span class="badge issue">D+' + Math.abs(d) + '</span>' : 
+            d === 0 ? '<span class="badge warn">D-DAY</span>' : 
+            '<span class="badge">D-' + d + '</span>'
+          ) : '-'}
+        </td>
+        <td>${issueCount(s) ? `<span class="badge issue">${issueCount(s)}건</span>` : '-'}</td>
+      </tr>
+    `;
+  }
+
+  /* 상세 페이지 화면 오픈 */
+  function openDetail(id) {
+    currentId = id;
+    const s = db.styles.find(x => x.id === id);
+    if (!s) return;
+
+    document.getElementById('listView').style.display = 'none';
+    const d = document.getElementById('detailView');
+    d.className = 'detail show';
+    d.innerHTML = detailHTML(s);
+    window.scrollTo(0, 0);
+  }
+
+  /* 상세 화면 HTML 생성 */
+  function detailHTML(s) {
+    const { stages, overallPct } = getStageMetrics(s);
+
+    return `
+      <button class="btn" onclick="backList()" style="margin-bottom:14px;">← 목록으로 돌아가기</button>
+      
+      <!-- 상단 요약 카드 -->
+      <div class="card">
+        <div class="detail-title">
+          <div>
+            <h2 style="font-size:20px;">[${esc(s.brand)}] ${esc(s.styleNo)} · ${esc(s.name)}</h2>
+            <p style="margin:4px 0 0; color:var(--muted);">
+              ${esc(s.season)} · 목표 수량: ${esc(s.qty || 0)}장 · 납기일: ${esc(s.deadline || '-')}
+            </p>
+          </div>
+          <div>
+            ${s.done ? '<span class="badge ok">완료 / 영구보관</span>' : `<span class="badge">${overallPct}% 진행중</span>`}
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <div class="progress" style="height:10px;"><i style="width:${overallPct}%"></i></div>
+        </div>
+      </div>
+
+      <!-- 7단계 공정 파이프라인 (자동 계산 & D-Day/진행률 표시) -->
+      <div class="card">
+        <div class="card-head">
+          <h2>전체 생산 공정 현황 (하단 입력 시 자동 반영)</h2>
+        </div>
+        <div class="pipeline">
+          ${stages.map(st => {
+            const d = dateDiff(st.dday);
+            const dText = st.dday ? (d < 0 ? `D+${Math.abs(d)}` : d === 0 ? 'D-DAY' : `D-${d}`) : '-';
+            return `
+              <div class="step ${st.pct === 100 ? 'done' : ''}">
+                <strong>${st.name}</strong>
+                <span class="pct">${st.pct}%</span>
+                <span class="dday">${st.dday ? esc(st.dday) : ''} (${dText})</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <!-- 4대 하단 세부 영역 -->
+      <div class="section-grid">
+        <!-- 1. 원단 / 원사 현황 -->
+        <div class="card">
+          <div class="card-head">
+            <h2>1. 원단 / 원사 자재 현황</h2>
+            <button class="btn small" onclick="openMaterialModal('fabric')">+ 자재 추가</button>
+          </div>
+          ${(s.materials || []).length 
+            ? (s.materials || []).map((m, i) => materialHTML(s, m, i, 'fabric')).join('') 
+            : '<p style="color:var(--muted); font-size:12px;">등록된 원단/원사 자재가 없습니다.</p>'}
+        </div>
+
+        <!-- 2. 부자재 현황 -->
+        <div class="card">
+          <div class="card-head">
+            <h2>2. 부자재 현황</h2>
+            <button class="btn small" onclick="openMaterialModal('trim')">+ 부자재 추가</button>
+          </div>
+          ${(s.trims || []).length 
+            ? (s.trims || []).map((m, i) => materialHTML(s, m, i, 'trim')).join('') 
+            : '<p style="color:var(--muted); font-size:12px;">등록된 부자재가 없습니다.</p>'}
+        </div>
+
+        <!-- 3. 봉제 / 생산 / 출고 실적 -->
+        <div class="card">
+          <div class="card-head">
+            <h2>3. 봉제 / 생산 / 출고 실적</h2>
+            <button class="btn small" onclick="openProductionModal()">+ 출고 기록 추가</button>
+          </div>
+          <div class="row"><span class="label">봉제 공장</span><span><b>${esc(s.factory || '미지정')}</b></span></div>
+          <div class="row"><span class="label">생산 목표</span><span>${esc(s.qty || 0)} 장</span></div>
+          <div class="row"><span class="label">누적 출고</span><span><b>${(s.shipments || []).reduce((n, x) => n + Number(x.qty || 0), 0)}</b> 장</span></div>
+          
+          <div style="margin-top:12px;">
+            ${(s.shipments || []).map((x, i) => `
+              <div class="material">
+                <div class="material-head">
+                  <h4>${i + 1}차 출고: ${esc(x.qty || 0)}장</h4>
+                  <button class="btn small" onclick="deleteShipment(${i})">삭제</button>
+                </div>
+                <p>출고일: ${esc(x.date || '-')} · 메모: ${esc(x.note || '-')}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- 4. QC 및 생산 이슈 관리 -->
+        <div class="card">
+          <div class="card-head">
+            <h2>4. QC 및 생산 이슈 관리</h2>
+            <button class="btn small" onclick="openIssueModal()">+ 이슈 등록</button>
+          </div>
+          ${(s.issues || []).length 
+            ? (s.issues || []).map((x, i) => `
+              <div class="material">
+                <div class="material-head">
+                  <h4>${esc(x.title)}</h4>
+                  <span class="badge ${x.done ? 'ok' : 'issue'}">${x.done ? '해결완료' : '조치중'}</span>
+                </div>
+                <p>발생일: ${esc(x.date || '-')} · 내용: ${esc(x.note || '-')}</p>
+                <div class="material-actions">
+                  ${!x.done ? `<button class="btn small" onclick="resolveIssue(${i})">해결 완료 처리</button>` : ''}
+                  <button class="btn small" onclick="deleteIssue(${i})">삭제</button>
+                </div>
+              </div>
+            `).join('') 
+            : '<p style="color:var(--muted); font-size:12px;">등록된 이슈가 없습니다.</p>'}
+        </div>
+      </div>
+
+      <!-- 메모 및 스타일 보관 관리 -->
+      <div class="card">
+        <div class="card-head">
+          <h2>메모 및 상태 관리</h2>
+          <div>
+            <button class="btn small" onclick="openStyleEdit()">Style 수정</button>
+            <button class="btn small" onclick="toggleDone()">${s.done ? '진행 상태로 전환' : '완료 / 보관함 이동'}</button>
+          </div>
+        </div>
+        <p style="margin:0; color:var(--muted);">${esc(s.note || '등록된 메모가 없습니다.')}</p>
+      </div>
+    `;
+  }
+
+  function materialHTML(s, m, i, group) {
+    const ratio = m.orderQty ? Math.min(100, Math.round((m.receivedQty || 0) / m.orderQty * 100)) : 0;
+    return `
+      <div class="material">
+        <div class="material-head">
+          <h4>${esc(m.name)} <span class="badge">${m.type === 'yarn' ? '원사' : m.type === 'trim' ? '부자재' : '원단'}</span></h4>
+          <span class="badge ${ratio >= 100 ? 'ok' : ratio > 0 ? 'warn' : ''}">
+            ${ratio >= 100 ? '입고 완료' : ratio > 0 ? '부분 입고' : '발주 대기'}
+          </span>
+        </div>
+        <p>공급처: ${esc(m.supplier || '-')} · 발주량: ${esc(m.orderQty || 0)} · 입고량: ${esc(m.receivedQty || 0)} · 입고예정: ${esc(m.dueDate || '-')}</p>
+        <div class="progress" style="margin-bottom:8px;"><i style="width:${ratio}%"></i></div>
+        <div class="material-actions">
+          <button class="btn small" onclick="receiveMaterial(${i}, '${group}')">입고 수량 입력</button>
+          <button class="btn small" onclick="deleteMaterial(${i}, '${group}')">삭제</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function backList() {
+    currentId = null;
+    document.getElementById('detailView').className = 'detail';
+    document.getElementById('listView').style.display = 'block';
+    render();
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('show');
+  }
+
+  function showModal(title, body) {
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalBody').innerHTML = body;
+    document.getElementById('modal').classList.add('show');
+  }
+
+  /* -------------------------------------------------------------
+     모달 팝업 및 데이터 조작 이벤트 핸들러
+  ------------------------------------------------------------- */
+  function openModal(type) {
+    if (type === 'style') {
+      showModal('신규 Style 등록', `
+        <form onsubmit="addStyle(event)">
+          <div class="form-grid">
+            <div class="field">
+              <label>브랜드</label>
+              <select name="brand"><option>스노야</option><option>모브온</option></select>
+            </div>
+            <div class="field">
+              <label>시즌</label>
+              <input name="season" placeholder="예: 26FW" required>
+            </div>
+            <div class="field">
+              <label>Style No.</label>
+              <input name="styleNo" placeholder="예: ST26001" required>
+            </div>
+            <div class="field">
+              <label>상품명</label>
+              <input name="name" required>
+            </div>
+            <div class="field">
+              <label>목표 생산 수량</label>
+              <input name="qty" type="number" min="0">
+            </div>
+            <div class="field">
+              <label>납기일</label>
+              <input name="deadline" type="date">
+            </div>
+            <div class="field full">
+              <label>비고 / 특이사항 메모</label>
+              <textarea name="note" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn" onclick="closeModal()">취소</button>
+            <button class="btn primary">등록하기</button>
+          </div>
+        </form>
+      `);
+    }
+  }
+
+  function addStyle(e) {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    db.styles.push({
+      id: uid(),
+      brand: f.get('brand'),
+      season: f.get('season'),
+      styleNo: f.get('styleNo'),
+      name: f.get('name'),
+      qty: Number(f.get('qty') || 0),
+      deadline: f.get('deadline'),
+      note: f.get('note'),
+      created: Date.now(),
+      done: false,
+      materials: [],
+      trims: [],
+      shipments: [],
+      issues: []
+    });
+    save();
+    closeModal();
+    render();
+  }
+
+  function openMaterialModal(group) {
+    showModal(group === 'fabric' ? '원단 / 원사 추가' : '부자재 추가', `
+      <form onsubmit="addMaterial(event, '${group}')">
+        <div class="form-grid">
+          <div class="field"><label>자재명</label><input name="name" required></div>
+          <div class="field">
+            <label>자재 구분</label>
+            <select name="type">
+              ${group === 'fabric' ? '<option value="fabric">원단</option><option value="yarn">원사</option>' : '<option value="trim">부자재</option>'}
+            </select>
+          </div>
+          <div class="field"><label>공급처</label><input name="supplier"></div>
+          <div class="field"><label>발주 수량</label><input name="orderQty" type="number" min="0"></div>
+          <div class="field"><label>초기 입고 수량</label><input name="receivedQty" type="number" min="0" value="0"></div>
+          <div class="field"><label>입고 예정일</label><input name="dueDate" type="date"></div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn" onclick="closeModal()">취소</button>
+          <button class="btn primary">저장</button>
+        </div>
+      </form>
+    `);
+  }
+
+  function addMaterial(e, group) {
+    e.preventDefault();
+    const s = db.styles.find(x => x.id === currentId);
+    const f = new FormData(e.target);
+    const m = {
+      id: uid(),
+      type: f.get('type'),
+      name: f.get('name'),
+      supplier: f.get('supplier'),
+      orderQty: Number(f.get('orderQty') || 0),
+      receivedQty: Number(f.get('receivedQty') || 0),
+      dueDate: f.get('dueDate')
+    };
+    (group === 'trim' ? s.trims : s.materials).push(m);
+    save();
+    closeModal();
+    openDetail(currentId);
+  }
+
+  function receiveMaterial(i, group) {
+    const s = db.styles.find(x => x.id === currentId);
+    const arr = group === 'trim' ? s.trims : s.materials;
+    const m = arr[i];
+    showModal('입고 수량 업데이트', `
+      <form onsubmit="saveReceive(event, '${group}', ${i})">
+        <div class="field">
+          <label>${esc(m.name)} (현재 발주량: ${m.orderQty})</label>
+          <input name="qty" type="number" min="0" value="${m.receivedQty || 0}" required>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn" onclick="closeModal()">취소</button>
+          <button class="btn primary">저장</button>
+        </div>
+      </form>
+    `);
+  }
+
+  function saveReceive(e, group, i) {
+    e.preventDefault();
+    const s = db.styles.find(x => x.id === currentId);
+    const arr = group === 'trim' ? s.trims : s.materials;
+    arr[i].receivedQty = Number(new FormData(e.target).get('qty'));
+    save();
+    closeModal();
+    openDetail(currentId);
+  }
+
+  function deleteMaterial(i, group) {
+    if (!confirm('해당 자재를 삭제하시겠습니까?')) return;
+    const s = db.styles.find(x => x.id === currentId);
+    (group === 'trim' ? s.trims : s.materials).splice(i, 1);
+    save();
+    openDetail(currentId);
+  }
+
+  function openProductionModal() {
+    const s = db.styles.find(x => x.id === currentId);
+    showModal('봉제 공장 및 출고 기록', `
+      <form onsubmit="saveProduction(event)">
+        <div class="form-grid">
+          <div class="field full"><label>봉제 공장명</label><input name="factory" value="${esc(s.factory || '')}"></div>
+          <div class="field"><label>출고 수량</label><input name="shipQty" type="number" min="0"></div>
+          <div class="field"><label>출고일</label><input name="shipDate" type="date"></div>
+          <div class="field full"><label>출고 메모</label><input name="shipNote"></div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn" onclick="closeModal()">취소</button>
+          <button class="btn primary">저장하기</button>
+        </div>
+      </form>
+    `);
+  }
+
+  function saveProduction(e) {
+    e.preventDefault();
+    const s = db.styles.find(x => x.id === currentId);
+    const f = new FormData(e.target);
+    s.factory = f.get('factory');
+    const q = Number(f.get('shipQty') || 0);
+    if (q) s.shipments.push({ qty: q, date: f.get('shipDate'), note: f.get('shipNote') });
+    save();
+    closeModal();
+    openDetail(currentId);
+  }
+
+  function deleteShipment(i) {
+    const s = db.styles.find(x => x.id === currentId);
+    if (confirm('해당 출고 내역을 삭제하시겠습니까?')) {
+      s.shipments.splice(i, 1);
+      save();
+      openDetail(currentId);
+    }
+  }
+
+  function openIssueModal() {
+    showModal('생산 이슈 등록', `
+      <form onsubmit="addIssue(event)">
+        <div class="field"><label>이슈 제목</label><input name="title" required></div>
+        <div class="field"><label>발생일</label><input name="date" type="date"></div>
+        <div class="field full"><label>상세 내용</label><textarea name="note" rows="3"></textarea></div>
+        <div class="modal-foot">
+          <button type="button" class="btn" onclick="closeModal()">취소</button>
+          <button class="btn primary">등록하기</button>
+        </div>
+      </form>
+    `);
+  }
+
+  function addIssue(e) {
+    e.preventDefault();
+    const s = db.styles.find(x => x.id === currentId);
+    const f = new FormData(e.target);
+    s.issues.push({ title: f.get('title'), date: f.get('date'), note: f.get('note'), done: false });
+    save();
+    closeModal();
+    openDetail(currentId);
+  }
+
+  function resolveIssue(i) {
+    const s = db.styles.find(x => x.id === currentId);
+    s.issues[i].done = true;
+    save();
+    openDetail(currentId);
+  }
+
+  function deleteIssue(i) {
+    const s = db.styles.find(x => x.id === currentId);
+    if (confirm('이슈 항목을 삭제하시겠습니까?')) {
+      s.issues.splice(i, 1);
+      save();
+      openDetail(currentId);
+    }
+  }
+
+  function openStyleEdit() {
+    const s = db.styles.find(x => x.id === currentId);
+    showModal('Style 기본 정보 수정', `
+      <form onsubmit="saveStyleEdit(event)">
+        <div class="form-grid">
+          <div class="field"><label>상품명</label><input name="name" value="${esc(s.name)}"></div>
+          <div class="field"><label>목표 수량</label><input name="qty" type="number" value="${s.qty || 0}"></div>
+          <div class="field"><label>납기일</label><input name="deadline" type="date" value="${s.deadline || ''}"></div>
+          <div class="field full"><label>메모</label><textarea name="note" rows="3">${esc(s.note || '')}</textarea></div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn" onclick="closeModal()">취소</button>
+          <button class="btn primary">저장</button>
+        </div>
+      </form>
+    `);
+  }
+
+  function saveStyleEdit(e) {
+    e.preventDefault();
+    const s = db.styles.find(x => x.id === currentId);
+    const f = new FormData(e.target);
+    s.name = f.get('name');
+    s.qty = Number(f.get('qty') || 0);
+    s.deadline = f.get('deadline');
+    s.note = f.get('note');
+    save();
+    closeModal();
+    openDetail(currentId);
+  }
+
+  function toggleDone() {
+    const s = db.styles.find(x => x.id === currentId);
+    s.done = !s.done;
+    save();
+    backList();
+  }
+
+  // 첫 실행 시 화면 렌더링
+  render();
+</script>
 </body>
 </html>
