@@ -3,22 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JPROJECT · 생산 관제</title>
+<title>J PROJECT · SCM </title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <style>
 :root{
-  --bg:#FAFAFA;
-  --paper:#FFFFFF;
-  --ink:#111111;
-  --ink-soft:#6B6B6B;
-  --line:#ECECEC;
-  --accent:#C4372B;
-  --accent-soft:#FBEAE8;
-  --soon:#946200;
-  --soon-soft:#FBF2E0;
-  --ok:#1E7A46;
-  --ok-soft:#E6F4EC;
+  --bg:#FAFAFA; --paper:#FFFFFF; --ink:#111111; --ink-soft:#6B6B6B; --line:#ECECEC;
+  --accent:#C4372B; --accent-soft:#FBEAE8; --soon:#946200; --soon-soft:#FBF2E0;
+  --ok:#1E7A46; --ok-soft:#E6F4EC;
   --mono: 'IBM Plex Mono', 'SFMono-Regular', Menlo, monospace;
   --sans: 'Pretendard', -apple-system, sans-serif;
   --ease: cubic-bezier(.2,.8,.2,1);
@@ -33,28 +26,21 @@ header{
   border-bottom:1px solid var(--line);
 }
 .brandmark{display:flex; align-items:center; gap:12px;}
-.brandmark .mark{
-  font-family:var(--sans); font-weight:800; font-size:13px; letter-spacing:0.02em;
-  background:var(--ink); color:#fff; padding:6px 10px; border-radius:8px;
-}
+.brandmark .mark{ font-weight:800; font-size:13px; background:var(--ink); color:#fff; padding:6px 10px; border-radius:8px;}
 .brandmark h1{font-size:19px; margin:0; font-weight:800; letter-spacing:-0.02em;}
 .brandmark .sub{font-size:12px; color:var(--ink-soft); font-weight:500; margin-top:1px;}
 .stats{display:flex; gap:32px; font-size:11px; color:var(--ink-soft); font-weight:600;}
 .stats b{font-size:22px; display:block; font-weight:800; color:var(--ink); letter-spacing:-0.02em;}
 
-.toolbar{
-  padding:16px 40px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;
-}
+.toolbar{ padding:16px 40px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
 select, input[type=text], input[type=number], input[type=date], textarea{
   font-family:var(--sans); font-size:13px; border:1px solid var(--line);
-  background:var(--paper); padding:9px 14px; color:var(--ink); border-radius:20px;
-  transition:.15s var(--ease);
+  background:var(--paper); padding:9px 14px; color:var(--ink); border-radius:20px; transition:.15s var(--ease);
 }
 textarea{border-radius:12px;}
 select:focus, input:focus, textarea:focus{outline:none; border-color:var(--ink); box-shadow:0 0 0 3px rgba(17,17,17,.06);}
 .btn{
-  font-family:var(--sans); font-weight:700; font-size:13px; cursor:pointer;
-  border:1px solid var(--ink); background:var(--ink); color:#fff;
+  font-weight:700; font-size:13px; cursor:pointer; border:1px solid var(--ink); background:var(--ink); color:#fff;
   padding:10px 20px; border-radius:24px; transition:.15s var(--ease);
 }
 .btn:hover{transform:translateY(-1px); box-shadow:0 6px 16px rgba(17,17,17,.18);}
@@ -65,23 +51,29 @@ select:focus, input:focus, textarea:focus{outline:none; border-color:var(--ink);
 .spacer{flex:1;}
 
 main{padding:8px 40px 80px;}
+.section-heading{
+  display:flex; align-items:center; gap:10px; margin:26px 0 10px;
+  font-size:13px; font-weight:800; color:var(--ink-soft); letter-spacing:.02em;
+}
+.section-heading .line{flex:1; height:1px; background:var(--line);}
 .list{display:flex; flex-direction:column; gap:8px;}
 .row-item{
-  display:grid;
-  grid-template-columns:56px 1.6fr 1fr 140px 90px 1.4fr;
-  align-items:center; gap:16px;
-  padding:18px 20px; border-radius:16px;
-  background:var(--paper); cursor:pointer; transition:.18s var(--ease);
+  display:grid; grid-template-columns:56px 1.6fr 1fr 140px 90px 1.4fr; align-items:center; gap:16px;
+  padding:18px 20px; border-radius:16px; background:var(--paper); cursor:pointer; transition:.18s var(--ease);
   box-shadow:0 1px 2px rgba(0,0,0,.04);
 }
 .row-item:hover{transform:translateY(-2px) scale(1.002); box-shadow:0 10px 28px rgba(0,0,0,.09);}
 .row-item.issue{box-shadow:0 1px 2px rgba(0,0,0,.04), inset 3px 0 0 var(--accent);}
 .row-item.issue:hover{box-shadow:0 10px 28px rgba(196,55,43,.14), inset 3px 0 0 var(--accent);}
+.row-item.done{opacity:.8;}
 .row-item .rowno{font-family:var(--mono); font-size:13px; font-weight:700; color:var(--ink-soft);}
+.row-item .thumb-mini{width:40px;height:40px;border-radius:8px;object-fit:cover;background:var(--bg);}
+.row-item .namewrap{display:flex; align-items:center; gap:10px;}
 .row-item .stagepill{
-  font-size:10.5px; font-weight:700; letter-spacing:.02em; color:var(--ink-soft);
-  background:var(--bg); padding:3px 9px; border-radius:20px; white-space:nowrap; width:max-content; margin-top:6px;
+  font-size:10.5px; font-weight:700; color:var(--ink-soft); background:var(--bg);
+  padding:3px 9px; border-radius:20px; white-space:nowrap; width:max-content; margin-top:6px;
 }
+.row-item .stagepill.done{background:var(--ok-soft); color:var(--ok);}
 .row-item .name{font-weight:700; font-size:15px; letter-spacing:-0.01em;}
 .row-item .styleno{font-family:var(--mono); font-size:11px; color:var(--ink-soft); margin-top:3px;}
 .row-item .brand-season{font-size:12.5px; color:var(--ink-soft); font-weight:600;}
@@ -90,27 +82,22 @@ main{padding:8px 40px 80px;}
 .progress-bar i{position:absolute; left:0; top:0; bottom:0; background:var(--ink); display:block; border-radius:4px; transition:width .3s var(--ease);}
 .progress-pct{font-family:var(--mono); font-size:11px; width:30px; text-align:right; color:var(--ink-soft);}
 .dday{font-family:var(--mono); font-size:12.5px; font-weight:700; text-align:right;}
-.dday.ok{color:var(--ink-soft);}
-.dday.soon{color:var(--soon);}
-.dday.over{color:var(--accent); font-weight:800;}
-.dday.none{color:var(--line);}
-.row-item .issue-note{
-  font-size:12px; color:var(--accent); font-weight:600;
-  display:flex; gap:5px; align-items:flex-start; line-height:1.4;
-}
+.dday.ok{color:var(--ink-soft);} .dday.soon{color:var(--soon);} .dday.over{color:var(--accent); font-weight:800;} .dday.none{color:var(--line);}
+.row-item .issue-note{ font-size:12px; color:var(--accent); font-weight:600; display:flex; gap:5px; align-items:flex-start; line-height:1.4;}
 .row-item .colorinfo{font-size:12.5px; color:var(--ink-soft);}
 .empty{padding:60px; text-align:center; color:var(--ink-soft); font-size:14px; border-radius:16px; background:var(--paper);}
-@media (max-width:900px){
-  .row-item{grid-template-columns:40px 1fr; grid-template-areas:"no name" ". meta"; row-gap:6px;}
-}
+@media (max-width:900px){ .row-item{grid-template-columns:40px 1fr; grid-template-areas:"no name" ". meta"; row-gap:6px;} }
+
+.archive-group{margin-bottom:18px;}
+.archive-group h4{font-size:13px; font-weight:800; margin:0 0 8px;}
+.archive-group h5{font-size:11.5px; font-weight:700; color:var(--ink-soft); margin:10px 0 6px;}
 
 .overlay{
   position:fixed; inset:0; background:rgba(17,17,17,.42); display:none;
-  align-items:flex-start; justify-content:center; padding:48px 20px; z-index:50; overflow-y:auto;
-  backdrop-filter:blur(3px);
+  align-items:flex-start; justify-content:center; padding:48px 20px; z-index:50; overflow-y:auto; backdrop-filter:blur(3px);
 }
 .overlay.show{display:flex;}
-.modal{ background:var(--paper); width:100%; max-width:880px; border-radius:24px; margin-bottom:48px; box-shadow:0 30px 80px rgba(0,0,0,.25); overflow:hidden; }
+.modal{ background:var(--paper); width:100%; max-width:900px; border-radius:24px; margin-bottom:48px; box-shadow:0 30px 80px rgba(0,0,0,.25); overflow:hidden; }
 .modal-head{
   padding:22px 30px; display:flex; justify-content:space-between; align-items:center;
   position:sticky; top:0; background:rgba(255,255,255,.9); backdrop-filter:blur(10px); z-index:2; border-bottom:1px solid var(--line);
@@ -121,13 +108,10 @@ main{padding:8px 40px 80px;}
 .modal-head .close:hover{background:var(--line); color:var(--ink);}
 .modal-body{padding:24px 30px 4px;}
 .section{margin-bottom:30px;}
-.section-title{
-  font-size:12px; font-weight:800; letter-spacing:.02em;
-  color:var(--ink); margin-bottom:14px;
-  display:flex; justify-content:space-between; align-items:center;
-}
+.section-title{ font-size:12px; font-weight:800; letter-spacing:.02em; color:var(--ink); margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;}
 .field-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
 .field-grid.two{grid-template-columns:repeat(2,1fr);}
+.field-grid.four{grid-template-columns:repeat(4,1fr);}
 .field label{display:block; font-size:11px; color:var(--ink-soft); margin-bottom:5px; font-weight:600;}
 .field select, .field input, .field textarea{width:100%;}
 .field textarea{resize:vertical; min-height:44px;}
@@ -136,71 +120,62 @@ table.dyn{width:100%; border-collapse:separate; border-spacing:0; font-size:12.5
 table.dyn th, table.dyn td{border-bottom:1px solid var(--line); padding:8px 8px;}
 table.dyn th{background:transparent; font-weight:700; font-size:10.5px; color:var(--ink-soft); text-align:center;}
 table.dyn th:first-child{text-align:left;}
-table.dyn input{border:none; width:100%; padding:4px; font-size:12.5px; background:transparent; text-align:center; border-radius:6px;}
-table.dyn input:focus{outline:none; background:var(--bg);}
-table.dyn input.colorname{text-align:left;}
+table.dyn input, table.dyn select{border:none; width:100%; padding:4px; font-size:12.5px; background:transparent; text-align:center; border-radius:6px;}
+table.dyn input:focus, table.dyn select:focus{outline:none; background:var(--bg);}
+table.dyn input.colorname, table.dyn input.leftalign{text-align:left;}
 table.dyn td.total{font-family:var(--mono); font-weight:800; text-align:center;}
 .row-actions{margin-top:10px; display:flex; gap:8px;}
-.small-btn{
-  font-size:12px; font-weight:700; border:1px solid var(--line); background:var(--paper);
-  padding:6px 12px; cursor:pointer; border-radius:16px; transition:.15s var(--ease);
-}
+.small-btn{ font-size:12px; font-weight:700; border:1px solid var(--line); background:var(--paper); padding:6px 12px; cursor:pointer; border-radius:16px; transition:.15s var(--ease);}
 .small-btn:hover{border-color:var(--ink); background:var(--bg);}
+.small-btn.mini{padding:3px 9px; font-size:11px;}
 .hint{font-size:11.5px; color:var(--ink-soft); margin-top:2px;}
 
 .stage-pills{display:flex; gap:6px; padding:14px 30px 0;}
-.pill{
-  font-size:12px; font-weight:700; padding:7px 14px; border:1px solid var(--line);
-  cursor:pointer; background:var(--paper); border-radius:20px; transition:.15s var(--ease);
-}
+.pill{ font-size:12px; font-weight:700; padding:7px 14px; border:1px solid var(--line); cursor:pointer; background:var(--paper); border-radius:20px; transition:.15s var(--ease);}
 .pill.active{background:var(--ink); color:#fff; border-color:var(--ink);}
 .pill:not(.active):hover{border-color:var(--ink);}
 
-.context-line{
-  padding:10px 30px 0; font-size:12.5px; color:var(--ink-soft); font-weight:600;
-  display:flex; gap:14px; flex-wrap:wrap;
-}
+.context-line{ padding:10px 30px 0; font-size:12.5px; color:var(--ink-soft); font-weight:600; display:flex; gap:14px; flex-wrap:wrap; align-items:center;}
 .context-line b{color:var(--ink); font-weight:700;}
+.context-line .completed-badge{background:var(--ok-soft); color:var(--ok); font-family:var(--mono); font-size:11px; font-weight:800; padding:2px 9px; border-radius:20px;}
 
 .issue-item{background:var(--bg); padding:11px 14px; margin-bottom:8px; font-size:12.5px; border-radius:12px;}
 .issue-item .meta{color:var(--ink-soft); font-size:11px; margin-top:4px;}
-
 .modal-foot{padding:18px 30px; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:10px;}
 
-/* file upload / preview */
-.filebox{
-  border:1.5px dashed var(--line); border-radius:16px; padding:18px;
-  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
-}
-.filebox .thumb{
-  width:84px; height:84px; border-radius:12px; object-fit:cover; cursor:zoom-in;
-  background:var(--bg); border:1px solid var(--line);
-}
-.filebox .doc-icon{
-  width:84px; height:84px; border-radius:12px; background:var(--bg); border:1px solid var(--line);
-  display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:var(--ink-soft);
-  text-align:center; padding:6px;
-}
+.filebox{ border:1.5px dashed var(--line); border-radius:16px; padding:18px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;}
+.filebox .thumb{ width:84px; height:84px; border-radius:12px; object-fit:cover; cursor:zoom-in; background:var(--bg); border:1px solid var(--line);}
+.filebox .doc-icon{ width:84px; height:84px; border-radius:12px; background:var(--bg); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:var(--ink-soft); text-align:center; padding:6px;}
 .filebox .info{flex:1; min-width:160px;}
 .filebox .fname{font-weight:700; font-size:13px; word-break:break-all;}
 .filebox .fmeta{font-size:11.5px; color:var(--ink-soft); margin-top:2px;}
 .filebox .actions{display:flex; gap:8px;}
-.lightbox{
-  position:fixed; inset:0; background:rgba(0,0,0,.85); display:none;
-  align-items:center; justify-content:center; z-index:100; flex-direction:column; gap:14px;
-}
+
+.lightbox{ position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; align-items:center; justify-content:center; z-index:100; flex-direction:column; gap:14px;}
 .lightbox.show{display:flex;}
-.lightbox img{max-width:88vw; max-height:76vh; transition:transform .15s var(--ease); border-radius:6px; cursor:grab;}
+.lightbox img{max-width:88vw; max-height:76vh; transition:transform .15s var(--ease); border-radius:6px;}
 .lightbox .lbtools{display:flex; gap:8px;}
-.lightbox .lbtools button{
-  font-family:var(--mono); font-size:13px; font-weight:700; border:1px solid rgba(255,255,255,.3);
-  background:rgba(255,255,255,.08); color:#fff; padding:8px 14px; border-radius:20px; cursor:pointer;
-}
+.lightbox .lbtools button{ font-family:var(--mono); font-size:13px; font-weight:700; border:1px solid rgba(255,255,255,.3); background:rgba(255,255,255,.08); color:#fff; padding:8px 14px; border-radius:20px; cursor:pointer;}
 .lightbox .lbtools button:hover{background:rgba(255,255,255,.18);}
 
 .badge{font-family:var(--mono); font-size:11px; font-weight:800; padding:3px 9px; border-radius:20px;}
 .badge.pass{background:var(--ok-soft); color:var(--ok);}
 .badge.fail{background:var(--accent-soft); color:var(--accent);}
+
+.matcard{ border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:10px;}
+.matcard-head{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+.matcard-head .grow{flex:1; min-width:120px;}
+.matcard .fields{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:10px;}
+.matcard .fields .field label{font-size:10px;}
+.matcard .receiptbox{margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); display:none;}
+.matcard .receiptbox.open{display:block;}
+.matcard .totals{font-family:var(--mono); font-size:11px; color:var(--ink-soft); margin-top:8px;}
+.matcard .totals b{color:var(--ink);}
+
+.doclist{display:flex; flex-direction:column; gap:8px;}
+.docrow{ display:flex; align-items:center; gap:10px; border:1px solid var(--line); border-radius:12px; padding:9px 12px;}
+.docrow select{width:120px;}
+.docrow .grow{flex:1;}
 </style>
 </head>
 <body>
@@ -208,10 +183,7 @@ table.dyn td.total{font-family:var(--mono); font-weight:800; text-align:center;}
 <header>
   <div class="brandmark">
     <span class="mark">JP</span>
-    <div>
-      <h1>JPROJECT</h1>
-      <div class="sub">생산 관제</div>
-    </div>
+    <div><h1>JPROJECT</h1><div class="sub">생산 관제</div></div>
   </div>
   <div class="stats" id="statsBar"></div>
 </header>
@@ -222,13 +194,15 @@ table.dyn td.total{font-family:var(--mono); font-weight:800; text-align:center;}
   <select id="fStage">
     <option value="">전체 단계</option>
     <option value="기획">기획</option>
-    <option value="작지서">샘플/작업지시서</option>
+    <option value="작지서">작업지시서</option>
     <option value="생산">생산</option>
-    <option value="완료">완료</option>
+    <option value="물류통관">물류·통관</option>
   </select>
   <input type="text" id="fSearch" placeholder="아이템명 · 스타일번호 검색" style="width:200px;">
   <div class="spacer"></div>
   <button class="btn ghost" id="btnSeed">테스트 데이터 넣기</button>
+  <button class="btn ghost" id="btnBulkPlan">기획 엑셀 일괄 업로드</button>
+  <input type="file" id="bulkPlanInput" accept=".xlsx,.xls,.csv" style="display:none;">
   <button class="btn" id="btnNew">+ 기획 아이템 등록</button>
 </div>
 
@@ -237,10 +211,7 @@ table.dyn td.total{font-family:var(--mono); font-weight:800; text-align:center;}
 <div class="overlay" id="overlay">
   <div class="modal">
     <div class="modal-head">
-      <div>
-        <h2 id="modalTitle">아이템</h2>
-        <div class="sub" id="modalSub"></div>
-      </div>
+      <div><h2 id="modalTitle">아이템</h2><div class="sub" id="modalSub"></div></div>
       <button class="close" id="modalClose">✕ 닫기</button>
     </div>
     <div class="stage-pills" id="stagePills"></div>
@@ -248,10 +219,7 @@ table.dyn td.total{font-family:var(--mono); font-weight:800; text-align:center;}
     <div class="modal-body" id="modalBody"></div>
     <div class="modal-foot">
       <button class="btn danger" id="btnDelete">삭제</button>
-      <div>
-        <button class="btn ghost" id="btnCancel">취소</button>
-        <button class="btn" id="btnSave">저장</button>
-      </div>
+      <div><button class="btn ghost" id="btnCancel">취소</button><button class="btn" id="btnSave">저장</button></div>
     </div>
   </div>
 </div>
@@ -259,80 +227,69 @@ table.dyn td.total{font-family:var(--mono); font-weight:800; text-align:center;}
 <div class="lightbox" id="lightbox">
   <img id="lightboxImg" src="">
   <div class="lbtools">
-    <button id="lbZoomOut">－</button>
-    <button id="lbZoomReset">100%</button>
-    <button id="lbZoomIn">＋</button>
-    <button id="lbClose">✕ 닫기</button>
+    <button id="lbZoomOut">－</button><button id="lbZoomReset">100%</button><button id="lbZoomIn">＋</button><button id="lbClose">✕ 닫기</button>
   </div>
 </div>
 
 <script>
 let DATA = JSON.parse(localStorage.getItem('jproject_data') || '[]');
-let editingId = null;   // id of style being edited, or null for new
-let workingCopy = null; // in-memory copy of the style being edited (not yet saved)
+let editingId = null;
+let workingCopy = null;
 
 function saveAll(){ localStorage.setItem('jproject_data', JSON.stringify(DATA)); render(); }
 function uid(){ return 'S' + Math.random().toString(36).slice(2,9); }
+function esc(v){ return (v===undefined||v===null) ? '' : String(v).replace(/"/g,'&quot;'); }
+
+const STAGES = ['기획','작지서','생산','물류통관'];
+const STAGE_LABEL = {기획:'기획', 작지서:'작업지시서', 생산:'생산', 물류통관:'물류·통관'};
 
 function newStyle(){
   return {
     id: uid(), brand:'', season:'', styleNo:'',
     itemName:'', composition:'', colorComposition:'', planQty:'', totalQty:'', price:'',
     sizeRange:'', material:'', origin:'', dueInDate:'', launchDate:'',
+    planImageDataUrl:'',
     stage:'기획',
-    planFile:{ fileDataUrl:'', fileName:'', fileType:'' },
-    workOrder:{ factory:'', writtenDate:'', dueDate:'', manager:'', memo:'',
-      colorSizeMatrix:[], sizeSpecRows:[], materials:[], labelMethod:'', packingMethod:'',
-      fileDataUrl:'', fileName:'', fileType:'' },
+    workOrder:{ fileDataUrl:'', fileName:'', factory:'', writtenDate:'', dueDate:'', manager:'', memo:'',
+      colorSizeMatrix:[], materials:[] },
     production:{
-      steps:{material:'대기', sewing:'대기', qc:'대기', shipping:'대기'},
-      shipments:[],
-      qc:{totalQty:'', passQty:'', failQty:'', note:''}
+      materials:[],
+      qc:{ date:'', fullInspection:true, totalQty:'', failQty:'', passQty:'', inspector:'', note:'', files:[] }
     },
-    completion:{ containerDate:'', shipDate:'', customsDate:'', logisticsCompany:'', portArrival:'', note:'' },
+    logistics:{
+      containerDate:'', shipDate:'', blNo:'', portArrival:'', customsDate:'', dispatchDate:'', logisticsCompany:'',
+      docs:[], shipments:[]
+    },
     issues:[]
   };
 }
 
+/* ---------- seed ---------- */
 function seedData(){
   const s1 = newStyle();
-  Object.assign(s1, {
-    brand:'스노야', season:'26FW', styleNo:'',
-    itemName:'베스트 판초', composition:'베스트+판초', colorComposition:'그레이/네이비',
-    planQty:3400, totalQty:169000, price:99000,
-    sizeRange:'FREE', material:'wool55% acrylic28% nylon17%', origin:'한국(역외)',
-    dueInDate:'', launchDate:'2026-08-24', stage:'기획'
-  });
+  Object.assign(s1, { brand:'스노야', season:'26FW', itemName:'베스트 판초', composition:'베스트+판초',
+    colorComposition:'그레이/네이비', planQty:3400, totalQty:169000, price:99000,
+    sizeRange:'FREE', material:'wool55% acrylic28% nylon17%', origin:'한국(역외)', launchDate:'2026-08-24', stage:'기획' });
 
   const s2 = newStyle();
-  Object.assign(s2, {
-    brand:'스노야', season:'26FW', styleNo:'6FW-HD-D02',
-    itemName:'패딩베스트', composition:'', colorComposition:'',
-    planQty:3000, totalQty:3000, price:'',
-    sizeRange:'S/M/L', material:'', origin:'', dueInDate:'', launchDate:'',
-    stage:'작지서'
-  });
+  Object.assign(s2, { brand:'스노야', season:'26FW', styleNo:'6FW-HD-D02', itemName:'패딩베스트',
+    planQty:3000, totalQty:3000, sizeRange:'S/M/L', stage:'작지서' });
   s2.workOrder = Object.assign(s2.workOrder, {
-    factory:'현송', writtenDate:'2026-08-13', dueDate:'', manager:'곽동혁 / 김혜연',
+    factory:'현송', writtenDate:'2026-08-13', dueDate:'2026-09-25', manager:'곽동혁 / 김혜연',
     colorSizeMatrix:[
       {color:'카키/오렌지(45%)', qtyBySize:{S:378,M:540,L:432}},
-      {color:'블루/스카이블루(35%)', qtyBySize:{S:294,M:420,L:336}},
-      {color:'그레이/핫핑크(20%)', qtyBySize:{S:192,M:288,L:120}}
+      {color:'블루/스카이블루(35%)', qtyBySize:{S:294,M:420,L:336}}
     ],
-    sizeSpecRows:[
-      {measure:'총장(뒤목점)', valuesBySize:{S:60,M:61,L:62}, deviation:'1'},
-      {measure:'가슴둘레', valuesBySize:{S:116,M:121,L:126}, deviation:'5'}
+    materials:[
+      {item:'겉감', spec:'', content:'폴리100%', qty:'3000Y', note:''},
+      {item:'충전재', spec:'', content:'덕다운90%', qty:'', note:''}
     ]
   });
 
   const s3 = newStyle();
-  Object.assign(s3, {
-    brand:'모브온', season:'26FW', styleNo:'6FW-MO-P02',
-    itemName:'기모 세미플레어 팬츠', composition:'', colorComposition:'베이지/네이비/블랙',
-    planQty:97200, totalQty:97200, price:'',
-    sizeRange:'55/66/77/88/99', material:'F-92/8% Poly/Span, B-100%POLY', origin:'',
-    dueInDate:'', launchDate:'', stage:'생산'
-  });
+  Object.assign(s3, { brand:'모브온', season:'26FW', styleNo:'6FW-MO-P02', itemName:'기모 세미플레어 팬츠',
+    colorComposition:'베이지/네이비/블랙', planQty:97200, totalQty:97200,
+    sizeRange:'55/66/77/88/99', material:'F-92/8% Poly/Span', stage:'생산' });
   s3.workOrder = Object.assign(s3.workOrder, {
     factory:'', writtenDate:'2026-06-30', dueDate:'2026-09-20', manager:'임소연 / 백수연',
     colorSizeMatrix:[
@@ -341,32 +298,59 @@ function seedData(){
       {color:'블랙', qtyBySize:{'55':7452,'66':12312,'77':8100,'88':2916,'99':1620}}
     ],
     materials:[
-      {item:'겉감', spec:'58"', content:'F-92/8% Poly/Span 220G/Y', qty:'', note:''},
-      {item:'밴드', spec:'70MM', content:'70MM COMEZ 중간직밴드', qty:'', note:''}
-    ],
-    packingMethod:'전 수량 PC 폴리백 Individual polybag'
+      {item:'겉감', spec:'58"', content:'F-92/8% Poly/Span 220G/Y', qty:'32000Y', note:''},
+      {item:'밴드', spec:'70MM', content:'COMEZ 중간직밴드', qty:'', note:''}
+    ]
   });
-  s3.production.steps = {material:'완료', sewing:'완료', qc:'진행', shipping:'대기'};
-  s3.production.shipments = [
-    {type:'부분출고', qty:30000, date:'2026-09-10', note:'베이지 컬러 우선 출고'}
+  s3.production.materials = [
+    {id:uid(), type:'원단', name:'겉감 F-92', supplier:'COMEZ', factory:'', orderDate:'2026-07-01', expectedInDate:'2026-08-10',
+      totalQty:'32000', receipts:[{date:'2026-08-05',qty:'20000',location:'본사창고',note:'1차 입고'}], inspected:true, sewingInDate:'', note:''},
+    {id:uid(), type:'부자재', name:'밴드', supplier:'COMEZ', factory:'', orderDate:'2026-07-05', expectedInDate:'2026-08-15',
+      totalQty:'5000', receipts:[], inspected:false, sewingInDate:'', note:'입고 지연'}
   ];
-  s3.production.qc = {totalQty:97200, passQty:95500, failQty:1700, note:'봉제선 불량 일부 발생'};
-  s3.issues.push({stage:'자재', content:'밴드 원단 입고 지연 - 공장 확인 필요', company:'COMEZ', date:'2026-08-15', resolved:false, memo:''});
-
+  s3.production.qc = {date:'2026-09-05', fullInspection:true, totalQty:97200, failQty:1700, passQty:95500, inspector:'QC팀', note:'봉제선 불량 일부', files:[]};
+  s3.logistics.shipments = [
+    {date:'2026-09-10', color:'베이지', size:'전체', qty:30000, box:120, logisticsCompany:'', receivedYn:false, receivedDate:'', note:'1차 출고'}
+  ];
+  s3.issues.push({stage:'생산', content:'밴드 원단 입고 지연 - 공장 확인 필요', company:'COMEZ', date:'2026-08-15', resolved:false});
   DATA = [s1, s2, s3];
   saveAll();
 }
 
-/* ---------- progress / dday ---------- */
+/* ---------- completion / progress / dday ---------- */
+function totalPlannedQty(s){
+  const wm = s.workOrder.colorSizeMatrix||[];
+  if(wm.length){
+    let t = 0;
+    wm.forEach(r=> Object.values(r.qtyBySize||{}).forEach(v=> t += Number(v)||0));
+    if(t>0) return t;
+  }
+  return Number(s.totalQty)||0;
+}
+function totalReceivedQty(s){
+  return (s.logistics.shipments||[]).filter(sh=>sh.receivedYn).reduce((a,sh)=>a+(Number(sh.qty)||0),0);
+}
+function isCompleted(s){
+  const total = totalPlannedQty(s);
+  if(total<=0) return false;
+  return totalReceivedQty(s) >= total;
+}
 function stageProgress(s){
+  if(isCompleted(s)) return 100;
   if(s.stage==='기획') return 8;
-  if(s.stage==='완료') return 100;
-  if(s.stage==='작지서') return 28;
-  const steps = s.production.steps;
-  const vals = Object.values(steps);
-  const done = vals.filter(v=>v==='완료').length;
-  const inprog = vals.filter(v=>v==='진행').length;
-  return Math.min(96, Math.round(35 + (done*14) + (inprog*6)));
+  if(s.stage==='작지서') return 25;
+  if(s.stage==='생산'){
+    const mats = s.production.materials||[];
+    if(mats.length===0) return 40;
+    const inspected = mats.filter(m=>m.inspected).length;
+    return Math.min(72, Math.round(42 + (inspected/mats.length)*28));
+  }
+  if(s.stage==='물류통관'){
+    const total = totalPlannedQty(s), rec = totalReceivedQty(s);
+    const ratio = total>0 ? rec/total : 0;
+    return Math.min(96, Math.round(74 + ratio*22));
+  }
+  return 50;
 }
 function ddayInfo(dateStr){
   if(!dateStr) return {label:'-', cls:'none'};
@@ -397,35 +381,56 @@ function render(){
   const fStage = document.getElementById('fStage').value;
   const q = document.getElementById('fSearch').value.trim().toLowerCase();
 
-  let list = DATA.filter(s=>{
+  const matches = s=>{
     if(fBrand && s.brand!==fBrand) return false;
     if(fSeason && s.season!==fSeason) return false;
     if(fStage && s.stage!==fStage) return false;
     if(q && !((s.itemName||'').toLowerCase().includes(q) || (s.styleNo||'').toLowerCase().includes(q))) return false;
     return true;
-  });
+  };
+  let list = DATA.filter(matches);
 
   const totalIssues = DATA.reduce((a,s)=>a+openIssues(s).length,0);
   document.getElementById('statsBar').innerHTML = `
     <div><b>${DATA.length}</b>전체 스타일</div>
-    <div><b>${DATA.filter(s=>s.stage==='생산').length}</b>생산중</div>
+    <div><b>${DATA.filter(s=>s.stage==='생산' && !isCompleted(s)).length}</b>생산중</div>
+    <div><b>${DATA.filter(isCompleted).length}</b>완료상품</div>
     <div><b style="color:${totalIssues?'var(--accent)':'var(--ink)'}">${totalIssues}</b>미해결 이슈</div>
   `;
 
   const main = document.getElementById('main');
-  if(list.length===0){
-    main.innerHTML = `<div class="empty">등록된 아이템이 없습니다. 우측 상단 "기획 아이템 등록" 또는 "테스트 데이터 넣기"로 시작하세요.</div>`;
+  if(DATA.length===0){
+    main.innerHTML = `<div class="empty">등록된 아이템이 없습니다. 우측 상단 "기획 아이템 등록", "기획 엑셀 일괄 업로드", 또는 "테스트 데이터 넣기"로 시작하세요.</div>`;
     return;
   }
 
-  const orderMap = {};
-  DATA.forEach(s=>{
-    const key = s.brand+'|'+s.season;
-    orderMap[key] = (orderMap[key]||0)+1;
-    s.__seq = orderMap[key];
-  });
+  const active = list.filter(s=>!isCompleted(s));
+  const completed = list.filter(isCompleted);
 
-  main.innerHTML = `<div class="list">${list.map(rowHtml).join('')}</div>`;
+  const orderMap = {};
+  DATA.forEach(s=>{ const key = s.brand+'|'+s.season; orderMap[key]=(orderMap[key]||0)+1; s.__seq = orderMap[key]; });
+
+  let html = '';
+  if(active.length){
+    html += `<div class="list">${active.map(rowHtml).join('')}</div>`;
+  } else {
+    html += `<div class="empty">진행중인 아이템이 없습니다.</div>`;
+  }
+
+  if(completed.length){
+    const byBrand = {};
+    completed.forEach(s=>{ (byBrand[s.brand||'브랜드 미정'] = byBrand[s.brand||'브랜드 미정']||{})[s.season||'시즌 미정'] = (byBrand[s.brand||'브랜드 미정'][s.season||'시즌 미정']||[]).concat(s); });
+    html += `<div class="section-heading"><span>완료상품</span><div class="line"></div></div>`;
+    Object.keys(byBrand).forEach(brand=>{
+      html += `<div class="archive-group"><h4>${brand}</h4>`;
+      Object.keys(byBrand[brand]).forEach(season=>{
+        html += `<h5>${season} 완료상품</h5><div class="list">${byBrand[brand][season].map(rowHtml).join('')}</div>`;
+      });
+      html += `</div>`;
+    });
+  }
+
+  main.innerHTML = html;
   main.querySelectorAll('.row-item').forEach(c=>{
     c.addEventListener('click', ()=> openModal(c.dataset.id));
   });
@@ -433,33 +438,137 @@ function render(){
 
 function rowHtml(s){
   const prog = stageProgress(s);
+  const done = isCompleted(s);
   const dd = ddayInfo(s.stage==='기획' ? s.launchDate : (s.workOrder.dueDate || s.launchDate));
   const issues = openIssues(s);
+  const thumb = s.planImageDataUrl ? `<img class="thumb-mini" src="${s.planImageDataUrl}">` : '';
   return `
-    <div class="row-item ${issues.length?'issue':''}" data-id="${s.id}">
+    <div class="row-item ${issues.length?'issue':''} ${done?'done':''}" data-id="${s.id}">
       <div class="rowno">No.${s.__seq}</div>
-      <div>
-        <div class="name">${s.itemName || '(이름 없음)'}</div>
-        <div class="styleno">${s.styleNo || '스타일번호 미정'}</div>
+      <div class="namewrap">
+        ${thumb}
+        <div>
+          <div class="name">${s.itemName || '(이름 없음)'}</div>
+          <div class="styleno">${s.styleNo || '스타일번호 미정'}</div>
+        </div>
       </div>
-      <div class="brand-season">${s.brand||'-'} / ${s.season||'-'}<div class="stagepill">${s.stage}</div></div>
+      <div class="brand-season">${s.brand||'-'} / ${s.season||'-'}<div class="stagepill ${done?'done':''}">${done?'완료':STAGE_LABEL[s.stage]}</div></div>
       <div class="progress-row">
         <div class="progress-bar"><i style="width:${prog}%"></i></div>
         <div class="progress-pct">${prog}%</div>
       </div>
       <div class="dday ${dd.cls}">${dd.label}</div>
-      ${issues.length
-        ? `<div class="issue-note">⚠ ${issues[0].content}</div>`
-        : `<div class="colorinfo">${s.colorComposition || s.material || ''}</div>`}
+      ${issues.length ? `<div class="issue-note">⚠ ${issues[0].content}</div>` : `<div class="colorinfo">${s.colorComposition || s.material || ''}</div>`}
     </div>
   `;
 }
 
-/* ---------- modal ---------- */
+/* ---------- bulk plan excel upload ---------- */
+const PLAN_FIELD_ALIASES = {
+  itemName: ['아이템/용도','아이템명','아이템','품목','상품명'],
+  composition: ['구성'],
+  colorComposition: ['컬러구성','컬러'],
+  planQty: ['기획수량'],
+  totalQty: ['총수량'],
+  price: ['판매가','가격'],
+  sizeRange: ['사이즈'],
+  material: ['소재'],
+  origin: ['원산지'],
+  dueInDate: ['입고예정일','입고일'],
+  launchDate: ['런칭희망일','런칭일'],
+  brand: ['브랜드'],
+  season: ['시즌']
+};
+function mapRowToStyle(rowObj, defaultBrand, defaultSeason){
+  const st = newStyle();
+  st.brand = defaultBrand || ''; st.season = defaultSeason || '';
+  Object.entries(PLAN_FIELD_ALIASES).forEach(([field, aliases])=>{
+    for(const alias of aliases){
+      if(rowObj[alias]!==undefined && rowObj[alias]!==''){ st[field] = rowObj[alias]; break; }
+    }
+  });
+  return st;
+}
+async function extractExcelRowImages(arrayBuffer){
+  const rowToImage = {};
+  try{
+    const zip = await JSZip.loadAsync(arrayBuffer);
+    const mediaFiles = {};
+    for(const name of Object.keys(zip.files)){
+      if(!/^xl\/media\//.test(name)) continue;
+      const ext = name.split('.').pop().toLowerCase();
+      const mime = ext==='png'?'image/png':(ext==='jpg'||ext==='jpeg')?'image/jpeg':null;
+      if(!mime) continue;
+      const base64 = await zip.files[name].async('base64');
+      mediaFiles[name] = `data:${mime};base64,${base64}`;
+    }
+    const drawingEntries = Object.keys(zip.files).filter(n=>/^xl\/drawings\/drawing\d+\.xml$/.test(n));
+    for(const drawingPath of drawingEntries){
+      const xmlText = await zip.files[drawingPath].async('text');
+      const relsPath = drawingPath.replace('drawings/drawing', 'drawings/_rels/drawing') + '.rels';
+      let relsMap = {};
+      if(zip.files[relsPath]){
+        const relsText = await zip.files[relsPath].async('text');
+        const relsDoc = new DOMParser().parseFromString(relsText, 'application/xml');
+        Array.from(relsDoc.getElementsByTagName('Relationship')).forEach(r=>{
+          relsMap[r.getAttribute('Id')] = 'xl/media/' + r.getAttribute('Target').split('/').pop();
+        });
+      }
+      const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+      const anchors = [...doc.getElementsByTagName('xdr:twoCellAnchor'), ...doc.getElementsByTagName('xdr:oneCellAnchor')];
+      anchors.forEach(anchor=>{
+        const fromEls = anchor.getElementsByTagName('xdr:from');
+        if(!fromEls.length) return;
+        const rowEls = fromEls[0].getElementsByTagName('xdr:row');
+        if(!rowEls.length) return;
+        const rowIdx = parseInt(rowEls[0].textContent, 10);
+        const blipEls = anchor.getElementsByTagName('a:blip');
+        if(!blipEls.length) return;
+        const rId = blipEls[0].getAttribute('r:embed');
+        const mediaPath = relsMap[rId];
+        if(mediaPath && mediaFiles[mediaPath]) rowToImage[rowIdx] = mediaFiles[mediaPath];
+      });
+    }
+  }catch(err){ console.error('이미지 추출 실패(무시하고 진행):', err); }
+  return rowToImage;
+}
+document.getElementById('btnBulkPlan').addEventListener('click', ()=> document.getElementById('bulkPlanInput').click());
+document.getElementById('bulkPlanInput').addEventListener('change', (e)=>{
+  const f = e.target.files[0];
+  if(!f) return;
+  const reader = new FileReader();
+  reader.onload = async ()=>{
+    let created = 0, withImage = 0;
+    try{
+      const buf = reader.result;
+      const wb = XLSX.read(buf, { type:'array' });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, { defval:'' });
+      let rowToImage = {};
+      try{ rowToImage = await extractExcelRowImages(buf.slice(0)); }catch(err){ console.error(err); }
+      rows.forEach((row, idx)=>{
+        const st = mapRowToStyle(row, '', '');
+        const img = rowToImage[idx+1]; // +1 : header row occupies xml row 0
+        if(img){ st.planImageDataUrl = img; withImage++; }
+        DATA.push(st);
+        created++;
+      });
+      saveAll();
+      alert(`기획 아이템 ${created}건을 등록했습니다.${withImage?` (이미지 자동 매칭 ${withImage}건)`:''}\n내용을 확인하고 필요하면 각 아이템 상세에서 수정해주세요.`);
+    }catch(err){
+      console.error(err);
+      alert('엑셀 파일을 읽는 중 문제가 발생했습니다. 파일 형식을 확인해주세요.');
+    }
+    e.target.value = '';
+  };
+  reader.readAsArrayBuffer(f);
+});
+
+/* ---------- modal shell ---------- */
 function openModal(id){
   editingId = id;
   const base = id ? DATA.find(d=>d.id===id) : newStyle();
-  workingCopy = JSON.parse(JSON.stringify(base)); // deep copy so edits don't leak until Save
+  workingCopy = JSON.parse(JSON.stringify(base));
   document.getElementById('modalTitle').textContent = id ? (base.itemName||'상세정보') : '새 기획 아이템 등록';
   document.getElementById('btnDelete').style.display = id ? 'inline-block' : 'none';
   renderModalStage();
@@ -468,9 +577,7 @@ function openModal(id){
 function closeModal(){ document.getElementById('overlay').classList.remove('show'); editingId=null; workingCopy=null; }
 
 function syncCurrentSectionIntoWorkingCopy(){
-  // pull whatever inputs are currently on screen back into workingCopy, guarding for missing fields
-  const s = workingCopy;
-  if(!s) return;
+  const s = workingCopy; if(!s) return;
   const g = id => { const el = document.getElementById(id); return el ? el.value : undefined; };
   if(g('f_brand')!==undefined){
     s.brand=g('f_brand'); s.season=g('f_season'); s.styleNo=g('f_styleNo');
@@ -483,77 +590,59 @@ function syncCurrentSectionIntoWorkingCopy(){
     s.workOrder.factory=g('w_factory'); s.workOrder.writtenDate=g('w_writtenDate');
     s.workOrder.dueDate=g('w_dueDate'); s.workOrder.manager=g('w_manager'); s.workOrder.memo=g('w_memo');
   }
-  if(document.getElementById('matrixBody')){
-    s.workOrder.colorSizeMatrix = readMatrixRowsFromDOM(currentSizes).filter(r=>r.color || Object.keys(r.qtyBySize).length);
-  }
-  if(document.getElementById('matBody')){
-    s.workOrder.materials = readMatRowsFromDOM().filter(r=>r.item||r.content);
-  }
-  if(g('p_material')!==undefined){
-    s.production.steps = { material:g('p_material'), sewing:g('p_sewing'), qc:g('p_qc'), shipping:g('p_shipping') };
-  }
-  if(document.getElementById('shipBody')){
-    s.production.shipments = readShipRowsFromDOM();
-  }
-  if(g('qc_total')!==undefined){
-    s.production.qc = { totalQty:g('qc_total'), passQty:g('qc_pass'), failQty:g('qc_fail'), note:g('qc_note') };
-  }
-  if(g('c_containerDate')!==undefined){
-    s.completion = {
-      containerDate:g('c_containerDate'), shipDate:g('c_shipDate'), customsDate:g('c_customsDate'),
-      logisticsCompany:g('c_logisticsCompany'), portArrival:g('c_portArrival'), note:g('c_note')
+  if(document.getElementById('matrixBody')) s.workOrder.colorSizeMatrix = readMatrixRowsFromDOM(currentSizes).filter(r=>r.color || Object.keys(r.qtyBySize).length);
+  if(document.getElementById('matBody')) s.workOrder.materials = readMatRowsFromDOM().filter(r=>r.item||r.content);
+  if(document.getElementById('prodMatList')) s.production.materials = readProdMaterialsFromDOM();
+  if(g('qc_date')!==undefined){
+    s.production.qc = {
+      date:g('qc_date'), fullInspection: document.getElementById('qc_full').checked,
+      totalQty:g('qc_total'), passQty:g('qc_pass'), failQty:g('qc_fail'),
+      inspector:g('qc_inspector'), note:g('qc_note'), files: s.production.qc.files||[]
     };
   }
-  // issues checkboxes
+  if(g('l_containerDate')!==undefined){
+    s.logistics.containerDate=g('l_containerDate'); s.logistics.shipDate=g('l_shipDate');
+    s.logistics.blNo=g('l_blNo'); s.logistics.portArrival=g('l_portArrival');
+    s.logistics.customsDate=g('l_customsDate'); s.logistics.dispatchDate=g('l_dispatchDate');
+    s.logistics.logisticsCompany=g('l_logisticsCompany');
+  }
+  if(document.getElementById('shipBody')) s.logistics.shipments = readShipRowsFromDOM();
   document.querySelectorAll('.issueResolved').forEach(cb=>{
-    const idx = +cb.dataset.idx;
-    if(s.issues[idx]) s.issues[idx].resolved = cb.checked;
+    const idx = +cb.dataset.idx; if(s.issues[idx]) s.issues[idx].resolved = cb.checked;
   });
 }
 
 function renderModalStage(){
   const s = workingCopy;
+  const done = isCompleted(s);
   document.getElementById('modalSub').textContent = `${s.brand||'브랜드 미정'} · ${s.season||'시즌 미정'}`;
-  document.getElementById('stagePills').innerHTML = ['기획','작지서','생산','완료'].map(st=>
-    `<div class="pill ${s.stage===st?'active':''}" data-stage="${st}">${st}</div>`).join('');
-  document.getElementById('contextLine').innerHTML = s.stage==='기획' ? '' : `
+  document.getElementById('stagePills').innerHTML = STAGES.map(st=>
+    `<div class="pill ${s.stage===st?'active':''}" data-stage="${st}">${STAGE_LABEL[st]}</div>`).join('');
+  document.getElementById('contextLine').innerHTML = (s.stage==='기획' ? '' : `
     <span><b>${s.styleNo || '스타일번호 미정'}</b></span>
     <span>${s.itemName||'(이름 없음)'}</span>
     <span>${s.brand||'-'} / ${s.season||'-'}</span>
-  `;
+  `) + (done ? `<span class="completed-badge">완료상품</span>` : '');
   document.getElementById('modalBody').innerHTML = stageBodyHtml(s);
-
   wireStageWidgets(s);
 }
-
-// event delegation: one listener on the pills container survives re-renders,
-// and errors in one field's sync never block switching tabs
-document.getElementById('stagePills').addEventListener('click', (e)=>{
-  const p = e.target.closest('.pill');
-  if(!p || !workingCopy) return;
-  try{ syncCurrentSectionIntoWorkingCopy(); }
-  catch(err){ console.error('sync error (ignored, tab switch continues):', err); }
-  workingCopy.stage = p.dataset.stage;
-  renderModalStage();
-});
 
 function stageBodyHtml(s){
   if(s.stage==='기획') return planStageHtml(s);
   if(s.stage==='작지서') return workOrderStageHtml(s);
   if(s.stage==='생산') return productionStageHtml(s);
-  return completionStageHtml(s);
+  return logisticsStageHtml(s);
 }
 
+/* ---------- 기획 ---------- */
 function planStageHtml(s){
   return `
-  <div class="section">
-    <div class="section-title">기획서 업로드</div>
-    <div class="hint">엑셀(xlsx/csv) 파일을 올리면 아이템명·구성·컬러구성·수량·사이즈·소재·원산지·날짜 등을 자동으로 읽어 아래 칸에 채워봅니다 (여러 항목이 있는 파일이면 첫 번째 행 기준). 자동 인식된 값은 자유롭게 다시 수정할 수 있어요. 이미지 파일은 자동 인식 없이 참고용으로 첨부만 됩니다.</div>
-    <div class="filebox" id="planFileBox" style="margin-top:8px;">${planFileBoxInnerHtml(s)}</div>
-    <input type="file" id="planFileInput" accept="image/*,.xlsx,.xls,.csv" style="display:none;">
-  </div>
+  ${s.planImageDataUrl ? `<div class="section"><div class="section-title">기획 이미지</div>
+    <img class="thumb" id="planImgThumb" src="${s.planImageDataUrl}" style="width:120px;height:120px;">
+  </div>` : ''}
   <div class="section">
     <div class="section-title">기본 정보 (기획서 기준)</div>
+    <div class="hint" style="margin-bottom:10px;">기획 정보는 메인 화면의 "기획 엑셀 일괄 업로드"로 채워집니다. 여기서는 확인하고 필요하면 직접 수정만 하면 됩니다.</div>
     <div class="field-grid">
       <div class="field"><label>브랜드</label><input id="f_brand" type="text" value="${esc(s.brand)}" placeholder="스노야 / 모브온"></div>
       <div class="field"><label>시즌</label><input id="f_season" type="text" value="${esc(s.season)}" placeholder="26FW"></div>
@@ -575,14 +664,15 @@ function planStageHtml(s){
   `;
 }
 
+/* ---------- 작업지시서 ---------- */
 function workOrderStageHtml(s){
   return `
   <div class="section">
-    <div class="section-title">작업지시서 파일</div>
-    <div class="filebox" id="fileBox">${fileBoxInnerHtml(s)}</div>
-    <input type="file" id="fileInput" accept="image/*,.xlsx,.xls,.csv" style="display:none;">
+    <div class="section-title">작업지시서 파일 (엑셀)</div>
+    <div class="hint">작업지시서는 엑셀 파일만 업로드할 수 있습니다. 올리면 파일이 저장되어 나중에 다시 열어볼 수 있어요.</div>
+    <div class="filebox" id="fileBox" style="margin-top:8px;">${fileBoxInnerHtml(s)}</div>
+    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display:none;">
   </div>
-
   <div class="section">
     <div class="section-title">공장정보</div>
     <div class="field-grid">
@@ -591,163 +681,220 @@ function workOrderStageHtml(s){
       <div class="field"><label>납기일</label><input id="w_dueDate" type="date" value="${esc(s.workOrder.dueDate)}"></div>
       <div class="field"><label>담당자</label><input id="w_manager" type="text" value="${esc(s.workOrder.manager)}"></div>
     </div>
-    <div class="field" style="margin-top:10px;">
-      <label>기타 메모</label>
-      <textarea id="w_memo">${esc(s.workOrder.memo)}</textarea>
-    </div>
+    <div class="field" style="margin-top:10px;"><label>기타 메모</label><textarea id="w_memo">${esc(s.workOrder.memo)}</textarea></div>
   </div>
-
   <div class="section">
-    <div class="section-title">
-      <span>컬러 × 사이즈 제작수량</span>
-      <button type="button" class="small-btn" id="applySizes">사이즈 · 컬러 적용</button>
-    </div>
-    <div class="hint">위 "사이즈"와 "컬러구성"을 슬래시(/)로 구분해 적어두면, 적용 시 표에 컬러 행과 사이즈 열이 자동으로 만들어집니다.</div>
+    <div class="section-title"><span>컬러 × 사이즈 제작수량</span><button type="button" class="small-btn" id="applySizes">사이즈 · 컬러 적용</button></div>
+    <div class="hint">"사이즈"와 "컬러구성"을 슬래시(/)로 구분해 적어두고 적용을 누르면 표가 자동으로 만들어집니다.</div>
     <div style="overflow-x:auto; margin-top:8px;">
-      <table class="dyn" id="matrixTable"><thead><tr id="matrixHeadRow"><th>컬러</th></tr></thead>
-      <tbody id="matrixBody"></tbody></table>
+      <table class="dyn" id="matrixTable"><thead><tr id="matrixHeadRow"><th>컬러</th></tr></thead><tbody id="matrixBody"></tbody></table>
     </div>
     <div class="row-actions"><button class="small-btn" id="addMatrixRow">+ 컬러 추가</button></div>
   </div>
-
   <div class="section">
     <div class="section-title">원부자재 소요량</div>
-    <table class="dyn" id="matTable"><thead><tr><th>품목</th><th>규격</th><th>내용</th><th>소요량</th><th>비고</th><th></th></tr></thead>
-    <tbody id="matBody"></tbody></table>
+    <table class="dyn" id="matTable"><thead><tr><th>품목</th><th>규격</th><th>내용</th><th>소요량</th><th>비고</th><th></th></tr></thead><tbody id="matBody"></tbody></table>
     <div class="row-actions"><button class="small-btn" id="addMatRow">+ 자재 추가</button></div>
+    <div class="hint">여기 입력한 자재는 "생산" 탭에서 자재별 발주/입고 관리로 이어집니다.</div>
   </div>
   ${issuesSectionHtml(s)}
   `;
 }
 
+/* ---------- 생산 ---------- */
 function productionStageHtml(s){
-  const stepLabels = {material:'자재',sewing:'봉제',qc:'QC',shipping:'출고'};
+  if(s.production.materials.length===0 && s.workOrder.materials.length){
+    s.production.materials = s.workOrder.materials.filter(r=>r.item||r.content).map(r=>({
+      id:uid(), type:'기타', name:r.item||r.content, supplier:'', factory:'', orderDate:'', expectedInDate:'',
+      totalQty:r.qty||'', receipts:[], inspected:false, sewingInDate:'', note:r.note||r.spec||''
+    }));
+  }
   return `
   <div class="section">
-    <div class="section-title">생산 진행 단계</div>
-    <div class="field-grid two">
-      ${['material','sewing','qc','shipping'].map(k=>`
-        <div class="field"><label>${stepLabels[k]}</label>
-          <select id="p_${k}">
-            <option ${s.production.steps[k]==='대기'?'selected':''}>대기</option>
-            <option ${s.production.steps[k]==='진행'?'selected':''}>진행</option>
-            <option ${s.production.steps[k]==='완료'?'selected':''}>완료</option>
-          </select>
-        </div>`).join('')}
-    </div>
+    <div class="section-title">원부자재별 관리 <span class="hint" style="font-weight:500;">(자재별 발주 · 입고 · 검수)</span></div>
+    <div id="prodMatList">${(s.production.materials||[]).map(matCardHtml).join('') || '<div class="hint">등록된 자재가 없습니다. 작업지시서에서 자재를 입력했다면 자동으로 여기 나타납니다.</div>'}</div>
+    <div class="row-actions"><button class="small-btn" id="addProdMat">+ 자재 추가</button></div>
   </div>
-
-  <div class="section">
-    <div class="section-title">출고 내역 <span class="hint" style="font-weight:500;">(부분출고 여러 건 가능)</span></div>
-    <table class="dyn" id="shipTable"><thead><tr><th>구분</th><th>수량</th><th>출고일</th><th>비고</th><th></th></tr></thead>
-    <tbody id="shipBody">${(s.production.shipments||[]).map(shipRowHtml).join('')}</tbody></table>
-    <div class="row-actions"><button class="small-btn" id="addShipRow">+ 출고 내역 추가</button></div>
-  </div>
-
   <div class="section">
     <div class="section-title">QC 전수검사</div>
-    <div class="field-grid">
+    <div class="field-grid four">
+      <div class="field"><label>검사일</label><input id="qc_date" type="date" value="${esc(s.production.qc.date)}"></div>
       <div class="field"><label>총 검사수량</label><input id="qc_total" type="text" value="${esc(s.production.qc.totalQty)}"></div>
       <div class="field"><label>합격수량</label><input id="qc_pass" type="text" value="${esc(s.production.qc.passQty)}"></div>
       <div class="field"><label>불합격수량</label><input id="qc_fail" type="text" value="${esc(s.production.qc.failQty)}"></div>
     </div>
-    <div class="field" style="margin-top:10px;"><label>비고</label><textarea id="qc_note">${esc(s.production.qc.note)}</textarea></div>
-    <div style="margin-top:10px;">${qcBadgeHtml(s.production.qc)}</div>
-  </div>
-  ${issuesSectionHtml(s)}
-  `;
-}
-
-function completionStageHtml(s){
-  return `
-  <div class="section">
-    <div class="section-title">물류 · 통관</div>
-    <div class="field-grid">
-      <div class="field"><label>컨테이너 작업일</label><input id="c_containerDate" type="date" value="${esc(s.completion.containerDate)}"></div>
-      <div class="field"><label>선적일</label><input id="c_shipDate" type="date" value="${esc(s.completion.shipDate)}"></div>
-      <div class="field"><label>통관일</label><input id="c_customsDate" type="date" value="${esc(s.completion.customsDate)}"></div>
-      <div class="field"><label>물류사 / 배차</label><input id="c_logisticsCompany" type="text" value="${esc(s.completion.logisticsCompany)}"></div>
-      <div class="field"><label>입항(도착)일</label><input id="c_portArrival" type="date" value="${esc(s.completion.portArrival)}"></div>
+    <div class="field-grid two" style="margin-top:8px;">
+      <div class="field"><label>검사업체</label><input id="qc_inspector" type="text" value="${esc(s.production.qc.inspector)}"></div>
+      <div class="field" style="display:flex; align-items:flex-end; gap:6px;">
+        <label style="display:flex; align-items:center; gap:6px; font-weight:600; font-size:12px; color:var(--ink); margin-bottom:0;">
+          <input type="checkbox" id="qc_full" ${s.production.qc.fullInspection?'checked':''} style="width:auto;"> 전수검사 여부
+        </label>
+      </div>
     </div>
-    <div class="field" style="margin-top:10px;"><label>비고</label><textarea id="c_note">${esc(s.completion.note)}</textarea></div>
+    <div class="field" style="margin-top:10px;"><label>비고</label><textarea id="qc_note">${esc(s.production.qc.note)}</textarea></div>
+    <div style="margin-top:10px;" id="qcBadge">${qcBadgeHtml(s.production.qc)}</div>
+    <div class="section-title" style="margin-top:16px;"><span>QC 관련 파일</span></div>
+    <div class="doclist" id="qcDocList">${(s.production.qc.files||[]).map((d,i)=>qcDocRowHtml(d,i)).join('')}</div>
+    <div class="row-actions"><button type="button" class="small-btn" id="addQcDoc">+ 파일 추가</button><input type="file" id="qcDocInput" accept="image/*,.pdf" style="display:none;"></div>
   </div>
   ${issuesSectionHtml(s)}
   `;
 }
-
+function matCardHtml(m){
+  const totalIn = (m.receipts||[]).reduce((a,r)=>a+(Number(r.qty)||0),0);
+  const total = Number(m.totalQty)||0;
+  const remain = Math.max(0, total-totalIn);
+  return `
+  <div class="matcard" data-id="${m.id}">
+    <div class="matcard-head">
+      <select class="pm_type" style="width:100px;">
+        ${['원단','원사','부자재','라벨','택','기타'].map(t=>`<option ${m.type===t?'selected':''}>${t}</option>`).join('')}
+      </select>
+      <input class="pm_name grow leftalign" style="text-align:left;" value="${esc(m.name)}" placeholder="자재명">
+      <label style="display:flex; align-items:center; gap:5px; font-size:12px; color:var(--ink-soft);"><input type="checkbox" class="pm_inspected" ${m.inspected?'checked':''}> 검수완료</label>
+      <button type="button" class="small-btn mini toggleReceipt">입고내역</button>
+      <button type="button" class="small-btn mini delMat">삭제</button>
+    </div>
+    <div class="fields">
+      <div class="field"><label>공급처</label><input class="pm_supplier" value="${esc(m.supplier)}"></div>
+      <div class="field"><label>생산공장</label><input class="pm_factory" value="${esc(m.factory)}"></div>
+      <div class="field"><label>발주일</label><input class="pm_orderDate" type="date" value="${esc(m.orderDate)}"></div>
+      <div class="field"><label>예상입고일</label><input class="pm_expectedInDate" type="date" value="${esc(m.expectedInDate)}"></div>
+      <div class="field"><label>전체수량</label><input class="pm_totalQty" value="${esc(m.totalQty)}"></div>
+      <div class="field"><label>봉제공장 입고일</label><input class="pm_sewingInDate" type="date" value="${esc(m.sewingInDate)}"></div>
+      <div class="field" style="grid-column:span 2;"><label>메모</label><input class="pm_note" value="${esc(m.note)}"></div>
+    </div>
+    <div class="totals">전체 <b>${total||0}</b> · 입고 <b>${totalIn}</b> · 미입고 <b>${remain}</b></div>
+    <div class="receiptbox">
+      <table class="dyn"><thead><tr><th>입고일</th><th>수량</th><th>장소</th><th>메모</th><th></th></tr></thead>
+      <tbody class="receiptBody">${(m.receipts||[]).map(receiptRowHtml).join('')}</tbody></table>
+      <div class="row-actions"><button type="button" class="small-btn mini addReceipt">+ 입고 추가</button></div>
+    </div>
+  </div>`;
+}
+function receiptRowHtml(r){
+  return `<tr>
+    <td><input class="rc_date" type="date" value="${esc(r.date)}"></td>
+    <td><input class="rc_qty" value="${esc(r.qty)}"></td>
+    <td><input class="rc_location leftalign" value="${esc(r.location)}"></td>
+    <td><input class="rc_note leftalign" value="${esc(r.note)}"></td>
+    <td><button type="button" class="small-btn mini delRow">삭제</button></td>
+  </tr>`;
+}
 function qcBadgeHtml(qc){
   const total = Number(qc.totalQty)||0, fail = Number(qc.failQty)||0;
   if(!total) return '';
   const lossRate = ((fail/total)*100).toFixed(1);
-  const cls = fail>0 ? 'fail' : 'pass';
-  return `<span class="badge ${cls}">로스율 ${lossRate}%</span>`;
+  return `<span class="badge ${fail>0?'fail':'pass'}">로스율 ${lossRate}%</span>`;
+}
+function qcDocRowHtml(d, idx){
+  return `<div class="docrow" data-idx="${idx}">
+    <span style="flex:1; font-size:12.5px; font-weight:600;">${esc(d.fileName)}</span>
+    <button type="button" class="small-btn mini viewDoc">보기</button>
+    <button type="button" class="small-btn mini delDoc">삭제</button>
+  </div>`;
+}
+
+/* ---------- 물류·통관 ---------- */
+function logisticsStageHtml(s){
+  const total = totalPlannedQty(s), rec = totalReceivedQty(s);
+  return `
+  <div class="section">
+    <div class="section-title">물류 · 통관 일정</div>
+    <div class="field-grid four">
+      <div class="field"><label>컨테이너 작업일</label><input id="l_containerDate" type="date" value="${esc(s.logistics.containerDate)}"></div>
+      <div class="field"><label>선적일</label><input id="l_shipDate" type="date" value="${esc(s.logistics.shipDate)}"></div>
+      <div class="field"><label>BL 번호</label><input id="l_blNo" type="text" value="${esc(s.logistics.blNo)}"></div>
+      <div class="field"><label>입항일</label><input id="l_portArrival" type="date" value="${esc(s.logistics.portArrival)}"></div>
+      <div class="field"><label>통관일</label><input id="l_customsDate" type="date" value="${esc(s.logistics.customsDate)}"></div>
+      <div class="field"><label>배차일</label><input id="l_dispatchDate" type="date" value="${esc(s.logistics.dispatchDate)}"></div>
+      <div class="field"><label>물류사</label><input id="l_logisticsCompany" type="text" value="${esc(s.logistics.logisticsCompany)}"></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">관련 서류 (BL · Invoice · Packing List 등, PDF 가능)</div>
+    <div class="doclist" id="logDocList">${(s.logistics.docs||[]).map((d,i)=>logDocRowHtml(d,i)).join('')}</div>
+    <div class="row-actions">
+      <button type="button" class="small-btn" id="addLogDoc">+ 서류 추가</button>
+      <input type="file" id="logDocInput" accept="image/*,.pdf" style="display:none;">
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">출고 내역 (1차 / 2차 / 3차 …)</div>
+    <table class="dyn" id="shipTable"><thead><tr><th>차수</th><th>출고일</th><th>컬러</th><th>사이즈</th><th>수량</th><th>박스수</th><th>물류사</th><th>입고여부</th><th>입고일</th><th>비고</th><th></th></tr></thead>
+    <tbody id="shipBody">${(s.logistics.shipments||[]).map(shipRowHtml).join('')}</tbody></table>
+    <div class="row-actions"><button class="small-btn" id="addShipRow">+ 출고 내역 추가</button></div>
+    <div class="totals" style="margin-top:10px; font-family:var(--mono); font-size:12px; color:var(--ink-soft);">
+      전체 생산수량 <b style="color:var(--ink);">${total||'-'}</b> · 누적 입고 <b style="color:var(--ink);">${rec}</b> · 미입고 <b style="color:var(--ink);">${Math.max(0,total-rec)}</b>
+      ${total>0 && rec>=total ? ' · <span class="badge pass">완료상품으로 자동 이동됨</span>' : ''}
+    </div>
+  </div>
+  ${issuesSectionHtml(s)}
+  `;
+}
+function logDocRowHtml(d, idx){
+  return `<div class="docrow" data-idx="${idx}">
+    <select class="ld_type">${['BL','Invoice','Packing List','통관서류','기타'].map(t=>`<option ${d.type===t?'selected':''}>${t}</option>`).join('')}</select>
+    <span class="grow" style="font-size:12.5px; font-weight:600;">${esc(d.fileName)||'(파일 없음)'}</span>
+    ${d.fileDataUrl?`<button type="button" class="small-btn mini viewDoc">보기</button>`:''}
+    <button type="button" class="small-btn mini delDoc">삭제</button>
+  </div>`;
+}
+function shipRowHtml(row){
+  return `<tr>
+    <td><input class="shipSeq" style="width:44px;" value="${esc(row.seqLabel||'')}" placeholder="1차"></td>
+    <td><input class="shipDate" type="date" value="${esc(row.date)}"></td>
+    <td><input class="shipColor leftalign" value="${esc(row.color)}"></td>
+    <td><input class="shipSize" value="${esc(row.size)}"></td>
+    <td><input class="shipQty" value="${esc(row.qty)}"></td>
+    <td><input class="shipBox" value="${esc(row.box)}"></td>
+    <td><input class="shipCompany leftalign" value="${esc(row.logisticsCompany)}"></td>
+    <td><input type="checkbox" class="shipReceived" ${row.receivedYn?'checked':''}></td>
+    <td><input class="shipReceivedDate" type="date" value="${esc(row.receivedDate)}"></td>
+    <td><input class="shipNote leftalign" value="${esc(row.note)}"></td>
+    <td><button type="button" class="small-btn mini delRow">삭제</button></td>
+  </tr>`;
 }
 
 function issuesSectionHtml(s){
-  return `
-  <div class="section">
-    <div class="section-title">이슈</div>
+  return `<div class="section"><div class="section-title">이슈</div>
     <div id="issueList">${(s.issues||[]).map((i,idx)=>issueHtml(i,idx)).join('') || '<div style="font-size:12px;color:var(--ink-soft);">등록된 이슈 없음</div>'}</div>
     <div class="field-grid two" style="margin-top:10px;">
       <input type="text" id="newIssueContent" placeholder="이슈 내용">
       <button class="small-btn" id="addIssue" style="height:34px;">+ 이슈 추가</button>
-    </div>
-  </div>`;
+    </div></div>`;
 }
 function issueHtml(i, idx){
   return `<div class="issue-item">
-    <label style="display:flex;gap:6px;align-items:center;">
-      <input type="checkbox" class="issueResolved" data-idx="${idx}" ${i.resolved?'checked':''}> ${esc(i.content)}
-    </label>
+    <label style="display:flex;gap:6px;align-items:center;"><input type="checkbox" class="issueResolved" data-idx="${idx}" ${i.resolved?'checked':''}> ${esc(i.content)}</label>
     <div class="meta">${esc(i.date)||''} ${i.company?'· '+esc(i.company):''}</div>
   </div>`;
 }
-function esc(v){ return (v===undefined||v===null) ? '' : String(v).replace(/"/g,'&quot;'); }
 
 /* ---------- matrix (color x size) ---------- */
 let currentSizes = [];
-
-function matrixHeadHtml(sizes){
-  return `<th>컬러</th>` + sizes.map(sz=>`<th>${sz}</th>`).join('') + `<th>합계</th><th></th>`;
-}
+function matrixHeadHtml(sizes){ return `<th>컬러</th>` + sizes.map(sz=>`<th>${sz}</th>`).join('') + `<th>합계</th><th></th>`; }
 function matrixRowHtml(row, sizes){
   const cells = sizes.map(sz=>`<td><input class="mCell" data-size="${sz}" value="${row.qtyBySize && row.qtyBySize[sz]!==undefined ? row.qtyBySize[sz] : ''}"></td>`).join('');
   const total = sizes.reduce((a,sz)=> a + (Number(row.qtyBySize && row.qtyBySize[sz]) || 0), 0);
-  return `<tr>
-    <td><input class="mColor colorname" value="${esc(row.color)}"></td>
-    ${cells}
-    <td class="total">${total || ''}</td>
-    <td><button type="button" class="small-btn delRow">삭제</button></td>
-  </tr>`;
+  return `<tr><td><input class="mColor colorname" value="${esc(row.color)}"></td>${cells}<td class="total">${total || ''}</td><td><button type="button" class="small-btn delRow">삭제</button></td></tr>`;
 }
 function matRowHtml(row){
   return `<tr>
-    <td><input class="matItem" value="${esc(row.item)}"></td>
+    <td><input class="matItem leftalign" value="${esc(row.item)}"></td>
     <td><input class="matSpec" value="${esc(row.spec)}"></td>
-    <td><input class="matContent" value="${esc(row.content)}"></td>
+    <td><input class="matContent leftalign" value="${esc(row.content)}"></td>
     <td><input class="matQty" value="${esc(row.qty)}"></td>
-    <td><input class="matNote" value="${esc(row.note)}"></td>
+    <td><input class="matNote leftalign" value="${esc(row.note)}"></td>
     <td><button type="button" class="small-btn delRow">삭제</button></td>
   </tr>`;
 }
-function shipRowHtml(row){
-  return `<tr>
-    <td><select class="shipType"><option ${row.type==='부분출고'?'selected':''}>부분출고</option><option ${row.type==='전체출고'?'selected':''}>전체출고</option></select></td>
-    <td><input class="shipQty" value="${esc(row.qty)}"></td>
-    <td><input class="shipDate" type="date" value="${esc(row.date)}"></td>
-    <td><input class="shipNote" value="${esc(row.note)}"></td>
-    <td><button type="button" class="small-btn delRow">삭제</button></td>
-  </tr>`;
-}
-
 function readMatrixRowsFromDOM(sizes){
   const rows = [];
   document.querySelectorAll('#matrixBody tr').forEach(tr=>{
     const color = tr.querySelector('.mColor').value;
     const qtyBySize = {};
-    tr.querySelectorAll('.mCell').forEach(inp=>{
-      if(inp.value!=='') qtyBySize[inp.dataset.size] = inp.value;
-    });
+    tr.querySelectorAll('.mCell').forEach(inp=>{ if(inp.value!=='') qtyBySize[inp.dataset.size] = inp.value; });
     rows.push({color, qtyBySize});
   });
   return rows;
@@ -755,94 +902,135 @@ function readMatrixRowsFromDOM(sizes){
 function readMatRowsFromDOM(){
   const rows = [];
   document.querySelectorAll('#matBody tr').forEach(tr=>{
-    rows.push({
-      item: tr.querySelector('.matItem').value, spec: tr.querySelector('.matSpec').value,
-      content: tr.querySelector('.matContent').value, qty: tr.querySelector('.matQty').value,
-      note: tr.querySelector('.matNote').value
-    });
+    rows.push({ item: tr.querySelector('.matItem').value, spec: tr.querySelector('.matSpec').value,
+      content: tr.querySelector('.matContent').value, qty: tr.querySelector('.matQty').value, note: tr.querySelector('.matNote').value });
   });
   return rows;
 }
-function readShipRowsFromDOM(){
-  const rows = [];
-  document.querySelectorAll('#shipBody tr').forEach(tr=>{
-    rows.push({
-      type: tr.querySelector('.shipType').value, qty: tr.querySelector('.shipQty').value,
-      date: tr.querySelector('.shipDate').value, note: tr.querySelector('.shipNote').value
-    });
-  });
-  return rows.filter(r=>r.qty || r.date || r.note);
-}
-
 function rebuildMatrix(sizes, colorNames){
   const existing = readMatrixRowsFromDOM(currentSizes);
-  const byColor = {};
-  existing.forEach(r=>{ if(r.color) byColor[r.color] = r.qtyBySize; });
+  const byColor = {}; existing.forEach(r=>{ if(r.color) byColor[r.color] = r.qtyBySize; });
   currentSizes = sizes;
   let rows;
-  if(colorNames && colorNames.length){
-    rows = colorNames.map(c=> ({ color:c, qtyBySize: byColor[c] || {} }));
-  } else {
-    rows = existing.length ? existing : [{color:'', qtyBySize:{}}];
-  }
+  if(colorNames && colorNames.length) rows = colorNames.map(c=> ({ color:c, qtyBySize: byColor[c] || {} }));
+  else rows = existing.length ? existing : [{color:'', qtyBySize:{}}];
   document.getElementById('matrixHeadRow').innerHTML = matrixHeadHtml(currentSizes);
   document.getElementById('matrixBody').innerHTML = rows.map(r=>matrixRowHtml(r, currentSizes)).join('');
   bindMatrixRowEvents();
 }
 function bindMatrixRowEvents(){
-  document.querySelectorAll('#matrixBody .delRow').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{ e.target.closest('tr').remove(); recalcTotals(); });
-  });
-  document.querySelectorAll('#matrixBody .mCell').forEach(inp=>{
-    inp.addEventListener('input', recalcTotals);
-  });
+  document.querySelectorAll('#matrixBody .delRow').forEach(btn=> btn.addEventListener('click', (e)=>{ e.target.closest('tr').remove(); recalcTotals(); }));
+  document.querySelectorAll('#matrixBody .mCell').forEach(inp=> inp.addEventListener('input', recalcTotals));
 }
 function recalcTotals(){
   document.querySelectorAll('#matrixBody tr').forEach(tr=>{
-    let total = 0;
-    tr.querySelectorAll('.mCell').forEach(inp=> total += Number(inp.value)||0 );
+    let total = 0; tr.querySelectorAll('.mCell').forEach(inp=> total += Number(inp.value)||0 );
     tr.querySelector('.total').textContent = total || '';
   });
 }
-function bindMatRowEvents(){
-  document.querySelectorAll('#matBody .delRow').forEach(btn=>{
-    btn.addEventListener('click', (e)=> e.target.closest('tr').remove());
+function bindMatRowEvents(){ document.querySelectorAll('#matBody .delRow').forEach(btn=> btn.addEventListener('click', (e)=> e.target.closest('tr').remove())); }
+function bindShipRowEvents(){ document.querySelectorAll('#shipBody .delRow').forEach(btn=> btn.addEventListener('click', (e)=> e.target.closest('tr').remove())); }
+function readShipRowsFromDOM(){
+  const rows = [];
+  document.querySelectorAll('#shipBody tr').forEach(tr=>{
+    rows.push({
+      seqLabel: tr.querySelector('.shipSeq').value, date: tr.querySelector('.shipDate').value,
+      color: tr.querySelector('.shipColor').value, size: tr.querySelector('.shipSize').value,
+      qty: tr.querySelector('.shipQty').value, box: tr.querySelector('.shipBox').value,
+      logisticsCompany: tr.querySelector('.shipCompany').value, receivedYn: tr.querySelector('.shipReceived').checked,
+      receivedDate: tr.querySelector('.shipReceivedDate').value, note: tr.querySelector('.shipNote').value
+    });
+  });
+  return rows.filter(r=>r.qty||r.date||r.note||r.color);
+}
+
+/* ---------- production materials DOM ---------- */
+function readProdMaterialsFromDOM(){
+  const list = [];
+  document.querySelectorAll('#prodMatList .matcard').forEach(card=>{
+    const receipts = [];
+    card.querySelectorAll('.receiptBody tr').forEach(tr=>{
+      receipts.push({ date: tr.querySelector('.rc_date').value, qty: tr.querySelector('.rc_qty').value,
+        location: tr.querySelector('.rc_location').value, note: tr.querySelector('.rc_note').value });
+    });
+    list.push({
+      id: card.dataset.id, type: card.querySelector('.pm_type').value, name: card.querySelector('.pm_name').value,
+      supplier: card.querySelector('.pm_supplier').value, factory: card.querySelector('.pm_factory').value,
+      orderDate: card.querySelector('.pm_orderDate').value, expectedInDate: card.querySelector('.pm_expectedInDate').value,
+      totalQty: card.querySelector('.pm_totalQty').value, sewingInDate: card.querySelector('.pm_sewingInDate').value,
+      note: card.querySelector('.pm_note').value, inspected: card.querySelector('.pm_inspected').checked,
+      receipts
+    });
+  });
+  return list;
+}
+function refreshMatCardTotals(card){
+  const total = Number(card.querySelector('.pm_totalQty').value)||0;
+  let totalIn = 0;
+  card.querySelectorAll('.receiptBody .rc_qty').forEach(inp=> totalIn += Number(inp.value)||0);
+  const remain = Math.max(0, total-totalIn);
+  card.querySelector('.totals').innerHTML = `전체 <b>${total||0}</b> · 입고 <b>${totalIn}</b> · 미입고 <b>${remain}</b>`;
+}
+function bindMatCardEvents(){
+  document.querySelectorAll('#prodMatList .matcard').forEach(card=>{
+    card.querySelector('.toggleReceipt').addEventListener('click', ()=> card.querySelector('.receiptbox').classList.toggle('open'));
+    card.querySelector('.delMat').addEventListener('click', ()=> card.remove());
+    card.querySelector('.addReceipt').addEventListener('click', ()=>{
+      const tbody = card.querySelector('.receiptBody');
+      tbody.insertAdjacentHTML('beforeend', receiptRowHtml({date:'',qty:'',location:'',note:''}));
+      bindReceiptRowEvents(card);
+      card.querySelector('.receiptbox').classList.add('open');
+    });
+    card.querySelector('.pm_totalQty').addEventListener('input', ()=> refreshMatCardTotals(card));
+    bindReceiptRowEvents(card);
   });
 }
-function bindShipRowEvents(){
-  document.querySelectorAll('#shipBody .delRow').forEach(btn=>{
-    btn.addEventListener('click', (e)=> e.target.closest('tr').remove());
+function bindReceiptRowEvents(card){
+  card.querySelectorAll('.receiptBody .delRow').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{ e.target.closest('tr').remove(); refreshMatCardTotals(card); });
+  });
+  card.querySelectorAll('.receiptBody .rc_qty').forEach(inp=>{
+    inp.addEventListener('input', ()=> refreshMatCardTotals(card));
   });
 }
 
-/* ---------- file upload / lightbox ---------- */
+/* ---------- file upload (작업지시서, excel only) ---------- */
 function fileBoxInnerHtml(s){
   const wo = s.workOrder;
   if(!wo.fileDataUrl){
-    return `
-      <div class="doc-icon">파일<br>없음</div>
-      <div class="info">
-        <div class="fname">작업지시서 파일이 없습니다</div>
-        <div class="fmeta">이미지(jpg/png) 또는 엑셀(xlsx) 파일을 올려주세요</div>
-      </div>
-      <div class="actions"><button type="button" class="small-btn" id="btnUploadFile">파일 선택</button></div>
-    `;
+    return `<div class="doc-icon">EXCEL<br>없음</div>
+      <div class="info"><div class="fname">작업지시서 엑셀 파일이 없습니다</div><div class="fmeta">xlsx/xls/csv 파일을 올려주세요</div></div>
+      <div class="actions"><button type="button" class="small-btn" id="btnUploadFile">파일 선택</button></div>`;
   }
-  const isImg = wo.fileType && wo.fileType.startsWith('image/');
-  const thumb = isImg
-    ? `<img class="thumb" id="woThumb" src="${wo.fileDataUrl}">`
-    : `<div class="doc-icon">EXCEL</div>`;
-  return `
-    ${thumb}
-    <div class="info">
-      <div class="fname">${esc(wo.fileName)}</div>
-      <div class="fmeta">${isImg ? '클릭하면 확대해서 볼 수 있어요' : '엑셀/문서 파일'}</div>
-    </div>
-    <div class="actions">
-      <button type="button" class="small-btn" id="btnUploadFile">다시 업로드</button>
-      <button type="button" class="small-btn" id="btnDownloadFile">다운로드</button>
-    </div>
-  `;
+  return `<div class="doc-icon">EXCEL</div>
+    <div class="info"><div class="fname">${esc(wo.fileName)}</div><div class="fmeta">엑셀 작업지시서 - 아래 항목에 자동 반영을 시도했습니다</div></div>
+    <div class="actions"><button type="button" class="small-btn" id="btnUploadFile">다시 업로드</button><button type="button" class="small-btn" id="btnDownloadFile">다운로드</button></div>`;
+}
+const WO_FIELD_ALIASES = {
+  factory: ['작업처','생산공장','공장'], writtenDate:['작성일'], dueDate:['납기일'], manager:['담당자'], styleNo:['스타일넘버','스타일번호']
+};
+function scanWorkOrderLabels(wb){
+  const result = {};
+  wb.SheetNames.forEach(name=>{
+    const ws = wb.Sheets[name];
+    const ref = ws['!ref']; if(!ref) return;
+    const range = XLSX.utils.decode_range(ref);
+    for(let R=range.s.r; R<=range.e.r; R++){
+      for(let C=range.s.c; C<=range.e.c; C++){
+        const cell = ws[XLSX.utils.encode_cell({r:R,c:C})];
+        if(!cell || typeof cell.v !== 'string') continue;
+        const label = cell.v.trim();
+        Object.entries(WO_FIELD_ALIASES).forEach(([field, aliases])=>{
+          if(result[field]) return;
+          if(aliases.some(a=> label.replace(/\s/g,'')===a.replace(/\s/g,''))){
+            const next = ws[XLSX.utils.encode_cell({r:R,c:C+1})];
+            if(next && next.v!=='') result[field] = String(next.v);
+          }
+        });
+      }
+    }
+  });
+  return result;
 }
 function wireFileUpload(s){
   const fileInput = document.getElementById('fileInput');
@@ -851,119 +1039,116 @@ function wireFileUpload(s){
     if(btnUp) btnUp.addEventListener('click', ()=> fileInput.click());
     const btnDown = document.getElementById('btnDownloadFile');
     if(btnDown) btnDown.addEventListener('click', ()=>{
-      const a = document.createElement('a');
-      a.href = s.workOrder.fileDataUrl; a.download = s.workOrder.fileName || 'file';
+      const a = document.createElement('a'); a.href = s.workOrder.fileDataUrl; a.download = s.workOrder.fileName || 'file';
       document.body.appendChild(a); a.click(); a.remove();
     });
-    const thumb = document.getElementById('woThumb');
-    if(thumb) thumb.addEventListener('click', ()=> openLightbox(s.workOrder.fileDataUrl));
   };
   rewire();
   fileInput.addEventListener('change', (e)=>{
-    const f = e.target.files[0];
-    if(!f) return;
+    const f = e.target.files[0]; if(!f) return;
     const reader = new FileReader();
     reader.onload = ()=>{
-      s.workOrder.fileDataUrl = reader.result;
       s.workOrder.fileName = f.name;
-      s.workOrder.fileType = f.type;
-      document.getElementById('fileBox').innerHTML = fileBoxInnerHtml(s);
-      rewire();
-    };
-    reader.readAsDataURL(f);
-  });
-}
-function planFileBoxInnerHtml(s){
-  const pf = s.planFile || {};
-  if(!pf.fileDataUrl){
-    return `
-      <div class="doc-icon">파일<br>없음</div>
-      <div class="info">
-        <div class="fname">기획서 파일이 없습니다</div>
-        <div class="fmeta">엑셀(xlsx/csv) 또는 이미지 파일을 올려주세요</div>
-      </div>
-      <div class="actions"><button type="button" class="small-btn" id="btnUploadPlanFile">파일 선택</button></div>
-    `;
-  }
-  const isImg = pf.fileType && pf.fileType.startsWith('image/');
-  const thumb = isImg
-    ? `<img class="thumb" id="planThumb" src="${pf.fileDataUrl}">`
-    : `<div class="doc-icon">EXCEL</div>`;
-  return `
-    ${thumb}
-    <div class="info">
-      <div class="fname">${esc(pf.fileName)}</div>
-      <div class="fmeta">${isImg ? '클릭하면 확대해서 볼 수 있어요' : '엑셀 파일 - 업로드 시 아래 항목에 자동 반영됩니다'}</div>
-    </div>
-    <div class="actions"><button type="button" class="small-btn" id="btnUploadPlanFile">다시 업로드</button></div>
-  `;
-}
-const PLAN_FIELD_ALIASES = {
-  itemName: ['아이템/용도','아이템명','아이템','품목','상품명'],
-  composition: ['구성'],
-  colorComposition: ['컬러구성','컬러'],
-  planQty: ['기획수량'],
-  totalQty: ['총수량'],
-  price: ['판매가','가격'],
-  sizeRange: ['사이즈'],
-  material: ['소재'],
-  origin: ['원산지'],
-  dueInDate: ['입고예정일','입고일'],
-  launchDate: ['런칭희망일','런칭일']
-};
-function applyPlanExcelToFields(rowObj){
-  Object.entries(PLAN_FIELD_ALIASES).forEach(([field, aliases])=>{
-    for(const alias of aliases){
-      if(rowObj[alias]!==undefined && rowObj[alias]!==''){
-        const el = document.getElementById('f_'+field);
-        if(el) el.value = rowObj[alias];
-        break;
+      try{
+        const wb = XLSX.read(reader.result, {type:'array'});
+        const fields = scanWorkOrderLabels(wb);
+        if(fields.factory) document.getElementById('w_factory').value = fields.factory;
+        if(fields.writtenDate) document.getElementById('w_writtenDate').value = fields.writtenDate;
+        if(fields.dueDate) document.getElementById('w_dueDate').value = fields.dueDate;
+        if(fields.manager) document.getElementById('w_manager').value = fields.manager;
+        // also convert to dataURL for storage/download
+        const b64Reader = new FileReader();
+        b64Reader.onload = ()=>{ s.workOrder.fileDataUrl = b64Reader.result; document.getElementById('fileBox').innerHTML = fileBoxInnerHtml(s); rewire(); };
+        b64Reader.readAsDataURL(f);
+        alert('엑셀에서 작업처/작성일/납기일/담당자 정보를 최대한 자동으로 찾아 채웠습니다. 확인 후 필요하면 수정해주세요.');
+      }catch(err){
+        console.error(err);
+        const b64Reader = new FileReader();
+        b64Reader.onload = ()=>{ s.workOrder.fileDataUrl = b64Reader.result; document.getElementById('fileBox').innerHTML = fileBoxInnerHtml(s); rewire(); };
+        b64Reader.readAsDataURL(f);
       }
-    }
-  });
-}
-function wirePlanFileUpload(s){
-  const rewire = ()=>{
-    const btn = document.getElementById('btnUploadPlanFile');
-    if(btn) btn.addEventListener('click', ()=> document.getElementById('planFileInput').click());
-    const thumb = document.getElementById('planThumb');
-    if(thumb) thumb.addEventListener('click', ()=> openLightbox(s.planFile.fileDataUrl));
-  };
-  rewire();
-  const input = document.getElementById('planFileInput');
-  input.addEventListener('change', (e)=>{
-    const f = e.target.files[0];
-    if(!f) return;
-    const isExcel = /\.(xlsx|xls|csv)$/i.test(f.name);
-    const reader = new FileReader();
-    reader.onload = ()=>{
-      s.planFile = { fileDataUrl: isExcel ? '' : reader.result, fileName: f.name, fileType: f.type || (isExcel?'application/excel':'') };
-      if(isExcel){
-        try{
-          const wb = XLSX.read(reader.result, { type:'array' });
-          const ws = wb.Sheets[wb.SheetNames[0]];
-          const rows = XLSX.utils.sheet_to_json(ws, { defval:'' });
-          if(rows.length){
-            applyPlanExcelToFields(rows[0]);
-            alert('엑셀 내용을 읽어 아래 항목에 채웠습니다. 내용을 확인하고 필요하면 직접 수정해주세요.');
-          } else {
-            alert('엑셀에서 데이터 행을 찾지 못했습니다. 직접 입력해주세요.');
-          }
-        }catch(err){
-          alert('엑셀 파일을 읽는 중 문제가 발생했습니다. 직접 입력해주세요.');
-        }
-      }
-      document.getElementById('planFileBox').innerHTML = planFileBoxInnerHtml(s);
-      rewire();
     };
-    if(isExcel) reader.readAsArrayBuffer(f); else reader.readAsDataURL(f);
+    reader.readAsArrayBuffer(f);
   });
 }
 
+/* ---------- generic doc upload (QC files, logistics docs) ---------- */
+function wireQcDocUpload(s){
+  const rebind = ()=>{
+    document.querySelectorAll('#qcDocList .viewDoc').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        const idx = +e.target.closest('.docrow').dataset.idx;
+        const d = s.production.qc.files[idx];
+        if(d.fileType && d.fileType.startsWith('image/')) openLightbox(d.fileDataUrl);
+        else window.open(d.fileDataUrl, '_blank');
+      });
+    });
+    document.querySelectorAll('#qcDocList .delDoc').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        const idx = +e.target.closest('.docrow').dataset.idx;
+        s.production.qc.files.splice(idx,1);
+        document.getElementById('qcDocList').innerHTML = s.production.qc.files.map((d,i)=>qcDocRowHtml(d,i)).join('');
+        rebind();
+      });
+    });
+  };
+  rebind();
+  document.getElementById('addQcDoc').addEventListener('click', ()=> document.getElementById('qcDocInput').click());
+  document.getElementById('qcDocInput').addEventListener('change', (e)=>{
+    const f = e.target.files[0]; if(!f) return;
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      s.production.qc.files = s.production.qc.files || [];
+      s.production.qc.files.push({ fileDataUrl:reader.result, fileName:f.name, fileType:f.type });
+      document.getElementById('qcDocList').innerHTML = s.production.qc.files.map((d,i)=>qcDocRowHtml(d,i)).join('');
+      rebind();
+    };
+    reader.readAsDataURL(f);
+    e.target.value='';
+  });
+}
+function wireLogDocUpload(s){
+  s.logistics.docs = s.logistics.docs || [];
+  const rebind = ()=>{
+    document.querySelectorAll('#logDocList .viewDoc').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        const idx = +e.target.closest('.docrow').dataset.idx;
+        const d = s.logistics.docs[idx];
+        if(d.fileType && d.fileType.startsWith('image/')) openLightbox(d.fileDataUrl);
+        else window.open(d.fileDataUrl, '_blank');
+      });
+    });
+    document.querySelectorAll('#logDocList .delDoc').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        const idx = +e.target.closest('.docrow').dataset.idx;
+        s.logistics.docs.splice(idx,1);
+        document.getElementById('logDocList').innerHTML = s.logistics.docs.map((d,i)=>logDocRowHtml(d,i)).join('');
+        rebind();
+      });
+    });
+    document.querySelectorAll('#logDocList .ld_type').forEach((sel,i)=>{
+      sel.addEventListener('change', ()=>{ s.logistics.docs[i].type = sel.value; });
+    });
+  };
+  rebind();
+  document.getElementById('addLogDoc').addEventListener('click', ()=> document.getElementById('logDocInput').click());
+  document.getElementById('logDocInput').addEventListener('change', (e)=>{
+    const f = e.target.files[0]; if(!f) return;
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      s.logistics.docs.push({ type:'기타', fileDataUrl:reader.result, fileName:f.name, fileType:f.type });
+      document.getElementById('logDocList').innerHTML = s.logistics.docs.map((d,i)=>logDocRowHtml(d,i)).join('');
+      rebind();
+    };
+    reader.readAsDataURL(f);
+    e.target.value='';
+  });
+}
+
+/* ---------- lightbox ---------- */
 let lbScale = 1;
 function openLightbox(src){
-  lbScale = 1;
-  document.getElementById('lightboxImg').src = src;
+  lbScale = 1; document.getElementById('lightboxImg').src = src;
   document.getElementById('lightboxImg').style.transform = 'scale(1)';
   document.getElementById('lightbox').classList.add('show');
 }
@@ -976,101 +1161,100 @@ document.getElementById('lbZoomReset').addEventListener('click', ()=>{ lbScale=1
 /* ---------- wire per-stage widgets ---------- */
 function wireStageWidgets(s){
   if(s.stage==='기획'){
-    wirePlanFileUpload(s);
+    const thumb = document.getElementById('planImgThumb');
+    if(thumb) thumb.addEventListener('click', ()=> openLightbox(s.planImageDataUrl));
     wireIssueAdd(s);
     return;
   }
   if(s.stage==='작지서'){
     let sizes = (s.sizeRange||'').split('/').map(x=>x.trim()).filter(Boolean);
     if(sizes.length===0 && s.workOrder.colorSizeMatrix.length){
-      const keySet = new Set();
-      s.workOrder.colorSizeMatrix.forEach(r=> Object.keys(r.qtyBySize||{}).forEach(k=>keySet.add(k)));
+      const keySet = new Set(); s.workOrder.colorSizeMatrix.forEach(r=> Object.keys(r.qtyBySize||{}).forEach(k=>keySet.add(k)));
       sizes = [...keySet];
     }
     currentSizes = sizes;
     document.getElementById('matrixHeadRow').innerHTML = matrixHeadHtml(currentSizes);
     document.getElementById('matrixBody').innerHTML = (s.workOrder.colorSizeMatrix||[]).map(r=>matrixRowHtml(r, currentSizes)).join('');
     bindMatrixRowEvents();
-
     document.getElementById('matBody').innerHTML = (s.workOrder.materials||[]).map(matRowHtml).join('');
     bindMatRowEvents();
-
     document.getElementById('applySizes').addEventListener('click', ()=>{
       const sizes2 = (document.getElementById('f_sizeRange').value||'').split('/').map(x=>x.trim()).filter(Boolean);
       const colors2 = (document.getElementById('f_colorComposition').value||'').split('/').map(x=>x.trim()).filter(Boolean);
       rebuildMatrix(sizes2, colors2);
     });
     document.getElementById('addMatrixRow').addEventListener('click', ()=>{
-      const existing = readMatrixRowsFromDOM(currentSizes);
-      existing.push({color:'', qtyBySize:{}});
-      document.getElementById('matrixBody').innerHTML = existing.map(r=>matrixRowHtml(r, currentSizes)).join('');
-      bindMatrixRowEvents();
+      const existing = readMatrixRowsFromDOM(currentSizes); existing.push({color:'', qtyBySize:{}});
+      document.getElementById('matrixBody').innerHTML = existing.map(r=>matrixRowHtml(r, currentSizes)).join(''); bindMatrixRowEvents();
     });
     document.getElementById('addMatRow').addEventListener('click', ()=>{
-      const existing = readMatRowsFromDOM();
-      existing.push({item:'', spec:'', content:'', qty:'', note:''});
-      document.getElementById('matBody').innerHTML = existing.map(matRowHtml).join('');
-      bindMatRowEvents();
+      const existing = readMatRowsFromDOM(); existing.push({item:'', spec:'', content:'', qty:'', note:''});
+      document.getElementById('matBody').innerHTML = existing.map(matRowHtml).join(''); bindMatRowEvents();
     });
     wireFileUpload(s);
     wireIssueAdd(s);
     return;
   }
   if(s.stage==='생산'){
-    bindShipRowEvents();
-    document.getElementById('addShipRow').addEventListener('click', ()=>{
-      const existing = readShipRowsFromDOM();
-      existing.push({type:'부분출고', qty:'', date:'', note:''});
-      document.getElementById('shipBody').innerHTML = existing.map(shipRowHtml).join('');
-      bindShipRowEvents();
+    bindMatCardEvents();
+    document.getElementById('addProdMat').addEventListener('click', ()=>{
+      const newMat = {id:uid(), type:'기타', name:'', supplier:'', factory:'', orderDate:'', expectedInDate:'', totalQty:'', receipts:[], inspected:false, sewingInDate:'', note:''};
+      document.getElementById('prodMatList').insertAdjacentHTML('beforeend', matCardHtml(newMat));
+      bindMatCardEvents();
     });
     ['qc_total','qc_fail'].forEach(id=>{
       document.getElementById(id).addEventListener('input', ()=>{
-        const total = Number(document.getElementById('qc_total').value)||0;
-        const fail = Number(document.getElementById('qc_fail').value)||0;
-        const badgeHost = document.getElementById('qc_note').closest('.section').querySelector('div[style*="margin-top:10px"]:last-child');
+        document.getElementById('qcBadge').innerHTML = qcBadgeHtml({
+          totalQty: document.getElementById('qc_total').value, failQty: document.getElementById('qc_fail').value
+        });
       });
     });
+    wireQcDocUpload(s);
     wireIssueAdd(s);
     return;
   }
-  if(s.stage==='완료'){
+  if(s.stage==='물류통관'){
+    bindShipRowEvents();
+    document.getElementById('addShipRow').addEventListener('click', ()=>{
+      const existing = readShipRowsFromDOM();
+      existing.push({seqLabel:(existing.length+1)+'차', date:'', color:'', size:'', qty:'', box:'', logisticsCompany:'', receivedYn:false, receivedDate:'', note:''});
+      document.getElementById('shipBody').innerHTML = existing.map(shipRowHtml).join(''); bindShipRowEvents();
+    });
+    wireLogDocUpload(s);
     wireIssueAdd(s);
     return;
   }
 }
 function wireIssueAdd(s){
-  const btn = document.getElementById('addIssue');
-  if(!btn) return;
+  const btn = document.getElementById('addIssue'); if(!btn) return;
   btn.addEventListener('click', ()=>{
-    const inp = document.getElementById('newIssueContent');
-    const val = inp.value.trim();
-    if(!val) return;
+    const inp = document.getElementById('newIssueContent'); const val = inp.value.trim(); if(!val) return;
     s.issues = s.issues || [];
-    s.issues.push({stage:s.stage, content:val, company:'', date:new Date().toISOString().slice(0,10), resolved:false, memo:''});
+    s.issues.push({stage:s.stage, content:val, company:'', date:new Date().toISOString().slice(0,10), resolved:false});
     document.getElementById('issueList').innerHTML = s.issues.map(issueHtml).join('');
     inp.value='';
   });
 }
 
+/* ---------- stage pill switching (event delegation) ---------- */
+document.getElementById('stagePills').addEventListener('click', (e)=>{
+  const p = e.target.closest('.pill'); if(!p || !workingCopy) return;
+  try{ syncCurrentSectionIntoWorkingCopy(); }catch(err){ console.error('sync error (ignored):', err); }
+  workingCopy.stage = p.dataset.stage;
+  renderModalStage();
+});
+
 /* ---------- save / delete ---------- */
 document.getElementById('btnSave').addEventListener('click', ()=>{
-  syncCurrentSectionIntoWorkingCopy();
+  try{ syncCurrentSectionIntoWorkingCopy(); }catch(err){ console.error(err); }
   const s = workingCopy;
-  if(editingId){
-    const idx = DATA.findIndex(d=>d.id===editingId);
-    DATA[idx] = s;
-  } else {
-    DATA.push(s);
-  }
-  saveAll();
-  closeModal();
+  if(editingId){ const idx = DATA.findIndex(d=>d.id===editingId); DATA[idx] = s; } else { DATA.push(s); }
+  saveAll(); closeModal();
 });
 document.getElementById('btnDelete').addEventListener('click', ()=>{
   if(!editingId) return;
-  if(!confirm('이 스타일을 삭제하시겠습니까? (완료 처리를 원하면 삭제 대신 "완료" 단계로 변경하세요)')) return;
-  DATA = DATA.filter(d=>d.id!==editingId);
-  saveAll(); closeModal();
+  if(!confirm('이 스타일을 삭제하시겠습니까?')) return;
+  DATA = DATA.filter(d=>d.id!==editingId); saveAll(); closeModal();
 });
 document.getElementById('btnCancel').addEventListener('click', closeModal);
 document.getElementById('modalClose').addEventListener('click', closeModal);
@@ -1080,7 +1264,6 @@ document.getElementById('btnSeed').addEventListener('click', ()=>{
   if(DATA.length && !confirm('기존 데이터가 있습니다. 테스트 데이터를 추가하시겠습니까?')) return;
   seedData();
 });
-
 ['fBrand','fSeason','fStage','fSearch'].forEach(id=>{
   document.getElementById(id).addEventListener('input', render);
   document.getElementById(id).addEventListener('change', render);
