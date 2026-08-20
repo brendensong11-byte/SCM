@@ -465,6 +465,7 @@ function rowHtml(s){
 
 /* ---------- bulk plan excel upload ---------- */
 const PLAN_FIELD_ALIASES = {
+  styleNo: ['STYLE','스타일','스타일번호','스타일넘버'],
   itemName: ['아이템/용도','아이템명','아이템','품목','상품명'],
   composition: ['구성'],
   colorComposition: ['컬러구성','컬러'],
@@ -473,26 +474,95 @@ const PLAN_FIELD_ALIASES = {
   price: ['판매가','가격'],
   sizeRange: ['사이즈'],
   material: ['소재'],
-  origin: ['원산지'],
+  origin: ['원산지','생산처'],
   dueInDate: ['입고예정일','입고일'],
-  launchDate: ['런칭희망일','런칭일'],
+  launchDate: ['런칭희망일','런칭일','런칭 희망일'],
   brand: ['브랜드'],
   season: ['시즌']
 };
-function mapRowToStyle(rowObj, defaultBrand, defaultSeason){
+const MULTILINE_FIELDS = ['colorComposition','sizeRange','composition','material'];
+function normalizeCellValue(v, field){
+  let s = String(v).trim();
+  if(MULTILINE_FIELDS.includes(field)){
+    s = s.replace(/\r\n/g,'\n').split('\n').map(x=>x.trim()).filter(Boolean).join('/');
+  } else {
+    s = s.replace(/\r\n/g,' ').replace(/\n/g,' ').replace(/\s+/g,' ').trim();
+  }
+  return s;
+}
+function normLabel(s){ return String(s||'').replace(/\s/g,''); }
+function buildHeaderColumnMap(headerRow){
+  const colMap = {};
+  (headerRow||[]).forEach((cell, idx)=>{
+    const label = normLabel(cell);
+    if(!label) return;
+    Object.entries(PLAN_FIELD_ALIASES).forEach(([field, aliases])=>{
+      if(colMap[field]!==undefined) return;
+      if(aliases.some(a=> label===normLabel(a))) colMap[field] = idx;
+    });
+  });
+  return colMap;
+}
+function findHeaderRowIndex(rows){
+  let bestIdx = 0, bestScore = -1;
+  for(let i=0;i<Math.min(rows.length,8);i++){
+    const score = Object.keys(buildHeaderColumnMap(rows[i])).length;
+    if(score>bestScore){ bestScore=score; bestIdx=i; }
+  }
+  return {idx:bestIdx, score:bestScore};
+}
+function guessBrandSeasonFromContext(sheetName, titleRowText){
+  const text = (sheetName||'') + ' ' + (titleRowText||'');
+  let brand = '';
+  if(text.includes('스노야')) brand = '스노야';
+  else if(text.includes('모브온') || text.includes('모브앤타임') || text.includes('모브')) brand = '모브온';
+  let season = '';
+  const m = text.match(/(\d{2}(FW|SS))/i);
+  if(m) season = m[1].toUpperCase();
+  return {brand, season};
+}
+function rowArrayToStyle(row, colMap, defaultBrand, defaultSeason){
   const st = newStyle();
   st.brand = defaultBrand || ''; st.season = defaultSeason || '';
-  Object.entries(PLAN_FIELD_ALIASES).forEach(([field, aliases])=>{
-    for(const alias of aliases){
-      if(rowObj[alias]!==undefined && rowObj[alias]!==''){ st[field] = rowObj[alias]; break; }
-    }
+  Object.entries(colMap).forEach(([field, idx])=>{
+    const raw = row[idx];
+    if(raw===undefined || raw===null || String(raw).trim()==='') return;
+    st[field] = normalizeCellValue(raw, field);
   });
   return st;
 }
-async function extractExcelRowImages(arrayBuffer){
+async function extractExcelRowImagesForSheet(arrayBuffer, targetSheetName){
   const rowToImage = {};
   try{
     const zip = await JSZip.loadAsync(arrayBuffer);
+    if(!zip.files['xl/workbook.xml']) return rowToImage;
+    const wbXml = await zip.files['xl/workbook.xml'].async('text');
+    const wbDoc = new DOMParser().parseFromString(wbXml, 'application/xml');
+    let targetRId = null;
+    Array.from(wbDoc.getElementsByTagName('sheet')).forEach(sh=>{
+      if(sh.getAttribute('name')===targetSheetName){
+        targetRId = sh.getAttribute('r:id') || sh.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','id');
+      }
+    });
+    if(!targetRId) return rowToImage;
+    const relsXml = await zip.files['xl/_rels/workbook.xml.rels'].async('text');
+    const relsDoc = new DOMParser().parseFromString(relsXml, 'application/xml');
+    let sheetPath = null;
+    Array.from(relsDoc.getElementsByTagName('Relationship')).forEach(r=>{
+      if(r.getAttribute('Id')===targetRId) sheetPath = 'xl/' + r.getAttribute('Target').replace(/^\/?xl\//,'');
+    });
+    if(!sheetPath || !zip.files[sheetPath]) return rowToImage;
+    const sheetFile = sheetPath.split('/').pop();
+    const sheetRelsPath = sheetPath.replace(sheetFile, '_rels/' + sheetFile) + '.rels';
+    if(!zip.files[sheetRelsPath]) return rowToImage;
+    const sheetRelsXml = await zip.files[sheetRelsPath].async('text');
+    const sheetRelsDoc = new DOMParser().parseFromString(sheetRelsXml, 'application/xml');
+    let drawingPath = null;
+    Array.from(sheetRelsDoc.getElementsByTagName('Relationship')).forEach(r=>{
+      if((r.getAttribute('Type')||'').indexOf('drawing')>-1) drawingPath = 'xl/drawings/' + r.getAttribute('Target').split('/').pop();
+    });
+    if(!drawingPath || !zip.files[drawingPath]) return rowToImage;
+
     const mediaFiles = {};
     for(const name of Object.keys(zip.files)){
       if(!/^xl\/media\//.test(name)) continue;
@@ -502,62 +572,97 @@ async function extractExcelRowImages(arrayBuffer){
       const base64 = await zip.files[name].async('base64');
       mediaFiles[name] = `data:${mime};base64,${base64}`;
     }
-    const drawingEntries = Object.keys(zip.files).filter(n=>/^xl\/drawings\/drawing\d+\.xml$/.test(n));
-    for(const drawingPath of drawingEntries){
-      const xmlText = await zip.files[drawingPath].async('text');
-      const relsPath = drawingPath.replace('drawings/drawing', 'drawings/_rels/drawing') + '.rels';
-      let relsMap = {};
-      if(zip.files[relsPath]){
-        const relsText = await zip.files[relsPath].async('text');
-        const relsDoc = new DOMParser().parseFromString(relsText, 'application/xml');
-        Array.from(relsDoc.getElementsByTagName('Relationship')).forEach(r=>{
-          relsMap[r.getAttribute('Id')] = 'xl/media/' + r.getAttribute('Target').split('/').pop();
-        });
-      }
-      const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
-      const anchors = [...doc.getElementsByTagName('xdr:twoCellAnchor'), ...doc.getElementsByTagName('xdr:oneCellAnchor')];
-      anchors.forEach(anchor=>{
-        const fromEls = anchor.getElementsByTagName('xdr:from');
-        if(!fromEls.length) return;
-        const rowEls = fromEls[0].getElementsByTagName('xdr:row');
-        if(!rowEls.length) return;
-        const rowIdx = parseInt(rowEls[0].textContent, 10);
-        const blipEls = anchor.getElementsByTagName('a:blip');
-        if(!blipEls.length) return;
-        const rId = blipEls[0].getAttribute('r:embed');
-        const mediaPath = relsMap[rId];
-        if(mediaPath && mediaFiles[mediaPath]) rowToImage[rowIdx] = mediaFiles[mediaPath];
+    const drawingRelsPath = drawingPath.replace('drawings/', 'drawings/_rels/') + '.rels';
+    let relsMap = {};
+    if(zip.files[drawingRelsPath]){
+      const drRelsText = await zip.files[drawingRelsPath].async('text');
+      const drRelsDoc = new DOMParser().parseFromString(drRelsText, 'application/xml');
+      Array.from(drRelsDoc.getElementsByTagName('Relationship')).forEach(r=>{
+        relsMap[r.getAttribute('Id')] = 'xl/media/' + r.getAttribute('Target').split('/').pop();
       });
     }
+    const xmlText = await zip.files[drawingPath].async('text');
+    const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+    const anchors = [...doc.getElementsByTagName('xdr:twoCellAnchor'), ...doc.getElementsByTagName('xdr:oneCellAnchor')];
+    anchors.forEach(anchor=>{
+      const fromEls = anchor.getElementsByTagName('xdr:from');
+      if(!fromEls.length) return;
+      const rowEls = fromEls[0].getElementsByTagName('xdr:row');
+      if(!rowEls.length) return;
+      const rowIdx = parseInt(rowEls[0].textContent, 10);
+      const blipEls = anchor.getElementsByTagName('a:blip');
+      if(!blipEls.length) return;
+      const rId = blipEls[0].getAttribute('r:embed');
+      const mediaPath = relsMap[rId];
+      if(mediaPath && mediaFiles[mediaPath]) rowToImage[rowIdx] = mediaFiles[mediaPath];
+    });
   }catch(err){ console.error('이미지 추출 실패(무시하고 진행):', err); }
   return rowToImage;
 }
+
+function pickSheetName(sheetNames){
+  if(sheetNames.length===1) return sheetNames[0];
+  const listText = sheetNames.map((n,i)=>`${i+1}. ${n}`).join('\n');
+  const answer = prompt(`이 파일에는 시트가 ${sheetNames.length}개 있습니다. 등록할 시트 번호를 입력해주세요:\n\n${listText}`, '1');
+  if(answer===null) return null;
+  const n = parseInt(answer.trim(), 10);
+  if(n>=1 && n<=sheetNames.length) return sheetNames[n-1];
+  alert('올바른 번호를 입력하지 않아 취소되었습니다.');
+  return null;
+}
+
 document.getElementById('btnBulkPlan').addEventListener('click', ()=> document.getElementById('bulkPlanInput').click());
 document.getElementById('bulkPlanInput').addEventListener('change', (e)=>{
   const f = e.target.files[0];
   if(!f) return;
   const reader = new FileReader();
   reader.onload = async ()=>{
-    let created = 0, withImage = 0;
+    let created = 0, withImage = 0, skipped = 0;
     try{
       const buf = reader.result;
       const wb = XLSX.read(buf, { type:'array' });
-      const ws = wb.Sheets[wb.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json(ws, { defval:'' });
+      const sheetName = pickSheetName(wb.SheetNames);
+      if(!sheetName){ e.target.value=''; return; }
+      const ws = wb.Sheets[sheetName];
+      const rawRows = XLSX.utils.sheet_to_json(ws, { header:1, defval:'' });
+      if(!rawRows.length){ alert('선택한 시트에서 데이터를 찾지 못했습니다.'); e.target.value=''; return; }
+
+      const {idx: headerIdx, score} = findHeaderRowIndex(rawRows);
+      if(score < 2){
+        alert('이 시트에서 "아이템명", "컬러구성" 같은 항목 제목 줄을 찾지 못했습니다. 시트 구성을 확인해주세요.');
+        e.target.value=''; return;
+      }
+      const colMap = buildHeaderColumnMap(rawRows[headerIdx]);
+      const titleRowText = rawRows.slice(0, headerIdx).map(r=>r.join(' ')).join(' ');
+      const {brand: defaultBrand, season: defaultSeason} = guessBrandSeasonFromContext(sheetName, titleRowText);
+
       let rowToImage = {};
-      try{ rowToImage = await extractExcelRowImages(buf.slice(0)); }catch(err){ console.error(err); }
-      rows.forEach((row, idx)=>{
-        const st = mapRowToStyle(row, '', '');
-        const img = rowToImage[idx+1]; // +1 : header row occupies xml row 0
-        if(img){ st.planImageDataUrl = img; withImage++; }
-        DATA.push(st);
-        created++;
+      try{ rowToImage = await extractExcelRowImagesForSheet(buf.slice(0), sheetName); }catch(err){ console.error(err); }
+
+      const dataRows = rawRows.slice(headerIdx+1);
+      dataRows.forEach((row, i)=>{
+        try{
+          const isEmpty = row.every(c=> String(c||'').trim()==='');
+          if(isEmpty){ return; }
+          const st = rowArrayToStyle(row, colMap, defaultBrand, defaultSeason);
+          if(!st.itemName && !st.styleNo){ skipped++; return; }
+          const sheetRowIdx = headerIdx + 1 + i;
+          const img = rowToImage[sheetRowIdx];
+          if(img){ st.planImageDataUrl = img; withImage++; }
+          DATA.push(st);
+          created++;
+        }catch(rowErr){ console.error('행 처리 실패(건너뜀):', rowErr); skipped++; }
       });
-      saveAll();
-      alert(`기획 아이템 ${created}건을 등록했습니다.${withImage?` (이미지 자동 매칭 ${withImage}건)`:''}\n내용을 확인하고 필요하면 각 아이템 상세에서 수정해주세요.`);
+
+      if(created===0){
+        alert('등록할 수 있는 항목을 찾지 못했습니다. 시트 구성을 확인해주세요.');
+      } else {
+        saveAll();
+        alert(`"${sheetName}" 시트에서 기획 아이템 ${created}건을 등록했습니다.${withImage?` (이미지 자동 매칭 ${withImage}건)`:''}${skipped?` (건너뛴 빈 행 ${skipped}건)`:''}\n내용을 확인하고 필요하면 각 아이템 상세에서 수정해주세요.`);
+      }
     }catch(err){
       console.error(err);
-      alert('엑셀 파일을 읽는 중 문제가 발생했습니다. 파일 형식을 확인해주세요.');
+      alert('엑셀 파일을 읽는 중 문제가 발생했습니다: ' + (err && err.message ? err.message : '알 수 없는 오류') + '\n파일 형식을 확인해주세요.');
     }
     e.target.value = '';
   };
