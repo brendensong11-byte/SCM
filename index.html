@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>J PROJECT · SCM </title>
+<title>JPROJECT · 생산 관제</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
@@ -162,16 +162,33 @@ table.dyn td.total{font-family:var(--mono); font-weight:800; text-align:center;}
 .badge.pass{background:var(--ok-soft); color:var(--ok);}
 .badge.fail{background:var(--accent-soft); color:var(--accent);}
 
-.matcard{ border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:10px;}
-.matcard-head{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
-.matcard-head .grow{flex:1; min-width:120px;}
-.matcard .fields{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:10px;}
-.matcard .fields .field label{font-size:10px;}
-.matcard .receiptbox{margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); display:none;}
-.matcard .receiptbox.open{display:block;}
-.matcard .totals{font-family:var(--mono); font-size:11px; color:var(--ink-soft); margin-top:8px;}
+.matcard{ border:1px solid var(--line); border-radius:14px; margin-bottom:8px; overflow:hidden;}
+.matcard-summary{ display:flex; align-items:center; gap:12px; padding:12px 14px; cursor:pointer; }
+.matcard-summary .typebadge{ font-size:10.5px; font-weight:700; background:var(--bg); color:var(--ink-soft); padding:3px 9px; border-radius:20px; white-space:nowrap;}
+.matcard-summary .matname{ font-weight:700; font-size:13.5px; flex:1; min-width:100px;}
+.matcard-summary .qtytotal{ font-family:var(--mono); font-size:12px; color:var(--ink-soft); white-space:nowrap;}
+.matcard-summary .statusbadge{ font-family:var(--mono); font-size:10.5px; font-weight:800; padding:3px 9px; border-radius:20px; white-space:nowrap;}
+.matcard-summary .statusbadge.ok{background:var(--ok-soft); color:var(--ok);}
+.matcard-summary .statusbadge.wait{background:var(--soon-soft); color:var(--soon);}
+.matcard-summary .caret{ color:var(--ink-soft); font-size:11px; transition:transform .15s var(--ease);}
+.matcard.open .caret{transform:rotate(90deg);}
+.matcard-detail{ display:none; padding:0 16px 16px; border-top:1px solid var(--line);}
+.matcard.open .matcard-detail{display:block;}
+.matcard-detail .fields{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:14px;}
+.matcard-detail .fields .field label{font-size:10px;}
+.matcard-detail .headrow{display:flex; gap:10px; align-items:center; margin-top:14px;}
+.matcard-detail .headrow .grow{flex:1;}
+.matcard .receiptbox{margin-top:10px;}
+.matcard .totals{font-family:var(--mono); font-size:11px; color:var(--ink-soft); margin-top:10px;}
 .matcard .totals b{color:var(--ink);}
 
+.excel-preview-wrap{ margin-top:12px; }
+.excel-preview{
+  overflow:auto; max-height:520px; border:1px solid var(--line); border-radius:12px; padding:10px; background:var(--paper);
+}
+.excel-preview table{ border-collapse:collapse; font-size:11px; }
+.excel-preview table td, .excel-preview table th{ border:1px solid var(--line); padding:3px 6px; white-space:pre-line; }
+.excel-preview .empty-preview{ padding:24px; text-align:center; color:var(--ink-soft); font-size:12.5px; }
 .doclist{display:flex; flex-direction:column; gap:8px;}
 .docrow{ display:flex; align-items:center; gap:10px; border:1px solid var(--line); border-radius:12px; padding:9px 12px;}
 .docrow select{width:120px;}
@@ -232,7 +249,29 @@ table.dyn td.total{font-family:var(--mono); font-weight:800; text-align:center;}
 </div>
 
 <script>
-let DATA = JSON.parse(localStorage.getItem('jproject_data') || '[]');
+const STAGES = ['기획','작지서','생산','물류통관'];
+const STAGE_LABEL = {기획:'기획', 작지서:'작업지시서', 생산:'생산', 물류통관:'물류·통관'};
+function migrateStyle(s){
+  const base = newStyle();
+  Object.keys(base).forEach(k=>{ if(s[k]===undefined) s[k] = base[k]; });
+  ['workOrder','production','logistics'].forEach(section=>{
+    if(!s[section] || typeof s[section] !== 'object'){ s[section] = base[section]; return; }
+    Object.keys(base[section]).forEach(k=>{ if(s[section][k]===undefined) s[section][k] = base[section][k]; });
+  });
+  if(!s.production.qc || typeof s.production.qc !== 'object') s.production.qc = base.production.qc;
+  else Object.keys(base.production.qc).forEach(k=>{ if(s.production.qc[k]===undefined) s.production.qc[k] = base.production.qc[k]; });
+  if(!Array.isArray(s.issues)) s.issues = [];
+  if(!Array.isArray(s.production.materials)) s.production.materials = [];
+  if(!Array.isArray(s.logistics.shipments)) s.logistics.shipments = [];
+  if(!Array.isArray(s.logistics.docs)) s.logistics.docs = [];
+  if(!Array.isArray(s.production.qc.files)) s.production.qc.files = [];
+  if(!Array.isArray(s.workOrder.colorSizeMatrix)) s.workOrder.colorSizeMatrix = [];
+  if(!Array.isArray(s.workOrder.materials)) s.workOrder.materials = [];
+  if(!s.id) s.id = uid();
+  if(!STAGES.includes(s.stage)) s.stage = '기획';
+  return s;
+}
+let DATA = JSON.parse(localStorage.getItem('jproject_data') || '[]').map(migrateStyle);
 let editingId = null;
 let workingCopy = null;
 
@@ -240,8 +279,6 @@ function saveAll(){ localStorage.setItem('jproject_data', JSON.stringify(DATA));
 function uid(){ return 'S' + Math.random().toString(36).slice(2,9); }
 function esc(v){ return (v===undefined||v===null) ? '' : String(v).replace(/"/g,'&quot;'); }
 
-const STAGES = ['기획','작지서','생산','물류통관'];
-const STAGE_LABEL = {기획:'기획', 작지서:'작업지시서', 생산:'생산', 물류통관:'물류·통관'};
 
 function newStyle(){
   return {
@@ -478,7 +515,8 @@ const PLAN_FIELD_ALIASES = {
   dueInDate: ['입고예정일','입고일'],
   launchDate: ['런칭희망일','런칭일','런칭 희망일'],
   brand: ['브랜드'],
-  season: ['시즌']
+  season: ['시즌'],
+  imageColRef: ['이미지','상품이미지','사진','착장이미지']
 };
 const MULTILINE_FIELDS = ['colorComposition','sizeRange','composition','material'];
 function normalizeCellValue(v, field){
@@ -525,14 +563,15 @@ function rowArrayToStyle(row, colMap, defaultBrand, defaultSeason){
   const st = newStyle();
   st.brand = defaultBrand || ''; st.season = defaultSeason || '';
   Object.entries(colMap).forEach(([field, idx])=>{
+    if(field==='imageColRef') return; // used only to locate the image column, not a real style field
     const raw = row[idx];
     if(raw===undefined || raw===null || String(raw).trim()==='') return;
     st[field] = normalizeCellValue(raw, field);
   });
   return st;
 }
-async function extractExcelRowImagesForSheet(arrayBuffer, targetSheetName){
-  const rowToImage = {};
+async function extractExcelRowImagesForSheet(arrayBuffer, targetSheetName, preferredCol){
+  const rowCandidates = {}; // rowIdx -> [{col, dataUrl}]
   try{
     const zip = await JSZip.loadAsync(arrayBuffer);
     if(!zip.files['xl/workbook.xml']) return rowToImage;
@@ -588,16 +627,136 @@ async function extractExcelRowImagesForSheet(arrayBuffer, targetSheetName){
       const fromEls = anchor.getElementsByTagName('xdr:from');
       if(!fromEls.length) return;
       const rowEls = fromEls[0].getElementsByTagName('xdr:row');
-      if(!rowEls.length) return;
+      const colEls = fromEls[0].getElementsByTagName('xdr:col');
+      if(!rowEls.length || !colEls.length) return;
       const rowIdx = parseInt(rowEls[0].textContent, 10);
+      const colIdx = parseInt(colEls[0].textContent, 10);
       const blipEls = anchor.getElementsByTagName('a:blip');
       if(!blipEls.length) return;
       const rId = blipEls[0].getAttribute('r:embed');
       const mediaPath = relsMap[rId];
-      if(mediaPath && mediaFiles[mediaPath]) rowToImage[rowIdx] = mediaFiles[mediaPath];
+      if(mediaPath && mediaFiles[mediaPath]){
+        (rowCandidates[rowIdx] = rowCandidates[rowIdx] || []).push({col:colIdx, dataUrl:mediaFiles[mediaPath]});
+      }
     });
   }catch(err){ console.error('이미지 추출 실패(무시하고 진행):', err); }
+
+  // for rows with multiple images anchored (e.g. product photo + a separate quantity-chart image),
+  // prefer the one closest to the "이미지" header column; fall back to the leftmost image.
+  const rowToImage = {};
+  Object.keys(rowCandidates).forEach(rowIdx=>{
+    const cands = rowCandidates[rowIdx];
+    let best = cands[0];
+    cands.forEach(c=>{
+      if(preferredCol!==undefined && preferredCol!==null){
+        if(Math.abs(c.col-preferredCol) < Math.abs(best.col-preferredCol)) best = c;
+      } else if(c.col < best.col){ best = c; }
+    });
+    rowToImage[rowIdx] = best.dataUrl;
+  });
   return rowToImage;
+}
+
+async function extractAllImagesForSheet(arrayBuffer, targetSheetName){
+  // returns [{row, col, dataUrl}] for every image anchored in the given sheet
+  const list = [];
+  try{
+    const zip = await JSZip.loadAsync(arrayBuffer);
+    if(!zip.files['xl/workbook.xml']) return list;
+    const wbXml = await zip.files['xl/workbook.xml'].async('text');
+    const wbDoc = new DOMParser().parseFromString(wbXml, 'application/xml');
+    let targetRId = null;
+    Array.from(wbDoc.getElementsByTagName('sheet')).forEach(sh=>{
+      if(sh.getAttribute('name')===targetSheetName){
+        targetRId = sh.getAttribute('r:id') || sh.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','id');
+      }
+    });
+    if(!targetRId) return list;
+    const relsXml = await zip.files['xl/_rels/workbook.xml.rels'].async('text');
+    const relsDoc = new DOMParser().parseFromString(relsXml, 'application/xml');
+    let sheetPath = null;
+    Array.from(relsDoc.getElementsByTagName('Relationship')).forEach(r=>{
+      if(r.getAttribute('Id')===targetRId) sheetPath = 'xl/' + r.getAttribute('Target').replace(/^\/?xl\//,'');
+    });
+    if(!sheetPath || !zip.files[sheetPath]) return list;
+    const sheetFile = sheetPath.split('/').pop();
+    const sheetRelsPath = sheetPath.replace(sheetFile, '_rels/' + sheetFile) + '.rels';
+    if(!zip.files[sheetRelsPath]) return list;
+    const sheetRelsXml = await zip.files[sheetRelsPath].async('text');
+    const sheetRelsDoc = new DOMParser().parseFromString(sheetRelsXml, 'application/xml');
+    let drawingPath = null;
+    Array.from(sheetRelsDoc.getElementsByTagName('Relationship')).forEach(r=>{
+      if((r.getAttribute('Type')||'').indexOf('drawing')>-1) drawingPath = 'xl/drawings/' + r.getAttribute('Target').split('/').pop();
+    });
+    if(!drawingPath || !zip.files[drawingPath]) return list;
+
+    const mediaFiles = {};
+    for(const name of Object.keys(zip.files)){
+      if(!/^xl\/media\//.test(name)) continue;
+      const ext = name.split('.').pop().toLowerCase();
+      const mime = ext==='png'?'image/png':(ext==='jpg'||ext==='jpeg')?'image/jpeg':null;
+      if(!mime) continue;
+      const base64 = await zip.files[name].async('base64');
+      mediaFiles[name] = `data:${mime};base64,${base64}`;
+    }
+    const drawingRelsPath = drawingPath.replace('drawings/', 'drawings/_rels/') + '.rels';
+    let relsMap = {};
+    if(zip.files[drawingRelsPath]){
+      const drRelsText = await zip.files[drawingRelsPath].async('text');
+      const drRelsDoc = new DOMParser().parseFromString(drRelsText, 'application/xml');
+      Array.from(drRelsDoc.getElementsByTagName('Relationship')).forEach(r=>{
+        relsMap[r.getAttribute('Id')] = 'xl/media/' + r.getAttribute('Target').split('/').pop();
+      });
+    }
+    const xmlText = await zip.files[drawingPath].async('text');
+    const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+    const anchors = [...doc.getElementsByTagName('xdr:twoCellAnchor'), ...doc.getElementsByTagName('xdr:oneCellAnchor')];
+    anchors.forEach(anchor=>{
+      const fromEls = anchor.getElementsByTagName('xdr:from');
+      if(!fromEls.length) return;
+      const rowEls = fromEls[0].getElementsByTagName('xdr:row');
+      const colEls = fromEls[0].getElementsByTagName('xdr:col');
+      if(!rowEls.length || !colEls.length) return;
+      const row = parseInt(rowEls[0].textContent, 10);
+      const col = parseInt(colEls[0].textContent, 10);
+      const blipEls = anchor.getElementsByTagName('a:blip');
+      if(!blipEls.length) return;
+      const rId = blipEls[0].getAttribute('r:embed');
+      const mediaPath = relsMap[rId];
+      if(mediaPath && mediaFiles[mediaPath]) list.push({row, col, dataUrl:mediaFiles[mediaPath]});
+    });
+  }catch(err){ console.error('시트 이미지 전체 추출 실패(무시):', err); }
+  return list;
+}
+
+function injectImagesIntoPreviewTable(tableEl, images){
+  if(!images.length) return;
+  // walk the rendered HTML table and compute each cell's true (row,col) accounting for merged cells
+  const rows = Array.from(tableEl.querySelectorAll('tr'));
+  const occupied = []; // occupied[r][c] = true once filled by a rowspan/colspan from above
+  rows.forEach((tr, rIdx)=>{
+    occupied[rIdx] = occupied[rIdx] || [];
+    let cIdx = 0;
+    const cells = Array.from(tr.children);
+    cells.forEach(td=>{
+      while(occupied[rIdx][cIdx]) cIdx++;
+      const rowspan = parseInt(td.getAttribute('rowspan')||'1', 10);
+      const colspan = parseInt(td.getAttribute('colspan')||'1', 10);
+      const match = images.find(im=> im.row===rIdx && im.col===cIdx);
+      if(match){
+        const img = document.createElement('img');
+        img.src = match.dataUrl;
+        img.style.cssText = 'max-width:90px;max-height:90px;display:block;cursor:zoom-in;border-radius:4px;';
+        img.addEventListener('click', ()=> openLightbox(match.dataUrl));
+        td.appendChild(img);
+      }
+      for(let rr=rIdx; rr<rIdx+rowspan; rr++){
+        occupied[rr] = occupied[rr] || [];
+        for(let cc=cIdx; cc<cIdx+colspan; cc++) occupied[rr][cc] = true;
+      }
+      cIdx += colspan;
+    });
+  });
 }
 
 function pickSheetName(sheetNames){
@@ -637,7 +796,7 @@ document.getElementById('bulkPlanInput').addEventListener('change', (e)=>{
       const {brand: defaultBrand, season: defaultSeason} = guessBrandSeasonFromContext(sheetName, titleRowText);
 
       let rowToImage = {};
-      try{ rowToImage = await extractExcelRowImagesForSheet(buf.slice(0), sheetName); }catch(err){ console.error(err); }
+      try{ rowToImage = await extractExcelRowImagesForSheet(buf.slice(0), sheetName, colMap.imageColRef); }catch(err){ console.error(err); }
 
       const dataRows = rawRows.slice(headerIdx+1);
       dataRows.forEach((row, i)=>{
@@ -774,9 +933,15 @@ function workOrderStageHtml(s){
   return `
   <div class="section">
     <div class="section-title">작업지시서 파일 (엑셀)</div>
-    <div class="hint">작업지시서는 엑셀 파일만 업로드할 수 있습니다. 올리면 파일이 저장되어 나중에 다시 열어볼 수 있어요.</div>
+    <div class="hint">작업지시서는 엑셀 파일만 업로드할 수 있습니다. 올리면 파일이 저장되고, 아래에서 원본 표를 그대로 볼 수 있어요.</div>
     <div class="filebox" id="fileBox" style="margin-top:8px;">${fileBoxInnerHtml(s)}</div>
     <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display:none;">
+    <div class="excel-preview-wrap">
+      <div class="row-actions" id="woSheetPickerWrap" style="display:none; margin-top:0; margin-bottom:8px;">
+        <label style="font-size:11.5px; color:var(--ink-soft); display:flex; align-items:center; gap:8px;">시트 <select id="woSheetSelect" style="border-radius:14px;"></select></label>
+      </div>
+      <div class="excel-preview" id="excelPreview"><div class="empty-preview">업로드하면 엑셀 원본 표가 여기 그대로 보여집니다.</div></div>
+    </div>
   </div>
   <div class="section">
     <div class="section-title">공장정보</div>
@@ -789,8 +954,13 @@ function workOrderStageHtml(s){
     <div class="field" style="margin-top:10px;"><label>기타 메모</label><textarea id="w_memo">${esc(s.workOrder.memo)}</textarea></div>
   </div>
   <div class="section">
-    <div class="section-title"><span>컬러 × 사이즈 제작수량</span><button type="button" class="small-btn" id="applySizes">사이즈 · 컬러 적용</button></div>
-    <div class="hint">"사이즈"와 "컬러구성"을 슬래시(/)로 구분해 적어두고 적용을 누르면 표가 자동으로 만들어집니다.</div>
+    <div class="section-title"><span>컬러 × 사이즈 제작수량</span>
+      <span style="display:flex; gap:6px;">
+        <button type="button" class="small-btn" id="autoFillFromExcel">작업지시서 표에서 자동 채우기</button>
+        <button type="button" class="small-btn" id="applySizes">사이즈 · 컬러 적용</button>
+      </span>
+    </div>
+    <div class="hint">"작업지시서 표에서 자동 채우기"는 위 미리보기에 나온 원본 표를 읽어 컬러·사이즈·수량과 원부자재를 최대한 채워봅니다 — 100% 정확하지 않을 수 있으니 원본과 꼭 대조해주세요. "사이즈·컬러 적용"은 위 필드값으로 직접 표 틀만 만드는 기존 방식입니다.</div>
     <div style="overflow-x:auto; margin-top:8px;">
       <table class="dyn" id="matrixTable"><thead><tr id="matrixHeadRow"><th>컬러</th></tr></thead><tbody id="matrixBody"></tbody></table>
     </div>
@@ -849,31 +1019,40 @@ function matCardHtml(m){
   const totalIn = (m.receipts||[]).reduce((a,r)=>a+(Number(r.qty)||0),0);
   const total = Number(m.totalQty)||0;
   const remain = Math.max(0, total-totalIn);
+  const done = total>0 && remain<=0;
   return `
   <div class="matcard" data-id="${m.id}">
-    <div class="matcard-head">
-      <select class="pm_type" style="width:100px;">
-        ${['원단','원사','부자재','라벨','택','기타'].map(t=>`<option ${m.type===t?'selected':''}>${t}</option>`).join('')}
-      </select>
-      <input class="pm_name grow leftalign" style="text-align:left;" value="${esc(m.name)}" placeholder="자재명">
-      <label style="display:flex; align-items:center; gap:5px; font-size:12px; color:var(--ink-soft);"><input type="checkbox" class="pm_inspected" ${m.inspected?'checked':''}> 검수완료</label>
-      <button type="button" class="small-btn mini toggleReceipt">입고내역</button>
-      <button type="button" class="small-btn mini delMat">삭제</button>
+    <div class="matcard-summary">
+      <span class="caret">▶</span>
+      <span class="typebadge">${m.type||'기타'}</span>
+      <span class="matname">${esc(m.name)||'(자재명 없음)'}</span>
+      <span class="qtytotal">${total?`${totalIn}/${total}`:'수량 미입력'}</span>
+      <span class="statusbadge ${done?'ok':'wait'}">${done?'입고완료':m.inspected?'검수완료':'진행중'}</span>
     </div>
-    <div class="fields">
-      <div class="field"><label>공급처</label><input class="pm_supplier" value="${esc(m.supplier)}"></div>
-      <div class="field"><label>생산공장</label><input class="pm_factory" value="${esc(m.factory)}"></div>
-      <div class="field"><label>발주일</label><input class="pm_orderDate" type="date" value="${esc(m.orderDate)}"></div>
-      <div class="field"><label>예상입고일</label><input class="pm_expectedInDate" type="date" value="${esc(m.expectedInDate)}"></div>
-      <div class="field"><label>전체수량</label><input class="pm_totalQty" value="${esc(m.totalQty)}"></div>
-      <div class="field"><label>봉제공장 입고일</label><input class="pm_sewingInDate" type="date" value="${esc(m.sewingInDate)}"></div>
-      <div class="field" style="grid-column:span 2;"><label>메모</label><input class="pm_note" value="${esc(m.note)}"></div>
-    </div>
-    <div class="totals">전체 <b>${total||0}</b> · 입고 <b>${totalIn}</b> · 미입고 <b>${remain}</b></div>
-    <div class="receiptbox">
-      <table class="dyn"><thead><tr><th>입고일</th><th>수량</th><th>장소</th><th>메모</th><th></th></tr></thead>
-      <tbody class="receiptBody">${(m.receipts||[]).map(receiptRowHtml).join('')}</tbody></table>
-      <div class="row-actions"><button type="button" class="small-btn mini addReceipt">+ 입고 추가</button></div>
+    <div class="matcard-detail">
+      <div class="headrow">
+        <select class="pm_type" style="width:100px;">
+          ${['원단','원사','부자재','라벨','택','기타'].map(t=>`<option ${m.type===t?'selected':''}>${t}</option>`).join('')}
+        </select>
+        <input class="pm_name grow leftalign" style="text-align:left;" value="${esc(m.name)}" placeholder="자재명">
+        <label style="display:flex; align-items:center; gap:5px; font-size:12px; color:var(--ink-soft); white-space:nowrap;"><input type="checkbox" class="pm_inspected" ${m.inspected?'checked':''}> 검수완료</label>
+        <button type="button" class="small-btn mini delMat">삭제</button>
+      </div>
+      <div class="fields">
+        <div class="field"><label>공급처</label><input class="pm_supplier" value="${esc(m.supplier)}"></div>
+        <div class="field"><label>생산공장</label><input class="pm_factory" value="${esc(m.factory)}"></div>
+        <div class="field"><label>전체수량</label><input class="pm_totalQty" value="${esc(m.totalQty)}"></div>
+        <div class="field"><label>발주일</label><input class="pm_orderDate" type="date" value="${esc(m.orderDate)}"></div>
+        <div class="field"><label>예상입고일</label><input class="pm_expectedInDate" type="date" value="${esc(m.expectedInDate)}"></div>
+        <div class="field"><label>봉제공장 입고일</label><input class="pm_sewingInDate" type="date" value="${esc(m.sewingInDate)}"></div>
+        <div class="field" style="grid-column:span 3;"><label>메모</label><input class="pm_note" value="${esc(m.note)}"></div>
+      </div>
+      <div class="totals">전체 <b>${total||0}</b> · 입고 <b>${totalIn}</b> · 미입고 <b>${remain}</b></div>
+      <div class="receiptbox">
+        <table class="dyn"><thead><tr><th>입고일</th><th>수량</th><th>장소</th><th>메모</th><th></th></tr></thead>
+        <tbody class="receiptBody">${(m.receipts||[]).map(receiptRowHtml).join('')}</tbody></table>
+        <div class="row-actions"><button type="button" class="small-btn mini addReceipt">+ 입고 추가</button></div>
+      </div>
     </div>
   </div>`;
 }
@@ -1075,20 +1254,41 @@ function refreshMatCardTotals(card){
   card.querySelectorAll('.receiptBody .rc_qty').forEach(inp=> totalIn += Number(inp.value)||0);
   const remain = Math.max(0, total-totalIn);
   card.querySelector('.totals').innerHTML = `전체 <b>${total||0}</b> · 입고 <b>${totalIn}</b> · 미입고 <b>${remain}</b>`;
+  card.querySelector('.qtytotal').textContent = total?`${totalIn}/${total}`:'수량 미입력';
+  refreshMatCardSummary(card);
 }
 function bindMatCardEvents(){
   document.querySelectorAll('#prodMatList .matcard').forEach(card=>{
-    card.querySelector('.toggleReceipt').addEventListener('click', ()=> card.querySelector('.receiptbox').classList.toggle('open'));
-    card.querySelector('.delMat').addEventListener('click', ()=> card.remove());
+    card.querySelector('.matcard-summary').addEventListener('click', ()=> card.classList.toggle('open'));
+    card.querySelector('.delMat').addEventListener('click', (e)=>{ e.stopPropagation(); card.remove(); });
+    card.querySelector('.headrow').addEventListener('click', (e)=> e.stopPropagation());
+    card.querySelector('.matcard-detail').addEventListener('click', (e)=> e.stopPropagation());
     card.querySelector('.addReceipt').addEventListener('click', ()=>{
       const tbody = card.querySelector('.receiptBody');
       tbody.insertAdjacentHTML('beforeend', receiptRowHtml({date:'',qty:'',location:'',note:''}));
       bindReceiptRowEvents(card);
-      card.querySelector('.receiptbox').classList.add('open');
     });
     card.querySelector('.pm_totalQty').addEventListener('input', ()=> refreshMatCardTotals(card));
+    ['pm_type','pm_name','pm_inspected'].forEach(cls=>{
+      const el = card.querySelector('.'+cls);
+      if(el) el.addEventListener('change', ()=> refreshMatCardSummary(card));
+      if(el) el.addEventListener('input', ()=> refreshMatCardSummary(card));
+    });
     bindReceiptRowEvents(card);
   });
+}
+function refreshMatCardSummary(card){
+  const type = card.querySelector('.pm_type').value;
+  const name = card.querySelector('.pm_name').value;
+  const inspected = card.querySelector('.pm_inspected').checked;
+  card.querySelector('.typebadge').textContent = type;
+  card.querySelector('.matname').textContent = name || '(자재명 없음)';
+  const total = Number(card.querySelector('.pm_totalQty').value)||0;
+  let totalIn = 0; card.querySelectorAll('.receiptBody .rc_qty').forEach(inp=> totalIn += Number(inp.value)||0);
+  const done = total>0 && (total-totalIn)<=0;
+  const badge = card.querySelector('.statusbadge');
+  badge.className = 'statusbadge ' + (done?'ok':'wait');
+  badge.textContent = done?'입고완료':(inspected?'검수완료':'진행중');
 }
 function bindReceiptRowEvents(card){
   card.querySelectorAll('.receiptBody .delRow').forEach(btn=>{
@@ -1137,6 +1337,172 @@ function scanWorkOrderLabels(wb){
   });
   return result;
 }
+function dataUrlToWorkbook(dataUrl){
+  const base64 = dataUrl.split(',')[1];
+  return XLSX.read(base64, {type:'base64'});
+}
+async function renderExcelPreview(wb, sheetName, rawArrayBuffer){
+  const box = document.getElementById('excelPreview');
+  if(!box) return;
+  try{
+    const ws = wb.Sheets[sheetName];
+    if(!ws){ box.innerHTML = '<div class="empty-preview">시트를 찾을 수 없습니다.</div>'; return; }
+    box.innerHTML = XLSX.utils.sheet_to_html(ws, {editable:false});
+    if(rawArrayBuffer){
+      try{
+        const images = await extractAllImagesForSheet(rawArrayBuffer.slice(0), sheetName);
+        const tableEl = box.querySelector('table');
+        if(tableEl && images.length) injectImagesIntoPreviewTable(tableEl, images);
+      }catch(err){ console.error('미리보기 이미지 삽입 실패(무시):', err); }
+    }
+  }catch(err){
+    console.error(err);
+    box.innerHTML = '<div class="empty-preview">원본 표를 표시하는 중 문제가 발생했습니다.</div>';
+  }
+}
+function loadWorkOrderPreview(s){
+  const box = document.getElementById('excelPreview');
+  const pickerWrap = document.getElementById('woSheetPickerWrap');
+  if(!box) return;
+  if(!s.workOrder.fileDataUrl){
+    box.innerHTML = '<div class="empty-preview">업로드하면 엑셀 원본 표가 여기 그대로 보여집니다 (이미지 포함).</div>';
+    pickerWrap.style.display = 'none';
+    return;
+  }
+  try{
+    const wb = dataUrlToWorkbook(s.workOrder.fileDataUrl);
+    const base64 = s.workOrder.fileDataUrl.split(',')[1];
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for(let i=0;i<binary.length;i++) bytes[i] = binary.charCodeAt(i);
+    const rawArrayBuffer = bytes.buffer;
+    const names = wb.SheetNames;
+    if(names.length>1){
+      pickerWrap.style.display = 'flex';
+      const sel = document.getElementById('woSheetSelect');
+      sel.innerHTML = names.map(n=>`<option>${n}</option>`).join('');
+      sel.value = names[0];
+      sel.onchange = ()=> renderExcelPreview(wb, sel.value, rawArrayBuffer);
+    } else {
+      pickerWrap.style.display = 'none';
+    }
+    renderExcelPreview(wb, names[0], rawArrayBuffer);
+  }catch(err){
+    console.error(err);
+    box.innerHTML = '<div class="empty-preview">원본 표를 불러오는 중 문제가 발생했습니다. (엑셀 파일만 미리보기가 가능합니다)</div>';
+  }
+}
+function parseColorSizeBlocksFromRows(rows){
+  const blocks = [];
+  for(let i=0;i<rows.length;i++){
+    const row = rows[i];
+    const rowText = row.map(c=>String(c||'')).join(' ');
+    if(/사이즈\s*편차|원부자재\s*소요량/.test(rowText)) break; // spec table / materials table starts here - stop looking for color blocks
+    const headerColIdx = row.findIndex(c=> String(c||'').replace(/\s/g,'').indexOf('컬러명')>-1);
+    if(headerColIdx===-1) continue;
+    const sizeCols = [];
+    row.forEach((c,ci)=>{
+      const v = String(c||'').trim();
+      if(!v || ci<=headerColIdx) return;
+      if(/^\d+(\.\d+)?$/.test(v) || /^(FREE|PLUS|XS|S|M|L|XL)$/i.test(v)) sizeCols.push({col:ci, label:v});
+    });
+    if(sizeCols.length===0) continue;
+    let j = i+1;
+    if(j<rows.length){
+      const maybeRatio = rows[j];
+      const allSmallDecimals = sizeCols.length>0 && sizeCols.every(sc=>{
+        const v = parseFloat(maybeRatio[sc.col]); return !isNaN(v) && v>0 && v<10;
+      });
+      if(allSmallDecimals) j++; // fabric-consumption-ratio row, not a color entry
+    }
+    const colorRows = [];
+    while(j<rows.length){
+      const row2 = rows[j];
+      const label0 = String(row2[0]||'').trim();
+      if(!label0) break;
+      if(label0.replace(/\s/g,'').indexOf('컬러명')>-1) break;
+      if(/합계|Total|사이즈\s*편차|원부자재/i.test(label0)) break;
+      const qtyBySize = {};
+      sizeCols.forEach(sc=>{ const v = row2[sc.col]; if(v!==undefined && v!=='') qtyBySize[sc.label] = v; });
+      if(Object.keys(qtyBySize).length) colorRows.push({color:label0, qtyBySize});
+      j++;
+    }
+    if(colorRows.length) blocks.push({sizeCols: sizeCols.map(s=>s.label), colorRows});
+    i = j-1;
+  }
+  return blocks;
+}
+function parseMaterialsTableFromRows(rows){
+  for(let i=0;i<rows.length;i++){
+    const row = rows[i];
+    const idxItem = row.findIndex(c=> String(c||'').trim()==='품목');
+    if(idxItem===-1) continue;
+    const idxSpec = row.findIndex(c=> String(c||'').trim()==='규격');
+    const idxContent = row.findIndex(c=> String(c||'').trim()==='내용');
+    const idxQty = row.findIndex(c=> String(c||'').trim()==='소요량');
+    const idxNote = row.findIndex(c=> String(c||'').trim()==='비고');
+    const items = [];
+    let j = i+1;
+    while(j<rows.length){
+      const row2 = rows[j];
+      const name = String(row2[idxItem]||'').trim();
+      if(!name) break;
+      if(/완성자재|원부자재/.test(name)) break;
+      items.push({
+        item:name,
+        spec: idxSpec>-1? String(row2[idxSpec]||'').trim():'',
+        content: idxContent>-1? String(row2[idxContent]||'').trim():'',
+        qty: idxQty>-1? String(row2[idxQty]||'').trim():'',
+        note: idxNote>-1? String(row2[idxNote]||'').trim():''
+      });
+      j++;
+    }
+    if(items.length) return items;
+  }
+  return [];
+}
+function wireAutoFillFromExcel(s){
+  const btn = document.getElementById('autoFillFromExcel');
+  if(!btn) return;
+  btn.addEventListener('click', ()=>{
+    if(!s.workOrder.fileDataUrl){ alert('먼저 작업지시서 엑셀 파일을 업로드해주세요.'); return; }
+    try{
+      const wb = dataUrlToWorkbook(s.workOrder.fileDataUrl);
+      const sel = document.getElementById('woSheetSelect');
+      const sheetName = (sel && sel.value) ? sel.value : wb.SheetNames[0];
+      const ws = wb.Sheets[sheetName];
+      const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+
+      const blocks = parseColorSizeBlocksFromRows(rows);
+      const materials = parseMaterialsTableFromRows(rows);
+
+      let colorCount = 0;
+      if(blocks.length){
+        const sizeSet = [];
+        blocks.forEach(b=> b.sizeCols.forEach(sz=>{ if(!sizeSet.includes(sz)) sizeSet.push(sz); }));
+        currentSizes = sizeSet;
+        const allColorRows = [];
+        blocks.forEach(b=> b.colorRows.forEach(cr=> allColorRows.push(cr)));
+        colorCount = allColorRows.length;
+        document.getElementById('matrixHeadRow').innerHTML = matrixHeadHtml(currentSizes);
+        document.getElementById('matrixBody').innerHTML = allColorRows.map(r=>matrixRowHtml(r, currentSizes)).join('');
+        bindMatrixRowEvents();
+      }
+      if(materials.length){
+        document.getElementById('matBody').innerHTML = materials.map(matRowHtml).join('');
+        bindMatRowEvents();
+      }
+      if(colorCount===0 && materials.length===0){
+        alert('"' + sheetName + '" 시트에서 컬러×사이즈 표나 원부자재 표를 찾지 못했습니다. 다른 시트를 선택했다면 위에서 시트를 바꿔보시거나, 직접 입력해주세요.');
+      } else {
+        alert(`"${sheetName}" 시트에서 컬러 ${colorCount}개, 원부자재 ${materials.length}개를 찾아 채웠습니다.\n\n※ 자동으로 읽은 내용이라 틀릴 수 있습니다. 위 원본 표와 꼭 대조해서 확인해주세요.`);
+      }
+    }catch(err){
+      console.error(err);
+      alert('표를 읽는 중 문제가 발생했습니다: ' + (err && err.message ? err.message : '알 수 없는 오류'));
+    }
+  });
+}
 function wireFileUpload(s){
   const fileInput = document.getElementById('fileInput');
   const rewire = ()=>{
@@ -1154,23 +1520,31 @@ function wireFileUpload(s){
     const reader = new FileReader();
     reader.onload = ()=>{
       s.workOrder.fileName = f.name;
+      const b64Reader = new FileReader();
+      b64Reader.onload = ()=>{ s.workOrder.fileDataUrl = b64Reader.result; document.getElementById('fileBox').innerHTML = fileBoxInnerHtml(s); rewire(); loadWorkOrderPreview(s); };
+      b64Reader.readAsDataURL(f);
       try{
         const wb = XLSX.read(reader.result, {type:'array'});
         const fields = scanWorkOrderLabels(wb);
+        const found = [], notFound = [];
+        const labelKr = {factory:'작업처', writtenDate:'작성일', dueDate:'납기일', manager:'담당자', styleNo:'스타일번호'};
+        Object.keys(labelKr).forEach(key=>{
+          if(fields[key]){ found.push(`${labelKr[key]}: ${fields[key]}`); }
+          else { notFound.push(labelKr[key]); }
+        });
         if(fields.factory) document.getElementById('w_factory').value = fields.factory;
         if(fields.writtenDate) document.getElementById('w_writtenDate').value = fields.writtenDate;
         if(fields.dueDate) document.getElementById('w_dueDate').value = fields.dueDate;
         if(fields.manager) document.getElementById('w_manager').value = fields.manager;
-        // also convert to dataURL for storage/download
-        const b64Reader = new FileReader();
-        b64Reader.onload = ()=>{ s.workOrder.fileDataUrl = b64Reader.result; document.getElementById('fileBox').innerHTML = fileBoxInnerHtml(s); rewire(); };
-        b64Reader.readAsDataURL(f);
-        alert('엑셀에서 작업처/작성일/납기일/담당자 정보를 최대한 자동으로 찾아 채웠습니다. 확인 후 필요하면 수정해주세요.');
+        if(fields.styleNo) document.getElementById('f_styleNo') && (document.getElementById('f_styleNo').value = fields.styleNo);
+        let msg = '파일이 저장되었습니다.\n\n';
+        msg += found.length ? `자동으로 찾은 항목:\n${found.join('\n')}\n\n` : '자동으로 찾은 항목이 없습니다.\n\n';
+        if(notFound.length) msg += `찾지 못한 항목(직접 입력 필요): ${notFound.join(', ')}\n\n`;
+        msg += '컬러×사이즈 수량, 원부자재는 자동 인식하지 않으니 아래 표에서 직접 입력/수정해주세요.';
+        alert(msg);
       }catch(err){
         console.error(err);
-        const b64Reader = new FileReader();
-        b64Reader.onload = ()=>{ s.workOrder.fileDataUrl = b64Reader.result; document.getElementById('fileBox').innerHTML = fileBoxInnerHtml(s); rewire(); };
-        b64Reader.readAsDataURL(f);
+        alert('파일은 저장했지만, 자동 인식 중 오류가 발생했습니다: ' + (err && err.message ? err.message : '알 수 없는 오류') + '\n항목은 직접 입력해주세요.');
       }
     };
     reader.readAsArrayBuffer(f);
@@ -1297,6 +1671,8 @@ function wireStageWidgets(s){
       document.getElementById('matBody').innerHTML = existing.map(matRowHtml).join(''); bindMatRowEvents();
     });
     wireFileUpload(s);
+    loadWorkOrderPreview(s);
+    wireAutoFillFromExcel(s);
     wireIssueAdd(s);
     return;
   }
